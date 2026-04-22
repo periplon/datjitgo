@@ -1,0 +1,780 @@
+{
+  "Person": [
+    {
+      "full_name": "Kenneth Chen",
+      "first_name": "Samantha",
+      "last_name": "Ramirez",
+      "prefix": "Fr.",
+      "username": "avery",
+      "bio": "Parent of two, dog parent of one.",
+      "avatar": "https://i.pravatar.cc/150?u=1172",
+      "gender": "nonbinary",
+      "dob": "1963-10-04",
+      "age": 51
+    },
+    {
+      "full_name": "David Hall",
+      "first_name": "Emily",
+      "last_name": "Thompson",
+      "prefix": "Capt.",
+      "username": "fox",
+      "bio": "Tech lead who believes in boring, reliable systems.",
+      "avatar": "https://i.pravatar.cc/150?u=1547",
+      "gender": "female",
+      "dob": "1983-09-03",
+      "age": 75
+    },
+    {
+      "full_name": "Katherine Williams",
+      "first_name": "Ryan",
+      "last_name": "Jackson",
+      "prefix": "Col.",
+      "username": "jade",
+      "bio": "Engineer passionate about clean code and strong coffee.",
+      "avatar": "https://i.pravatar.cc/150?u=1128",
+      "gender": "male",
+      "dob": "1992-07-11",
+      "age": 58
+    },
+    {
+      "full_name": "Andrew Rivera",
+      "first_name": "Jessica",
+      "last_name": "Gonzalez",
+      "prefix": "Mr.",
+      "username": "jade",
+      "bio": "Cloud architect exploring distributed systems.",
+      "avatar": "https://i.pravatar.cc/150?u=1381",
+      "gender": "nonbinary",
+      "dob": "1975-12-05",
+      "age": 84
+    },
+    {
+      "full_name": "Jennifer Mitchell",
+      "first_name": "Stephen",
+      "last_name": "Wang",
+      "prefix": "Sra.",
+      "username": "lark",
+      "bio": "Writer by night, developer by day.",
+      "avatar": "https://i.pravatar.cc/150?u=2778",
+      "gender": "male",
+      "dob": "1977-02-07",
+      "age": 39
+    },
+    {
+      "full_name": "Nicholas Flores",
+      "first_name": "Helen",
+      "last_name": "Kim",
+      "prefix": "Srta.",
+      "username": "atlas",
+      "bio": "Developer advocate fostering inclusive communities.",
+      "avatar": "https://i.pravatar.cc/150?u=8394",
+      "gender": "nonbinary",
+      "dob": "1957-08-21",
+      "age": 41
+    },
+    {
+      "full_name": "Daniel Wu",
+      "first_name": "Alexander",
+      "last_name": "Rodriguez",
+      "prefix": "Maj.",
+      "username": "sparrow",
+      "bio": "Hiker, reader, occasional writer.",
+      "avatar": "https://i.pravatar.cc/150?u=7745",
+      "gender": "nonbinary",
+      "dob": "1993-11-23",
+      "age": 27
+    },
+    {
+      "full_name": "Jacob Martin",
+      "first_name": "Lisa",
+      "last_name": "King",
+      "prefix": "Rev.",
+      "username": "gray",
+      "bio": "Building scalable systems and mentoring junior devs.",
+      "avatar": "https://i.pravatar.cc/150?u=2318",
+      "gender": "female",
+      "dob": "1985-09-22",
+      "age": 69
+    },
+    {
+      "full_name": "Catherine Jones",
+      "first_name": "Samantha",
+      "last_name": "Nguyen",
+      "prefix": "Ms.",
+      "username": "hale",
+      "bio": "Systems thinker with a soft spot for weird APIs.",
+      "avatar": "https://i.pravatar.cc/150?u=5186",
+      "gender": "nonbinary",
+      "dob": "1995-02-26",
+      "age": 20
+    },
+    {
+      "full_name": "Edward Lee",
+      "first_name": "Paul",
+      "last_name": "Davis",
+      "prefix": "Prof.",
+      "username": "aurora",
+      "bio": "UX designer grounded in user research.",
+      "avatar": "https://i.pravatar.cc/150?u=2375",
+      "gender": "nonbinary",
+      "dob": "1987-09-04",
+      "age": 22
+    }
+  ],
+  "Contact": [
+    {
+      "email": "james.perez@mail.com",
+      "phone": "+1-510-639-9332",
+      "mobile": "+1-213-777-9442",
+      "landline": "+1-305-345-6240",
+      "website": "https://example.com/page/1028",
+      "photo_url": "https://picsum.photos/400/300?id=724",
+      "avatar_url": "https://i.pravatar.cc/150?u=1998"
+    },
+    {
+      "email": "margaret.brown@example.com",
+      "phone": "+1-929-188-4952",
+      "mobile": "+1-202-684-6341",
+      "landline": "+1-614-365-9634",
+      "website": "https://example.com/page/6103",
+      "photo_url": "https://picsum.photos/400/300?id=191",
+      "avatar_url": "https://i.pravatar.cc/150?u=3052"
+    },
+    {
+      "email": "lisa.flores@example.com",
+      "phone": "+1-904-720-3113",
+      "mobile": "+1-904-733-4112",
+      "landline": "+1-469-231-1440",
+      "website": "https://example.com/page/5765",
+      "photo_url": "https://picsum.photos/400/300?id=39",
+      "avatar_url": "https://i.pravatar.cc/150?u=5459"
+    },
+    {
+      "email": "ashley.martinez@gmail.com",
+      "phone": "+1-619-101-8441",
+      "mobile": "+1-917-536-4182",
+      "landline": "+1-619-414-4911",
+      "website": "https://example.com/page/6770",
+      "photo_url": "https://picsum.photos/400/300?id=609",
+      "avatar_url": "https://i.pravatar.cc/150?u=6338"
+    },
+    {
+      "email": "raymond.thomas@outlook.com",
+      "phone": "+1-502-822-4942",
+      "mobile": "+1-408-831-3441",
+      "landline": "+1-202-889-6627",
+      "website": "https://example.com/page/3589",
+      "photo_url": "https://picsum.photos/400/300?id=640",
+      "avatar_url": "https://i.pravatar.cc/150?u=656"
+    },
+    {
+      "email": "gregory.thomas@gmail.com",
+      "phone": "+1-212-532-7876",
+      "mobile": "+1-202-612-8264",
+      "landline": "+1-929-276-9335",
+      "website": "https://example.com/page/5249",
+      "photo_url": "https://picsum.photos/400/300?id=182",
+      "avatar_url": "https://i.pravatar.cc/150?u=4416"
+    },
+    {
+      "email": "emma.thomas@company.com",
+      "phone": "+1-408-967-4472",
+      "mobile": "+1-303-582-7565",
+      "landline": "+1-408-392-6035",
+      "website": "https://example.com/page/4938",
+      "photo_url": "https://picsum.photos/400/300?id=231",
+      "avatar_url": "https://i.pravatar.cc/150?u=615"
+    },
+    {
+      "email": "sharon.liu@example.com",
+      "phone": "+1-801-496-9237",
+      "mobile": "+1-858-581-5340",
+      "landline": "+1-314-286-6739",
+      "website": "https://example.com/page/9148",
+      "photo_url": "https://picsum.photos/400/300?id=269",
+      "avatar_url": "https://i.pravatar.cc/150?u=1690"
+    },
+    {
+      "email": "margaret.davis@test.org",
+      "phone": "+1-713-559-8060",
+      "mobile": "+1-614-496-4863",
+      "landline": "+1-312-517-5092",
+      "website": "https://example.com/page/5642",
+      "photo_url": "https://picsum.photos/400/300?id=416",
+      "avatar_url": "https://i.pravatar.cc/150?u=8966"
+    },
+    {
+      "email": "jason.allen@gmail.com",
+      "phone": "+1-213-700-6676",
+      "mobile": "+1-323-837-6613",
+      "landline": "+1-404-901-5720",
+      "website": "https://example.com/page/2403",
+      "photo_url": "https://picsum.photos/400/300?id=134",
+      "avatar_url": "https://i.pravatar.cc/150?u=9843"
+    }
+  ],
+  "Location": [
+    {
+      "full_address": "3958 Church, Miami, Virginia 12196",
+      "street": "6618 Washington",
+      "city": "Atlanta",
+      "state": "California",
+      "zip": "23407",
+      "country": "Indonesia",
+      "lat": 42.9672,
+      "lng": 174.9718,
+      "tz": "Pacific/Honolulu"
+    },
+    {
+      "full_address": "2660 Elm, Memphis, North Carolina 65057",
+      "street": "6013 Spring",
+      "city": "Fresno",
+      "state": "Washington",
+      "zip": "23724",
+      "country": "Sweden",
+      "lat": -13.9927,
+      "lng": 52.3034,
+      "tz": "Africa/Lagos"
+    },
+    {
+      "full_address": "9781 Cherry, Portland, Louisiana 48224",
+      "street": "2714 Walnut",
+      "city": "Miami",
+      "state": "New Hampshire",
+      "zip": "78989",
+      "country": "Switzerland",
+      "lat": 58.4356,
+      "lng": -0.1175,
+      "tz": "Europe/Moscow"
+    },
+    {
+      "full_address": "4833 Highland, Austin, Missouri 75341",
+      "street": "785 Park",
+      "city": "Indianapolis",
+      "state": "Wisconsin",
+      "zip": "89285",
+      "country": "Brazil",
+      "lat": 54.8812,
+      "lng": 64.062,
+      "tz": "Asia/Kolkata"
+    },
+    {
+      "full_address": "175 Willow, New Orleans, South Dakota 98442",
+      "street": "5405 Valley",
+      "city": "Raleigh",
+      "state": "Minnesota",
+      "zip": "56789",
+      "country": "United Kingdom",
+      "lat": 8.2471,
+      "lng": -146.7203,
+      "tz": "Europe/Amsterdam"
+    },
+    {
+      "full_address": "9577 Valley, New Orleans, Kentucky 74318",
+      "street": "147 Maple",
+      "city": "Phoenix",
+      "state": "Oklahoma",
+      "zip": "31189",
+      "country": "Norway",
+      "lat": -49.7394,
+      "lng": -98.4667,
+      "tz": "Asia/Singapore"
+    },
+    {
+      "full_address": "1097 Park, Boston, Maryland 63668",
+      "street": "6321 Hill",
+      "city": "Seattle",
+      "state": "Tennessee",
+      "zip": "53265",
+      "country": "Poland",
+      "lat": -17.7645,
+      "lng": -133.8905,
+      "tz": "America/New_York"
+    },
+    {
+      "full_address": "170 Madison, Kansas City, Arkansas 39900",
+      "street": "5765 Washington",
+      "city": "Indianapolis",
+      "state": "Michigan",
+      "zip": "71380",
+      "country": "Saudi Arabia",
+      "lat": 61.048,
+      "lng": 124.8998,
+      "tz": "America/Bogota"
+    },
+    {
+      "full_address": "7753 Franklin, Raleigh, Rhode Island 55100",
+      "street": "1098 Sunset",
+      "city": "Raleigh",
+      "state": "Alabama",
+      "zip": "44948",
+      "country": "United Arab Emirates",
+      "lat": 17.0364,
+      "lng": 21.3882,
+      "tz": "America/Chicago"
+    },
+    {
+      "full_address": "7327 Poplar, Denver, Utah 76395",
+      "street": "3698 Walnut",
+      "city": "Fort Worth",
+      "state": "Alaska",
+      "zip": "91491",
+      "country": "New Zealand",
+      "lat": -10.3166,
+      "lng": -0.3094,
+      "tz": "Australia/Sydney"
+    }
+  ],
+  "Finance": [
+    {
+      "price_usd": 233.81,
+      "price_eur": 932.48,
+      "card_number": "4111-1352-1826-4104",
+      "card_type": "visa",
+      "iban_code": "DE42944855084884230941",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 321.22,
+      "price_eur": 228.22,
+      "card_number": "4111-5887-3636-4957",
+      "card_type": "mastercard",
+      "iban_code": "DE58246010981392908073",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 472.61,
+      "price_eur": 501.68,
+      "card_number": "4111-9260-5070-6719",
+      "card_type": "mastercard",
+      "iban_code": "DE83737740983354335018",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 434.6,
+      "price_eur": 328.33,
+      "card_number": "4111-9922-7799-7330",
+      "card_type": "visa",
+      "iban_code": "DE32584814658056832011",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 397.34,
+      "price_eur": 96.93,
+      "card_number": "4111-3547-1700-3407",
+      "card_type": "discover",
+      "iban_code": "DE31930793776087448179",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 515.31,
+      "price_eur": 526.13,
+      "card_number": "4111-5507-7001-7203",
+      "card_type": "discover",
+      "iban_code": "DE87720749358214136644",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 117.63,
+      "price_eur": 630.08,
+      "card_number": "4111-2162-9180-7086",
+      "card_type": "amex",
+      "iban_code": "DE37872958764119469726",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 997.23,
+      "price_eur": 317.44,
+      "card_number": "4111-8251-9433-5330",
+      "card_type": "amex",
+      "iban_code": "DE38549043777133760339",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 19.9,
+      "price_eur": 480.97,
+      "card_number": "4111-3971-5799-9357",
+      "card_type": "discover",
+      "iban_code": "DE76235366156665757094",
+      "swift_code": "COBADEFFXXX"
+    },
+    {
+      "price_usd": 338.79,
+      "price_eur": 984.93,
+      "card_number": "4111-9730-2856-6907",
+      "card_type": "discover",
+      "iban_code": "DE95899780847420795481",
+      "swift_code": "COBADEFFXXX"
+    }
+  ],
+  "Content": [
+    {
+      "word": "right",
+      "sentence": "The best feedback is specific, kind, and on time.",
+      "paragraph": "Teams that feel safe ask better questions. When people believe they can admit confusion without penalty, the whole group learns faster. Psychological safety is not a nice-to-have; it is the substrate of effective collaboration.",
+      "url_slug": "party-problem-110"
+    },
+    {
+      "word": "center",
+      "sentence": "Simple solutions are often the hardest to design.",
+      "paragraph": "A culture of continuous improvement takes years to build and only moments to erode. Leaders set the tone with their daily choices, and teams respond in kind. The trick is to celebrate small wins, acknowledge honest failures, and keep learning out loud.",
+      "url_slug": "night-place-192"
+    },
+    {
+      "word": "lot",
+      "sentence": "Iteration is the secret behind every polished product.",
+      "paragraph": "Trust compounds like interest. Every interaction either deposits or withdraws, and the balance determines how far your ideas can travel. Consistency in small things is what makes the big things possible.",
+      "url_slug": "center-head-686"
+    },
+    {
+      "word": "man",
+      "sentence": "After careful review, the committee approved the revised proposal.",
+      "paragraph": "Habits quietly shape careers. The engineer who reads one paper a week, the designer who sketches daily, the manager who invests in one-on-ones: all of them accumulate advantages that become undeniable over time.",
+      "url_slug": "member-year-120"
+    },
+    {
+      "word": "hand",
+      "sentence": "Shipping small, meaningful improvements beats waiting for perfection.",
+      "paragraph": "Time spent listening to users is rarely wasted. They will tell you, in their own words, where your product breaks down. The craft is in translating their frustrations into features that actually help.",
+      "url_slug": "history-life-953"
+    },
+    {
+      "word": "music",
+      "sentence": "Documentation matters more than most people realize.",
+      "paragraph": "Every line of production code is a promise to maintain it. Think carefully before adding, and more carefully before removing. Respect the work that came before, even as you improve upon it.",
+      "url_slug": "moment-education-390"
+    },
+    {
+      "word": "home",
+      "sentence": "Time spent on clarity is always repaid later.",
+      "paragraph": "Every line of production code is a promise to maintain it. Think carefully before adding, and more carefully before removing. Respect the work that came before, even as you improve upon it.",
+      "url_slug": "night-party-789"
+    },
+    {
+      "word": "person",
+      "sentence": "Documentation matters more than most people realize.",
+      "paragraph": "A product is rarely judged by a single feature. Instead, users form opinions based on the accumulated weight of countless tiny interactions. Get the small things right, and the big things have room to shine.",
+      "url_slug": "hour-air-448"
+    },
+    {
+      "word": "right",
+      "sentence": "People remember how you made them feel, not what you said.",
+      "paragraph": "Careful observation beats clever prediction. The world rewards those who pay attention to what is really happening rather than what they expected. Notice the anomalies, and you will often find the next opportunity.",
+      "url_slug": "day-government-42"
+    },
+    {
+      "word": "part",
+      "sentence": "Collaboration across teams produced a surprisingly elegant result.",
+      "paragraph": "When a team aligns on the problem, solutions begin to converge. Most disagreements are really disagreements about what is being solved in the first place. Start with the question, not the answer.",
+      "url_slug": "lot-company-954"
+    }
+  ],
+  "Product": [
+    {
+      "title": "Classic Leather Wallet",
+      "description": "A classic design meets modern functionality in this handcrafted piece.",
+      "sku": "SKU-SS-5736",
+      "company": "Horizon Digital Corp.",
+      "industry": "Retail",
+      "catch_phrase": "Streamline scalable workflows.",
+      "role": "Senior Software Engineer",
+      "department": "Business Development"
+    },
+    {
+      "title": "Lightweight Aluminum Backpack",
+      "description": "A modern update on a time-tested classic, built with care.",
+      "sku": "SKU-TP-1385",
+      "company": "Pinnacle Solutions Corp.",
+      "industry": "Energy",
+      "catch_phrase": "Innovate seamless workflows.",
+      "role": "Database Administrator",
+      "department": "Support"
+    },
+    {
+      "title": "Wireless Carbon Fiber Headphones",
+      "description": "Built with precision craftsmanship for enduring performance.",
+      "sku": "SKU-UL-9960",
+      "company": "Meridian Solutions LLC",
+      "industry": "Education",
+      "catch_phrase": "Simplify cutting-edge solutions.",
+      "role": "Software Engineer",
+      "department": "Business Development"
+    },
+    {
+      "title": "Compact Ceramic Mug",
+      "description": "Perfect for home, office, or travel with its versatile design.",
+      "sku": "SKU-UH-7180",
+      "company": "Atlas Systems Ltd.",
+      "industry": "Aerospace",
+      "catch_phrase": "Empower agile synergies.",
+      "role": "UX Designer",
+      "department": "Product"
+    },
+    {
+      "title": "Sleek Carbon Fiber Headphones",
+      "description": "Smart features and intuitive design make this a must-have for modern life.",
+      "sku": "SKU-YE-1731",
+      "company": "Stellar Data Technologies",
+      "industry": "Energy",
+      "catch_phrase": "Elevate holistic strategies.",
+      "role": "Business Analyst",
+      "department": "Human Resources"
+    },
+    {
+      "title": "Portable Silicone Charger",
+      "description": "Premium craftsmanship and sustainable materials define this standout piece.",
+      "sku": "SKU-SA-2107",
+      "company": "Pinnacle Solutions Corp.",
+      "industry": "Construction",
+      "catch_phrase": "Empower sustainable insights.",
+      "role": "Senior Software Engineer",
+      "department": "Human Resources"
+    },
+    {
+      "title": "Smart Glass Monitor",
+      "description": "Engineered for performance, styled for every occasion.",
+      "sku": "SKU-XT-7761",
+      "company": "Nova Logic Inc.",
+      "industry": "Aerospace",
+      "catch_phrase": "Innovate agile strategies.",
+      "role": "Machine Learning Engineer",
+      "department": "Business Development"
+    },
+    {
+      "title": "Heavy-Duty Carbon Fiber Case",
+      "description": "Premium craftsmanship and sustainable materials define this standout piece.",
+      "sku": "SKU-JV-8454",
+      "company": "Apex Tech Inc.",
+      "industry": "Retail",
+      "catch_phrase": "Integrate cutting-edge partnerships.",
+      "role": "Security Engineer",
+      "department": "Finance"
+    },
+    {
+      "title": "Ultra-thin Carbon Fiber Headphones",
+      "description": "Perfect for home, office, or travel with its versatile design.",
+      "sku": "SKU-RH-4311",
+      "company": "Zenith Solutions LLC",
+      "industry": "Pharmaceuticals",
+      "catch_phrase": "Empower agile synergies.",
+      "role": "Technical Writer",
+      "department": "Security"
+    },
+    {
+      "title": "Handcrafted Copper Bottle",
+      "description": "Eco-friendly materials meet premium build quality.",
+      "sku": "SKU-SI-8373",
+      "company": "Atlas Cloud Corp.",
+      "industry": "Transportation",
+      "catch_phrase": "Revolutionize dynamic partnerships.",
+      "role": "Data Scientist",
+      "department": "Support"
+    }
+  ],
+  "Identity": [
+    {
+      "sku_code": "SKU-JS-7362",
+      "slug_id": "item-5380",
+      "alpha_code": "YNY506",
+      "md5": "4374b6cfd0203a0c6bf8f4fa05fc917c",
+      "sha256": "1d3b81e232d0cef5af425aac95a07f3b31025db5c8698f75adbf6ff87117e957"
+    },
+    {
+      "sku_code": "SKU-FB-4139",
+      "slug_id": "item-6525",
+      "alpha_code": "SBD330",
+      "md5": "cdb10824eb3a95bcb00bba394dc90399",
+      "sha256": "80ea1397fe63579753c84d140c0399cdc04abae0f4f8f53a37de9fabb2be293c"
+    },
+    {
+      "sku_code": "SKU-CO-1990",
+      "slug_id": "item-1252",
+      "alpha_code": "UQK780",
+      "md5": "9e58511325c876d822142fe784bde860",
+      "sha256": "3fc59e7082fff1d324ad1fc2c7bb7416a6578b029c65b4448f1cdbe67fce4016"
+    },
+    {
+      "sku_code": "SKU-PX-4583",
+      "slug_id": "item-8351",
+      "alpha_code": "PWB987",
+      "md5": "1550e1f4c28390a915965dbc7490e67f",
+      "sha256": "6d3edfb90408954f6ce826a4cb1713c44af26230c3d9cb6ed33d5f675f74433b"
+    },
+    {
+      "sku_code": "SKU-AQ-9161",
+      "slug_id": "item-3367",
+      "alpha_code": "MHV921",
+      "md5": "2efc948c72fbbcd1fa62c037fe09fc34",
+      "sha256": "2293a8e8bde44232f9e51460042501afd7415bcad2825c4917c824ed60246d10"
+    },
+    {
+      "sku_code": "SKU-UN-8454",
+      "slug_id": "item-8150",
+      "alpha_code": "QPS862",
+      "md5": "62055eb24dbf49f45483be9ab6b9394d",
+      "sha256": "2572d4915172ce8903fa08ac3b50bbfa949125a0b4e2d337df92d3b7dae635d4"
+    },
+    {
+      "sku_code": "SKU-PW-7319",
+      "slug_id": "item-4328",
+      "alpha_code": "NAO341",
+      "md5": "a5172ff8f8089a7747bb2528c2fcabc0",
+      "sha256": "32dde720a01c423f130c854a1c30bd696dfeff807811e9eba31986dd1740ab50"
+    },
+    {
+      "sku_code": "SKU-HD-0150",
+      "slug_id": "item-3576",
+      "alpha_code": "JSL697",
+      "md5": "047abab662be53d66747c651b142631e",
+      "sha256": "35c40d4798bf50afa967fa73dcd38b2d5ad18f697ddc2ec1e2a2523e62786450"
+    },
+    {
+      "sku_code": "SKU-RT-5875",
+      "slug_id": "item-2537",
+      "alpha_code": "OJJ380",
+      "md5": "d94631a272a2b6c73fdb6fd45006f089",
+      "sha256": "8a78c51a0542939b6e028bb2b48719a615210ab0baf4a3b695d9a79935ada7f7"
+    },
+    {
+      "sku_code": "SKU-AT-8785",
+      "slug_id": "item-4269",
+      "alpha_code": "MSG355",
+      "md5": "70c5bcba126ba62133733e0b66a5a3a6",
+      "sha256": "922e254b45c7dd22021c025a43482ba2c2da8a1f5bc0a7fe1ab7ef1bc2891722"
+    }
+  ],
+  "Network": [
+    {
+      "ipv4_addr": "35.9.40.39",
+      "ipv6_addr": "27ad:1a61:c107:7056:a962:1ae1:d60f:a4a2",
+      "mac_addr": "9F:89:F1:F1:E6:54"
+    },
+    {
+      "ipv4_addr": "217.199.134.219",
+      "ipv6_addr": "4652:3962:735f:15de:f72b:e5ee:3c42:128e",
+      "mac_addr": "8B:99:00:B1:2D:3F"
+    },
+    {
+      "ipv4_addr": "238.170.60.210",
+      "ipv6_addr": "5826:acf2:e0be:b891:d14c:92ab:56ea:a874",
+      "mac_addr": "9C:87:7A:05:70:F6"
+    },
+    {
+      "ipv4_addr": "159.179.49.20",
+      "ipv6_addr": "9a2f:1534:cdc6:cdb9:0bed:7caf:e1c9:3e97",
+      "mac_addr": "B9:F3:EF:18:F9:D3"
+    },
+    {
+      "ipv4_addr": "16.53.165.3",
+      "ipv6_addr": "b254:3036:ef34:f4d3:ae18:fb4d:c97f:9f0b",
+      "mac_addr": "91:B9:61:90:FB:7A"
+    },
+    {
+      "ipv4_addr": "3.169.247.2",
+      "ipv6_addr": "579d:eacf:b2f9:43f7:ba5b:1071:640f:348f",
+      "mac_addr": "21:BE:0A:BA:84:C1"
+    },
+    {
+      "ipv4_addr": "3.129.166.10",
+      "ipv6_addr": "db88:8dfe:5a9f:5078:ddbd:0492:2b4d:a523",
+      "mac_addr": "9C:26:A1:34:F5:25"
+    },
+    {
+      "ipv4_addr": "76.63.226.134",
+      "ipv6_addr": "324d:2bb6:4373:1347:f437:643b:ba8b:4792",
+      "mac_addr": "48:C5:C5:94:71:72"
+    },
+    {
+      "ipv4_addr": "128.150.3.131",
+      "ipv6_addr": "33c3:3991:2a25:66a2:3636:4b37:224e:5491",
+      "mac_addr": "56:9A:EB:1A:96:8C"
+    },
+    {
+      "ipv4_addr": "108.88.34.157",
+      "ipv6_addr": "c761:90cd:46af:5dc6:9740:8c62:61e1:3375",
+      "mac_addr": "89:71:E5:84:2A:D2"
+    }
+  ],
+  "FileInfo": [
+    {
+      "filename": "report_822.xlsx",
+      "ext": ".csv",
+      "mime": "application/json",
+      "color_hex": "#ee69a5",
+      "color_rgb": "rgb(85, 141, 190)",
+      "color_name": "pink"
+    },
+    {
+      "filename": "report_698.yaml",
+      "ext": ".xml",
+      "mime": "audio/wav",
+      "color_hex": "#68c123",
+      "color_rgb": "rgb(46, 216, 27)",
+      "color_name": "gray"
+    },
+    {
+      "filename": "document_713.tsv",
+      "ext": ".json",
+      "mime": "image/png",
+      "color_hex": "#725ac0",
+      "color_rgb": "rgb(19, 24, 84)",
+      "color_name": "lavender"
+    },
+    {
+      "filename": "document_785.svg",
+      "ext": ".ppt",
+      "mime": "image/png",
+      "color_hex": "#25b489",
+      "color_rgb": "rgb(182, 82, 239)",
+      "color_name": "beige"
+    },
+    {
+      "filename": "data_271.xls",
+      "ext": ".7z",
+      "mime": "application/octet-stream",
+      "color_hex": "#a08ba5",
+      "color_rgb": "rgb(180, 116, 238)",
+      "color_name": "beige"
+    },
+    {
+      "filename": "backup_248.odt",
+      "ext": ".webp",
+      "mime": "application/vnd.ms-powerpoint",
+      "color_hex": "#40f878",
+      "color_rgb": "rgb(211, 122, 90)",
+      "color_name": "blue"
+    },
+    {
+      "filename": "document_922.jpg",
+      "ext": ".wav",
+      "mime": "video/webm",
+      "color_hex": "#bbce2e",
+      "color_rgb": "rgb(140, 149, 16)",
+      "color_name": "brown"
+    },
+    {
+      "filename": "image_905.wav",
+      "ext": ".md",
+      "mime": "application/xml",
+      "color_hex": "#5b4810",
+      "color_rgb": "rgb(50, 176, 13)",
+      "color_name": "yellow"
+    },
+    {
+      "filename": "backup_927.csv",
+      "ext": ".zip",
+      "mime": "application/pdf",
+      "color_hex": "#fba4a0",
+      "color_rgb": "rgb(31, 203, 168)",
+      "color_name": "turquoise"
+    },
+    {
+      "filename": "image_254.md",
+      "ext": ".png",
+      "mime": "image/jpeg",
+      "color_hex": "#39702b",
+      "color_rgb": "rgb(107, 111, 190)",
+      "color_name": "crimson"
+    }
+  ]
+}

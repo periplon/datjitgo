@@ -1,0 +1,546 @@
+{
+  "Office": [
+    {
+      "city": "Columbus, Virginia",
+      "state": "Virginia",
+      "zip": "69366",
+      "timezone": "Asia/Singapore",
+      "phone": "+1-512-760-1771"
+    },
+    {
+      "city": "Milwaukee, Alabama",
+      "state": "Alabama",
+      "zip": "94481",
+      "timezone": "Australia/Sydney",
+      "phone": "+1-714-297-3224"
+    },
+    {
+      "city": "Fresno, Wyoming",
+      "state": "Wyoming",
+      "zip": "18887",
+      "timezone": "Asia/Kolkata",
+      "phone": "+1-929-106-4573"
+    },
+    {
+      "city": "Seattle, Kentucky",
+      "state": "Kentucky",
+      "zip": "90687",
+      "timezone": "Pacific/Honolulu",
+      "phone": "+1-714-542-4876"
+    },
+    {
+      "city": "San Francisco, Montana",
+      "state": "Montana",
+      "zip": "25110",
+      "timezone": "Asia/Hong_Kong",
+      "phone": "+1-305-950-7509"
+    },
+    {
+      "city": "Dallas, Indiana",
+      "state": "Indiana",
+      "zip": "57366",
+      "timezone": "Asia/Taipei",
+      "phone": "+1-503-999-1341"
+    },
+    {
+      "city": "Portland, Montana",
+      "state": "Montana",
+      "zip": "52754",
+      "timezone": "Europe/Stockholm",
+      "phone": "+1-917-593-5228"
+    },
+    {
+      "city": "Tucson, Connecticut",
+      "state": "Connecticut",
+      "zip": "77577",
+      "timezone": "Asia/Singapore",
+      "phone": "+1-904-484-8260"
+    },
+    {
+      "city": "Memphis, New Mexico",
+      "state": "New Mexico",
+      "zip": "54337",
+      "timezone": "Europe/Amsterdam",
+      "phone": "+1-917-175-8207"
+    },
+    {
+      "city": "Honolulu, Maryland",
+      "state": "Maryland",
+      "zip": "61474",
+      "timezone": "Asia/Shanghai",
+      "phone": "+1-929-321-4692"
+    },
+    {
+      "city": "Kansas City, Montana",
+      "state": "Montana",
+      "zip": "26711",
+      "timezone": "America/Argentina/Buenos_Aires",
+      "phone": "+1-510-274-5551"
+    },
+    {
+      "city": "Mesa, Pennsylvania",
+      "state": "Pennsylvania",
+      "zip": "67745",
+      "timezone": "Asia/Jakarta",
+      "phone": "+1-202-992-5071"
+    },
+    {
+      "city": "Cincinnati, Virginia",
+      "state": "Virginia",
+      "zip": "44690",
+      "timezone": "Europe/Rome",
+      "phone": "+1-858-449-4399"
+    },
+    {
+      "city": "Austin, Hawaii",
+      "state": "Hawaii",
+      "zip": "70711",
+      "timezone": "Africa/Cairo",
+      "phone": "+1-929-505-8697"
+    },
+    {
+      "city": "San Jose, Washington",
+      "state": "Washington",
+      "zip": "75487",
+      "timezone": "America/Los_Angeles",
+      "phone": "+1-503-799-2208"
+    },
+    {
+      "city": "Nashville, Idaho",
+      "state": "Idaho",
+      "zip": "92608",
+      "timezone": "Asia/Taipei",
+      "phone": "+1-469-658-7709"
+    },
+    {
+      "city": "Dallas, New Hampshire",
+      "state": "New Hampshire",
+      "zip": "43384",
+      "timezone": "America/Bogota",
+      "phone": "+1-215-414-9022"
+    },
+    {
+      "city": "San Francisco, Iowa",
+      "state": "Iowa",
+      "zip": "14399",
+      "timezone": "America/Bogota",
+      "phone": "+1-917-807-6947"
+    },
+    {
+      "city": "Mesa, North Carolina",
+      "state": "North Carolina",
+      "zip": "58203",
+      "timezone": "Pacific/Honolulu",
+      "phone": "+1-602-791-8601"
+    },
+    {
+      "city": "Colorado Springs, Tennessee",
+      "state": "Tennessee",
+      "zip": "17245",
+      "timezone": "America/Phoenix",
+      "phone": "+1-323-545-9178"
+    }
+  ],
+  "Employee": [
+    {
+      "first_name": "Frank",
+      "last_name": "Thompson",
+      "email": "frank.thompson@gmail.com",
+      "username": "frank819",
+      "name": "Christopher Wu",
+      "work_email": "christopher.wu@yahoo.com"
+    },
+    {
+      "first_name": "Jason",
+      "last_name": "Robinson",
+      "email": "jason.robinson@company.com",
+      "username": "jason30",
+      "name": "Anna Walker",
+      "work_email": "anna.walker@company.com"
+    },
+    {
+      "first_name": "Amanda",
+      "last_name": "Baker",
+      "email": "amanda.baker@example.com",
+      "username": "amanda213",
+      "name": "Catherine Rivera",
+      "work_email": "catherine.rivera@icloud.com"
+    },
+    {
+      "first_name": "Shirley",
+      "last_name": "Baker",
+      "email": "shirley.baker@gmx.com",
+      "username": "shirley137",
+      "name": "Pamela Perez",
+      "work_email": "pamela.perez@pm.me"
+    },
+    {
+      "first_name": "Paul",
+      "last_name": "Perez",
+      "email": "paul.perez@yahoo.com",
+      "username": "paul182",
+      "name": "Rachel Harris",
+      "work_email": "rachel.harris@icloud.com"
+    },
+    {
+      "first_name": "Mark",
+      "last_name": "Lee",
+      "email": "mark.lee@mail.com",
+      "username": "mark31",
+      "name": "Gary Harris",
+      "work_email": "gary.harris@outlook.com"
+    },
+    {
+      "first_name": "Gary",
+      "last_name": "Thomas",
+      "email": "gary.thomas@gmail.com",
+      "username": "gary332",
+      "name": "Carol Adams",
+      "work_email": "carol.adams@gmail.com"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Rivera",
+      "email": "john.rivera@pm.me",
+      "username": "john640",
+      "name": "Frank Martin",
+      "work_email": "frank.martin@zoho.com"
+    },
+    {
+      "first_name": "Paul",
+      "last_name": "Baker",
+      "email": "paul.baker@hotmail.com",
+      "username": "paul478",
+      "name": "Carol Lee",
+      "work_email": "carol.lee@gmail.com"
+    },
+    {
+      "first_name": "Timothy",
+      "last_name": "Nguyen",
+      "email": "timothy.nguyen@example.org",
+      "username": "timothy181",
+      "name": "Amy Lee",
+      "work_email": "amy.lee@gmail.com"
+    },
+    {
+      "first_name": "Maria",
+      "last_name": "Wilson",
+      "email": "maria.wilson@gmail.com",
+      "username": "maria972",
+      "name": "Anthony Moore",
+      "work_email": "anthony.moore@company.com"
+    },
+    {
+      "first_name": "Nicholas",
+      "last_name": "Wang",
+      "email": "nicholas.wang@gmail.com",
+      "username": "nicholas634",
+      "name": "Jerry Davis",
+      "work_email": "jerry.davis@hotmail.com"
+    },
+    {
+      "first_name": "Jeffrey",
+      "last_name": "King",
+      "email": "jeffrey.king@outlook.com",
+      "username": "jeffrey643",
+      "name": "Patricia Adams",
+      "work_email": "patricia.adams@example.com"
+    },
+    {
+      "first_name": "Stephen",
+      "last_name": "Green",
+      "email": "stephen.green@yahoo.com",
+      "username": "stephen594",
+      "name": "Mary Liu",
+      "work_email": "mary.liu@example.com"
+    },
+    {
+      "first_name": "William",
+      "last_name": "Adams",
+      "email": "william.adams@gmail.com",
+      "username": "william544",
+      "name": "Kimberly Mitchell",
+      "work_email": "kimberly.mitchell@example.net"
+    },
+    {
+      "first_name": "Daniel",
+      "last_name": "Lewis",
+      "email": "daniel.lewis@me.com",
+      "username": "daniel832",
+      "name": "Jerry Robinson",
+      "work_email": "jerry.robinson@hey.com"
+    },
+    {
+      "first_name": "Frank",
+      "last_name": "Green",
+      "email": "frank.green@gmail.com",
+      "username": "frank502",
+      "name": "Justin Campbell",
+      "work_email": "justin.campbell@test.org"
+    },
+    {
+      "first_name": "Angela",
+      "last_name": "Kim",
+      "email": "angela.kim@protonmail.com",
+      "username": "angela398",
+      "name": "Robert Sanchez",
+      "work_email": "robert.sanchez@gmail.com"
+    },
+    {
+      "first_name": "Nicholas",
+      "last_name": "Jones",
+      "email": "nicholas.jones@hotmail.com",
+      "username": "nicholas395",
+      "name": "Charles Green",
+      "work_email": "charles.green@test.org"
+    },
+    {
+      "first_name": "Kenneth",
+      "last_name": "Lopez",
+      "email": "kenneth.lopez@example.com",
+      "username": "kenneth633",
+      "name": "Mary Nelson",
+      "work_email": "mary.nelson@test.org"
+    },
+    {
+      "first_name": "Michael",
+      "last_name": "Campbell",
+      "email": "michael.campbell@hotmail.com",
+      "username": "michael517",
+      "name": "Donna Davis",
+      "work_email": "donna.davis@outlook.com"
+    },
+    {
+      "first_name": "Patricia",
+      "last_name": "Wang",
+      "email": "patricia.wang@gmail.com",
+      "username": "patricia592",
+      "name": "Larry Sanchez",
+      "work_email": "larry.sanchez@live.com"
+    },
+    {
+      "first_name": "Laura",
+      "last_name": "Liu",
+      "email": "laura.liu@outlook.com",
+      "username": "laura493",
+      "name": "Sharon Lewis",
+      "work_email": "sharon.lewis@gmail.com"
+    },
+    {
+      "first_name": "Pamela",
+      "last_name": "Mitchell",
+      "email": "pamela.mitchell@gmail.com",
+      "username": "pamela639",
+      "name": "Gregory Torres",
+      "work_email": "gregory.torres@gmail.com"
+    },
+    {
+      "first_name": "Melissa",
+      "last_name": "Sanchez",
+      "email": "melissa.sanchez@example.com",
+      "username": "melissa203",
+      "name": "William Kim",
+      "work_email": "william.kim@company.com"
+    },
+    {
+      "first_name": "Emma",
+      "last_name": "Baker",
+      "email": "emma.baker@outlook.com",
+      "username": "emma251",
+      "name": "Angela Perez",
+      "work_email": "angela.perez@yahoo.com"
+    },
+    {
+      "first_name": "Andrew",
+      "last_name": "Ramirez",
+      "email": "andrew.ramirez@yahoo.com",
+      "username": "andrew199",
+      "name": "Heather Liu",
+      "work_email": "heather.liu@outlook.com"
+    },
+    {
+      "first_name": "James",
+      "last_name": "Yang",
+      "email": "james.yang@hey.com",
+      "username": "james107",
+      "name": "Donald Brown",
+      "work_email": "donald.brown@live.com"
+    },
+    {
+      "first_name": "Sarah",
+      "last_name": "Miller",
+      "email": "sarah.miller@yahoo.com",
+      "username": "sarah525",
+      "name": "Sandra Yang",
+      "work_email": "sandra.yang@protonmail.com"
+    },
+    {
+      "first_name": "Mark",
+      "last_name": "Wang",
+      "email": "mark.wang@hey.com",
+      "username": "mark773",
+      "name": "Barbara White",
+      "work_email": "barbara.white@outlook.com"
+    },
+    {
+      "first_name": "Shirley",
+      "last_name": "Davis",
+      "email": "shirley.davis@outlook.com",
+      "username": "shirley222",
+      "name": "Alexander Moore",
+      "work_email": "alexander.moore@outlook.com"
+    },
+    {
+      "first_name": "Samantha",
+      "last_name": "White",
+      "email": "samantha.white@example.com",
+      "username": "samantha118",
+      "name": "Robert Li",
+      "work_email": "robert.li@me.com"
+    },
+    {
+      "first_name": "Scott",
+      "last_name": "Garcia",
+      "email": "scott.garcia@example.net",
+      "username": "scott167",
+      "name": "John Wang",
+      "work_email": "john.wang@company.com"
+    },
+    {
+      "first_name": "Justin",
+      "last_name": "Lewis",
+      "email": "justin.lewis@example.com",
+      "username": "justin64",
+      "name": "Samantha Wang",
+      "work_email": "samantha.wang@example.org"
+    },
+    {
+      "first_name": "Samuel",
+      "last_name": "Zhang",
+      "email": "samuel.zhang@test.org",
+      "username": "samuel449",
+      "name": "Debra Martinez",
+      "work_email": "debra.martinez@company.com"
+    },
+    {
+      "first_name": "Maria",
+      "last_name": "Wang",
+      "email": "maria.wang@outlook.com",
+      "username": "maria532",
+      "name": "Joshua Moore",
+      "work_email": "joshua.moore@test.org"
+    },
+    {
+      "first_name": "Michelle",
+      "last_name": "Wright",
+      "email": "michelle.wright@example.com",
+      "username": "michelle12",
+      "name": "Matthew Jones",
+      "work_email": "matthew.jones@protonmail.com"
+    },
+    {
+      "first_name": "Jack",
+      "last_name": "Sanchez",
+      "email": "jack.sanchez@gmail.com",
+      "username": "jack754",
+      "name": "Jack White",
+      "work_email": "jack.white@outlook.com"
+    },
+    {
+      "first_name": "Brian",
+      "last_name": "Lee",
+      "email": "brian.lee@gmail.com",
+      "username": "brian36",
+      "name": "Susan Liu",
+      "work_email": "susan.liu@gmail.com"
+    },
+    {
+      "first_name": "Robert",
+      "last_name": "Roberts",
+      "email": "robert.roberts@outlook.com",
+      "username": "robert960",
+      "name": "Richard Lewis",
+      "work_email": "richard.lewis@icloud.com"
+    },
+    {
+      "first_name": "Nicholas",
+      "last_name": "Chen",
+      "email": "nicholas.chen@example.com",
+      "username": "nicholas55",
+      "name": "Kevin Allen",
+      "work_email": "kevin.allen@gmail.com"
+    },
+    {
+      "first_name": "Patrick",
+      "last_name": "Rivera",
+      "email": "patrick.rivera@example.com",
+      "username": "patrick292",
+      "name": "Jack Nguyen",
+      "work_email": "jack.nguyen@gmail.com"
+    },
+    {
+      "first_name": "Deborah",
+      "last_name": "Mitchell",
+      "email": "deborah.mitchell@yahoo.com",
+      "username": "deborah858",
+      "name": "Jacob Hill",
+      "work_email": "jacob.hill@example.com"
+    },
+    {
+      "first_name": "William",
+      "last_name": "Jackson",
+      "email": "william.jackson@example.com",
+      "username": "william815",
+      "name": "Jeffrey Wright",
+      "work_email": "jeffrey.wright@icloud.com"
+    },
+    {
+      "first_name": "Pamela",
+      "last_name": "Smith",
+      "email": "pamela.smith@gmail.com",
+      "username": "pamela406",
+      "name": "Catherine Adams",
+      "work_email": "catherine.adams@yahoo.com"
+    },
+    {
+      "first_name": "Sandra",
+      "last_name": "Roberts",
+      "email": "sandra.roberts@hotmail.com",
+      "username": "sandra11",
+      "name": "Eric Nguyen",
+      "work_email": "eric.nguyen@example.com"
+    },
+    {
+      "first_name": "Nicholas",
+      "last_name": "Williams",
+      "email": "nicholas.williams@example.com",
+      "username": "nicholas248",
+      "name": "Rachel White",
+      "work_email": "rachel.white@gmail.com"
+    },
+    {
+      "first_name": "Benjamin",
+      "last_name": "Hall",
+      "email": "benjamin.hall@test.org",
+      "username": "benjamin847",
+      "name": "Justin Hill",
+      "work_email": "justin.hill@fastmail.com"
+    },
+    {
+      "first_name": "Laura",
+      "last_name": "Kim",
+      "email": "laura.kim@gmail.com",
+      "username": "laura904",
+      "name": "Kevin Jones",
+      "work_email": "kevin.jones@example.com"
+    },
+    {
+      "first_name": "Michael",
+      "last_name": "Zhang",
+      "email": "michael.zhang@test.org",
+      "username": "michael479",
+      "name": "Benjamin Brown",
+      "work_email": "benjamin.brown@company.com"
+    }
+  ]
+}

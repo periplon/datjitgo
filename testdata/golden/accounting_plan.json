@@ -1,0 +1,260 @@
+{
+  "AccountGroup": [
+    {
+      "country": "accounting.country_2917",
+      "group_code": "accounting.group_740",
+      "group_name": "accounting.group_name_2994",
+      "group_name_en": "accounting.group_name_en_66"
+    },
+    {
+      "country": "accounting.country_4015",
+      "group_code": "accounting.group_5783",
+      "group_name": "accounting.group_name_1805",
+      "group_name_en": "accounting.group_name_en_1965"
+    },
+    {
+      "country": "accounting.country_4378",
+      "group_code": "accounting.group_2283",
+      "group_name": "accounting.group_name_8038",
+      "group_name_en": "accounting.group_name_en_7968"
+    },
+    {
+      "country": "accounting.country_3095",
+      "group_code": "accounting.group_9445",
+      "group_name": "accounting.group_name_5352",
+      "group_name_en": "accounting.group_name_en_2910"
+    },
+    {
+      "country": "accounting.country_5938",
+      "group_code": "accounting.group_5760",
+      "group_name": "accounting.group_name_6656",
+      "group_name_en": "accounting.group_name_en_6018"
+    },
+    {
+      "country": "accounting.country_8339",
+      "group_code": "accounting.group_1444",
+      "group_name": "accounting.group_name_5433",
+      "group_name_en": "accounting.group_name_en_3874"
+    },
+    {
+      "country": "accounting.country_7999",
+      "group_code": "accounting.group_7798",
+      "group_name": "accounting.group_name_2628",
+      "group_name_en": "accounting.group_name_en_1184"
+    },
+    {
+      "country": "accounting.country_3955",
+      "group_code": "accounting.group_178",
+      "group_name": "accounting.group_name_4158",
+      "group_name_en": "accounting.group_name_en_5717"
+    },
+    {
+      "country": "accounting.country_7056",
+      "group_code": "accounting.group_2641",
+      "group_name": "accounting.group_name_6892",
+      "group_name_en": "accounting.group_name_en_2741"
+    },
+    {
+      "country": "accounting.country_7926",
+      "group_code": "accounting.group_8658",
+      "group_name": "accounting.group_name_1926",
+      "group_name_en": "accounting.group_name_en_6292"
+    }
+  ],
+  "SpanishAccount": [
+    {
+      "group_code": "accounting.group_3325",
+      "group_name": "accounting.group_name_2634",
+      "subgroup_code": "accounting.subgroup_1372",
+      "subgroup_name": "accounting.subgroup_name_5510",
+      "account_code": "accounting.account_108",
+      "account_name": "accounting.account_name_1855",
+      "account_name_en": "accounting.account_name_en_2617"
+    },
+    {
+      "group_code": "accounting.group_7068",
+      "group_name": "accounting.group_name_6242",
+      "subgroup_code": "accounting.subgroup_2176",
+      "subgroup_name": "accounting.subgroup_name_9962",
+      "account_code": "accounting.account_7686",
+      "account_name": "accounting.account_name_1238",
+      "account_name_en": "accounting.account_name_en_1355"
+    },
+    {
+      "group_code": "accounting.group_5320",
+      "group_name": "accounting.group_name_6356",
+      "subgroup_code": "accounting.subgroup_1887",
+      "subgroup_name": "accounting.subgroup_name_2343",
+      "account_code": "accounting.account_5760",
+      "account_name": "accounting.account_name_4537",
+      "account_name_en": "accounting.account_name_en_4128"
+    },
+    {
+      "group_code": "accounting.group_4248",
+      "group_name": "accounting.group_name_2508",
+      "subgroup_code": "accounting.subgroup_2687",
+      "subgroup_name": "accounting.subgroup_name_7610",
+      "account_code": "accounting.account_4465",
+      "account_name": "accounting.account_name_5798",
+      "account_name_en": "accounting.account_name_en_5772"
+    },
+    {
+      "group_code": "accounting.group_556",
+      "group_name": "accounting.group_name_498",
+      "subgroup_code": "accounting.subgroup_4910",
+      "subgroup_name": "accounting.subgroup_name_1341",
+      "account_code": "accounting.account_2985",
+      "account_name": "accounting.account_name_9070",
+      "account_name_en": "accounting.account_name_en_2813"
+    },
+    {
+      "group_code": "accounting.group_2663",
+      "group_name": "accounting.group_name_3565",
+      "subgroup_code": "accounting.subgroup_1311",
+      "subgroup_name": "accounting.subgroup_name_4892",
+      "account_code": "accounting.account_9086",
+      "account_name": "accounting.account_name_2340",
+      "account_name_en": "accounting.account_name_en_5544"
+    },
+    {
+      "group_code": "accounting.group_7237",
+      "group_name": "accounting.group_name_3250",
+      "subgroup_code": "accounting.subgroup_3687",
+      "subgroup_name": "accounting.subgroup_name_6229",
+      "account_code": "accounting.account_9264",
+      "account_name": "accounting.account_name_1087",
+      "account_name_en": "accounting.account_name_en_6370"
+    },
+    {
+      "group_code": "accounting.group_4549",
+      "group_name": "accounting.group_name_803",
+      "subgroup_code": "accounting.subgroup_4039",
+      "subgroup_name": "accounting.subgroup_name_6463",
+      "account_code": "accounting.account_9847",
+      "account_name": "accounting.account_name_6552",
+      "account_name_en": "accounting.account_name_en_9724"
+    },
+    {
+      "group_code": "accounting.group_6405",
+      "group_name": "accounting.group_name_2517",
+      "subgroup_code": "accounting.subgroup_6102",
+      "subgroup_name": "accounting.subgroup_name_7504",
+      "account_code": "accounting.account_1237",
+      "account_name": "accounting.account_name_4177",
+      "account_name_en": "accounting.account_name_en_2505"
+    },
+    {
+      "group_code": "accounting.group_201",
+      "group_name": "accounting.group_name_2157",
+      "subgroup_code": "accounting.subgroup_5525",
+      "subgroup_name": "accounting.subgroup_name_9724",
+      "account_code": "accounting.account_8136",
+      "account_name": "accounting.account_name_4534",
+      "account_name_en": "accounting.account_name_en_6395"
+    }
+  ],
+  "GermanAccount": [
+    {
+      "account_code": "accounting.account_1625",
+      "account_name": "accounting.account_name_4251",
+      "account_name_en": "accounting.account_name_en_7124"
+    },
+    {
+      "account_code": "accounting.account_1937",
+      "account_name": "accounting.account_name_4512",
+      "account_name_en": "accounting.account_name_en_1171"
+    },
+    {
+      "account_code": "accounting.account_3789",
+      "account_name": "accounting.account_name_1193",
+      "account_name_en": "accounting.account_name_en_3852"
+    },
+    {
+      "account_code": "accounting.account_374",
+      "account_name": "accounting.account_name_8349",
+      "account_name_en": "accounting.account_name_en_2696"
+    },
+    {
+      "account_code": "accounting.account_2558",
+      "account_name": "accounting.account_name_8524",
+      "account_name_en": "accounting.account_name_en_4451"
+    },
+    {
+      "account_code": "accounting.account_8349",
+      "account_name": "accounting.account_name_4424",
+      "account_name_en": "accounting.account_name_en_4546"
+    },
+    {
+      "account_code": "accounting.account_2834",
+      "account_name": "accounting.account_name_4212",
+      "account_name_en": "accounting.account_name_en_2039"
+    },
+    {
+      "account_code": "accounting.account_7594",
+      "account_name": "accounting.account_name_3389",
+      "account_name_en": "accounting.account_name_en_1845"
+    },
+    {
+      "account_code": "accounting.account_5644",
+      "account_name": "accounting.account_name_4370",
+      "account_name_en": "accounting.account_name_en_2100"
+    },
+    {
+      "account_code": "accounting.account_8610",
+      "account_name": "accounting.account_name_5796",
+      "account_name_en": "accounting.account_name_en_4175"
+    }
+  ],
+  "FullDetail": [
+    {
+      "country": "accounting.country_2387",
+      "full_code": "accounting.account_full_1690",
+      "full_name": "accounting.account_full_name_899"
+    },
+    {
+      "country": "accounting.country_5560",
+      "full_code": "accounting.account_full_8901",
+      "full_name": "accounting.account_full_name_7062"
+    },
+    {
+      "country": "accounting.country_7057",
+      "full_code": "accounting.account_full_2536",
+      "full_name": "accounting.account_full_name_8049"
+    },
+    {
+      "country": "accounting.country_1066",
+      "full_code": "accounting.account_full_2754",
+      "full_name": "accounting.account_full_name_2175"
+    },
+    {
+      "country": "accounting.country_6494",
+      "full_code": "accounting.account_full_9780",
+      "full_name": "accounting.account_full_name_648"
+    },
+    {
+      "country": "accounting.country_2120",
+      "full_code": "accounting.account_full_6695",
+      "full_name": "accounting.account_full_name_9642"
+    },
+    {
+      "country": "accounting.country_3113",
+      "full_code": "accounting.account_full_1709",
+      "full_name": "accounting.account_full_name_5870"
+    },
+    {
+      "country": "accounting.country_4784",
+      "full_code": "accounting.account_full_8655",
+      "full_name": "accounting.account_full_name_8217"
+    },
+    {
+      "country": "accounting.country_6477",
+      "full_code": "accounting.account_full_6526",
+      "full_name": "accounting.account_full_name_7072"
+    },
+    {
+      "country": "accounting.country_9300",
+      "full_code": "accounting.account_full_5491",
+      "full_name": "accounting.account_full_name_6317"
+    }
+  ]
+}

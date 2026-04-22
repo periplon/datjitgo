@@ -1,0 +1,596 @@
+{
+  "Product": [
+    {
+      "name": "Classic Leather Wallet",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "classic-leather-wallet",
+      "name_lower": "classic leather wallet",
+      "name_upper": "CLASSIC LEATHER WALLET",
+      "display": "Classic Leather Wallet - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Lightweight Aluminum Backpack",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "lightweight-aluminum-backpack",
+      "name_lower": "lightweight aluminum backpack",
+      "name_upper": "LIGHTWEIGHT ALUMINUM BACKPACK",
+      "display": "Lightweight Aluminum Backpack - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Wireless Carbon Fiber Headphones",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "wireless-carbon-fiber-headphones",
+      "name_lower": "wireless carbon fiber headphones",
+      "name_upper": "WIRELESS CARBON FIBER HEADPHONES",
+      "display": "Wireless Carbon Fiber Headphones - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Compact Ceramic Mug",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "compact-ceramic-mug",
+      "name_lower": "compact ceramic mug",
+      "name_upper": "COMPACT CERAMIC MUG",
+      "display": "Compact Ceramic Mug - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Sleek Carbon Fiber Headphones",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "sleek-carbon-fiber-headphones",
+      "name_lower": "sleek carbon fiber headphones",
+      "name_upper": "SLEEK CARBON FIBER HEADPHONES",
+      "display": "Sleek Carbon Fiber Headphones - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Portable Silicone Charger",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "portable-silicone-charger",
+      "name_lower": "portable silicone charger",
+      "name_upper": "PORTABLE SILICONE CHARGER",
+      "display": "Portable Silicone Charger - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Smart Glass Monitor",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "smart-glass-monitor",
+      "name_lower": "smart glass monitor",
+      "name_upper": "SMART GLASS MONITOR",
+      "display": "Smart Glass Monitor - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Heavy-Duty Carbon Fiber Case",
+      "base_price": 10,
+      "tax_rate": 0.17263008314404416,
+      "tax_amount": 1.7263008314404416,
+      "total_price": 11.726300831440442,
+      "slug": "heavy-duty-carbon-fiber-case",
+      "name_lower": "heavy-duty carbon fiber case",
+      "name_upper": "HEAVY-DUTY CARBON FIBER CASE",
+      "display": "Heavy-Duty Carbon Fiber Case - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Ultra-thin Carbon Fiber Headphones",
+      "base_price": 10,
+      "tax_rate": 0.0978974673222105,
+      "tax_amount": 0.978974673222105,
+      "total_price": 10.978974673222105,
+      "slug": "ultra-thin-carbon-fiber-headphones",
+      "name_lower": "ultra-thin carbon fiber headphones",
+      "name_upper": "ULTRA-THIN CARBON FIBER HEADPHONES",
+      "display": "Ultra-thin Carbon Fiber Headphones - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Handcrafted Copper Bottle",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "handcrafted-copper-bottle",
+      "name_lower": "handcrafted copper bottle",
+      "name_upper": "HANDCRAFTED COPPER BOTTLE",
+      "display": "Handcrafted Copper Bottle - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Ultra-thin Carbon Fiber Headphones",
+      "base_price": 10,
+      "tax_rate": 0.05,
+      "tax_amount": 0.5,
+      "total_price": 10.5,
+      "slug": "ultra-thin-carbon-fiber-headphones",
+      "name_lower": "ultra-thin carbon fiber headphones",
+      "name_upper": "ULTRA-THIN CARBON FIBER HEADPHONES",
+      "display": "Ultra-thin Carbon Fiber Headphones - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Modern Titanium Watch",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "modern-titanium-watch",
+      "name_lower": "modern titanium watch",
+      "name_upper": "MODERN TITANIUM WATCH",
+      "display": "Modern Titanium Watch - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Wireless Silicone Speaker",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "wireless-silicone-speaker",
+      "name_lower": "wireless silicone speaker",
+      "name_upper": "WIRELESS SILICONE SPEAKER",
+      "display": "Wireless Silicone Speaker - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Sleek Aluminum Keyboard",
+      "base_price": 10,
+      "tax_rate": 0.23861641298363723,
+      "tax_amount": 2.3861641298363723,
+      "total_price": 12.386164129836372,
+      "slug": "sleek-aluminum-keyboard",
+      "name_lower": "sleek aluminum keyboard",
+      "name_upper": "SLEEK ALUMINUM KEYBOARD",
+      "display": "Sleek Aluminum Keyboard - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Ultra-thin Carbon Fiber Headphones",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "ultra-thin-carbon-fiber-headphones",
+      "name_lower": "ultra-thin carbon fiber headphones",
+      "name_upper": "ULTRA-THIN CARBON FIBER HEADPHONES",
+      "display": "Ultra-thin Carbon Fiber Headphones - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Heavy-Duty Stainless Steel Bottle",
+      "base_price": 10,
+      "tax_rate": 0.2192230412445575,
+      "tax_amount": 2.192230412445575,
+      "total_price": 12.192230412445575,
+      "slug": "heavy-duty-stainless-steel-bottle",
+      "name_lower": "heavy-duty stainless steel bottle",
+      "name_upper": "HEAVY-DUTY STAINLESS STEEL BOTTLE",
+      "display": "Heavy-Duty Stainless Steel Bottle - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Premium Titanium Watch",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "premium-titanium-watch",
+      "name_lower": "premium titanium watch",
+      "name_upper": "PREMIUM TITANIUM WATCH",
+      "display": "Premium Titanium Watch - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Wireless Silicone Speaker",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "wireless-silicone-speaker",
+      "name_lower": "wireless silicone speaker",
+      "name_upper": "WIRELESS SILICONE SPEAKER",
+      "display": "Wireless Silicone Speaker - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Lightweight Aluminum Backpack",
+      "base_price": 10,
+      "tax_rate": 0.20717688242228127,
+      "tax_amount": 2.0717688242228127,
+      "total_price": 12.071768824222813,
+      "slug": "lightweight-aluminum-backpack",
+      "name_lower": "lightweight aluminum backpack",
+      "name_upper": "LIGHTWEIGHT ALUMINUM BACKPACK",
+      "display": "Lightweight Aluminum Backpack - $10",
+      "price_tier": "standard"
+    },
+    {
+      "name": "Eco-Friendly Cotton Blanket",
+      "base_price": 10,
+      "tax_rate": 0.25,
+      "tax_amount": 2.5,
+      "total_price": 12.5,
+      "slug": "eco-friendly-cotton-blanket",
+      "name_lower": "eco-friendly cotton blanket",
+      "name_upper": "ECO-FRIENDLY COTTON BLANKET",
+      "display": "Eco-Friendly Cotton Blanket - $10",
+      "price_tier": "standard"
+    }
+  ],
+  "LineItem": [
+    {
+      "product": "8121b41e-9b71-497a-a16c-f846feef7fff",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "8b7ddf21-da6a-4220-b3d4-c6d613eac844",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "4ecf16c6-c10d-4f72-8697-64c4bcbaf64d",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "0885f647-2088-4311-bad3-26de97ea06d5",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8163f031-e90a-4506-809f-3109f8bed15d",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8163f031-e90a-4506-809f-3109f8bed15d",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "a5aa1e09-8219-4d9c-b45d-cd9171aadf7b",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "8b7ddf21-da6a-4220-b3d4-c6d613eac844",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "8b458e2a-c436-4574-8890-0e05c11812c1",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "be7d1e9d-c5f4-482b-be1a-70c25b570ce1",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "2ad4417d-0595-46e6-a353-b02c0013268b",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "9ff6f4c2-e567-43d6-9e1b-11c4e0782631",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8163f031-e90a-4506-809f-3109f8bed15d",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "da9abbae-da5a-4d9f-87ba-06472b2ca75b",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "3376d21e-ce2a-4d2b-9b6a-531c0a82d786",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "0885f647-2088-4311-bad3-26de97ea06d5",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "dd1b5a88-e570-46ac-b7de-775349981c47",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "26c1f3ca-1374-4c49-a6af-5e7dc929fcc5",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8163f031-e90a-4506-809f-3109f8bed15d",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "3376d21e-ce2a-4d2b-9b6a-531c0a82d786",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "ab6bc125-e6fd-45a2-a118-a54aee987d36",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "2ad4417d-0595-46e6-a353-b02c0013268b",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "a5aa1e09-8219-4d9c-b45d-cd9171aadf7b",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "3ba53d86-3560-4586-bcc3-7b9a332bbe24",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "2ad4417d-0595-46e6-a353-b02c0013268b",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "81fe933f-249b-44b5-924c-05f805e89a19",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "26c1f3ca-1374-4c49-a6af-5e7dc929fcc5",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "dd1b5a88-e570-46ac-b7de-775349981c47",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8b458e2a-c436-4574-8890-0e05c11812c1",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "0885f647-2088-4311-bad3-26de97ea06d5",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "337bee7d-f3a1-41c1-82b2-7347144851d3",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "81fe933f-249b-44b5-924c-05f805e89a19",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "be7d1e9d-c5f4-482b-be1a-70c25b570ce1",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "26c1f3ca-1374-4c49-a6af-5e7dc929fcc5",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "e38f4779-99ce-490b-ae5d-a0da0489c40d",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8b7ddf21-da6a-4220-b3d4-c6d613eac844",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "8b7ddf21-da6a-4220-b3d4-c6d613eac844",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "dd1b5a88-e570-46ac-b7de-775349981c47",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "417a8e9a-9455-4a99-9673-8b1af08d8b0d",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "da9abbae-da5a-4d9f-87ba-06472b2ca75b",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "2ad4417d-0595-46e6-a353-b02c0013268b",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "417a8e9a-9455-4a99-9673-8b1af08d8b0d",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "e38f4779-99ce-490b-ae5d-a0da0489c40d",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "81fe933f-249b-44b5-924c-05f805e89a19",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "da9abbae-da5a-4d9f-87ba-06472b2ca75b",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "8b458e2a-c436-4574-8890-0e05c11812c1",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "0885f647-2088-4311-bad3-26de97ea06d5",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "da9abbae-da5a-4d9f-87ba-06472b2ca75b",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    },
+    {
+      "product": "2ad4417d-0595-46e6-a353-b02c0013268b",
+      "quantity": 1,
+      "unit_price": 5,
+      "subtotal": 5,
+      "rounded_total": 5
+    },
+    {
+      "product": "da9abbae-da5a-4d9f-87ba-06472b2ca75b",
+      "quantity": 20,
+      "unit_price": 5,
+      "subtotal": 100,
+      "rounded_total": 100
+    }
+  ]
+}
