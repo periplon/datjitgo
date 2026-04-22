@@ -1,0 +1,421 @@
+{
+  "Product": [
+    {
+      "price": 0.01880539606422471,
+      "discount_pct": 0.004931641405000464,
+      "internal_score": 0.6933203393318959,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": 328429,
+      "max_weight": 0.8034293812147286,
+      "tags": [
+        "MqKrl5Ipwb",
+        "GokW6hzCJyZ"
+      ],
+      "api_version": "v2",
+      "legacy_code": "QwKmbcSw9Nl",
+      "internal_secret": "oSv4VatZ",
+      "sku": "WE-7582"
+    },
+    {
+      "price": 0.423655058466191,
+      "discount_pct": 0.11768612006346468,
+      "internal_score": 0.4547886591849538,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": -100025,
+      "max_weight": 0.3436001685395329,
+      "tags": null,
+      "api_version": "v2",
+      "legacy_code": "2OC13phxfiWc",
+      "internal_secret": "eT0K8mlsCnm5k",
+      "sku": "WX-2896"
+    },
+    {
+      "price": 0.9713195594555896,
+      "discount_pct": 0.25896470692879947,
+      "internal_score": 0.9220490114703837,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": 340274,
+      "max_weight": 0.26031289487667464,
+      "tags": null,
+      "api_version": "v2",
+      "legacy_code": "oCClYe3Ovq",
+      "internal_secret": "c4EibLWt",
+      "sku": "VP-5569"
+    },
+    {
+      "price": 0.05035361692327611,
+      "discount_pct": 0.7767143420142177,
+      "internal_score": 0.8732231928290074,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": -752842,
+      "max_weight": 0.015292370120884469,
+      "tags": [
+        "IvAKSP0De"
+      ],
+      "api_version": "v2",
+      "legacy_code": "kl5f7uHpQcBH",
+      "internal_secret": "MAEqhzzvU3VVV",
+      "sku": "GN-3094"
+    },
+    {
+      "price": 0.7508716643564693,
+      "discount_pct": 0.8704283792044785,
+      "internal_score": 0.47609416847934927,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": -364487,
+      "max_weight": 0.31477292552092206,
+      "tags": null,
+      "api_version": "v2",
+      "legacy_code": "N6ObOaUvl76uw",
+      "internal_secret": "ttL5CDWyBO6fyVJ",
+      "sku": "FY-1312"
+    },
+    {
+      "price": 0.554760212861509,
+      "discount_pct": 0.7824536829718849,
+      "internal_score": 0.8160649812134173,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": -861753,
+      "max_weight": 0.17911631295104813,
+      "tags": [
+        "Ft4J3VMRt4",
+        "IkXFf2lfF1mBLnav",
+        "HKfPPcScKN"
+      ],
+      "api_version": "v2",
+      "legacy_code": "uYXydV20Z2R",
+      "internal_secret": "0W2DsDT2psyuy",
+      "sku": "XJ-3293"
+    },
+    {
+      "price": 0.8245956849511249,
+      "discount_pct": 0.42443150946646047,
+      "internal_score": 0.724849683689535,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": -104934,
+      "max_weight": 0.049400035910271645,
+      "tags": [
+        "q0UACwoEJr",
+        "jtiPpu4muxnPK"
+      ],
+      "api_version": "v2",
+      "legacy_code": "FniNSFMPE",
+      "internal_secret": "jdAd8S9Zt",
+      "sku": "GE-8948"
+    },
+    {
+      "price": 0.3075112089969576,
+      "discount_pct": 0.8078774460558236,
+      "internal_score": 0.17263008314404416,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": -296843,
+      "max_weight": 0.828558263936928,
+      "tags": [
+        "bYOCm4lcb0AB",
+        "69nP5zcdyvuJfTWs",
+        "6ihjIL7bmb8"
+      ],
+      "api_version": "v2",
+      "legacy_code": "XwyBLKQ16TiTkc",
+      "internal_secret": "LuBgAfLUqt",
+      "sku": "FI-9529"
+    },
+    {
+      "price": 0.8452631063672261,
+      "discount_pct": 0.7730954057359873,
+      "internal_score": 0.0978974673222105,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": 546867,
+      "max_weight": 0.7207698169313473,
+      "tags": null,
+      "api_version": "v2",
+      "legacy_code": "q1NV8VrbgNOEC",
+      "internal_secret": "fbs8RgPj4IPc6M8",
+      "sku": "HL-7735"
+    },
+    {
+      "price": 0.25917717951117414,
+      "discount_pct": 0.3974598196423542,
+      "internal_score": 0.47618335479005713,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": 874081,
+      "max_weight": 0.9726364715972984,
+      "tags": [
+        "uwgrQv1HePb"
+      ],
+      "api_version": "v2",
+      "legacy_code": "5m9uSckqMsK0c",
+      "internal_secret": "TPsZOnuYNf8LLK",
+      "sku": "BJ-7209"
+    },
+    {
+      "price": 0.846115889128717,
+      "discount_pct": 0.4452254607646028,
+      "internal_score": 0.00011906329005828553,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": -671179,
+      "max_weight": 0.7100946156552125,
+      "tags": [
+        "q57UUZsTW9P3IQwt",
+        "NtsdRJ6axdDIA",
+        "IiY2AwX4"
+      ],
+      "api_version": "v2",
+      "legacy_code": "NUBTXrHIm",
+      "internal_secret": "oFgHVKKpcAi",
+      "sku": "DT-3726"
+    },
+    {
+      "price": 0.49086748087807686,
+      "discount_pct": 0.9853855292575483,
+      "internal_score": 0.397467848376858,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": 333602,
+      "max_weight": 0.6025925676056251,
+      "tags": [
+        "CR7tkH4yW8zByrD",
+        "Sp253388wyqCl",
+        "WhFeGVvkKVb",
+        "Qmui2ZYm"
+      ],
+      "api_version": "v2",
+      "legacy_code": "5fN3xim0ru",
+      "internal_secret": "zLJQS6Ji5zFkxXOw",
+      "sku": "NV-2840"
+    },
+    {
+      "price": 0.9942897763983044,
+      "discount_pct": 0.1315804354162372,
+      "internal_score": 0.6214160053504787,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": 35564,
+      "max_weight": 0.6071958139891767,
+      "tags": [
+        "eA1Dz8gqbyJ0xezx"
+      ],
+      "api_version": "v2",
+      "legacy_code": "bqCkX4vDPWCXyCfS",
+      "internal_secret": "Qqhu3jok",
+      "sku": "SZ-8520"
+    },
+    {
+      "price": 0.734069314237441,
+      "discount_pct": 0.4679229278623741,
+      "internal_score": 0.23861641298363723,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": -695492,
+      "max_weight": 0.4233254227888693,
+      "tags": null,
+      "api_version": "v2",
+      "legacy_code": "LtTU5lTtHaAW",
+      "internal_secret": "yKSLvMWlej77BcUd",
+      "sku": "CW-0735"
+    },
+    {
+      "price": 0.8485963751208503,
+      "discount_pct": 0.5371077561990079,
+      "internal_score": 0.9386471248917638,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": -396746,
+      "max_weight": 0.6407835723257193,
+      "tags": [
+        "VEeokIrw9la"
+      ],
+      "api_version": "v2",
+      "legacy_code": "witwEBnh",
+      "internal_secret": "NEx6CjcsWDe2",
+      "sku": "LE-6196"
+    },
+    {
+      "price": 0.3352561131757372,
+      "discount_pct": 0.3665896575383141,
+      "internal_score": 0.2192230412445575,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": -363396,
+      "max_weight": 0.3464605206446114,
+      "tags": [
+        "AfEiAN9QS7W",
+        "j9hsEFmQSOh9"
+      ],
+      "api_version": "v2",
+      "legacy_code": "rsBRbb7xV",
+      "internal_secret": "jm0A6bIVQ",
+      "sku": "ZZ-1906"
+    },
+    {
+      "price": 0.618095009962522,
+      "discount_pct": 0.6683823117988982,
+      "internal_score": 0.7273795576438441,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": 568110,
+      "max_weight": 0.1657614973600624,
+      "tags": [
+        "BVzJAtac0Vk",
+        "geXflofanOs8"
+      ],
+      "api_version": "v2",
+      "legacy_code": "gnY5svaDcwUv",
+      "internal_secret": "3wC8KuAO2xqjpuE",
+      "sku": "OJ-8527"
+    },
+    {
+      "price": 0.979342356177751,
+      "discount_pct": 0.3118742675691397,
+      "internal_score": 0.6911676949033445,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": -407569,
+      "max_weight": 0.01934183766158415,
+      "tags": [
+        "J89BRKbzny4AU0",
+        "SZZqdSpApn"
+      ],
+      "api_version": "v2",
+      "legacy_code": "PDYZCvSJciytFI",
+      "internal_secret": "TV3VwWjJ",
+      "sku": "BS-1816"
+    },
+    {
+      "price": 0.4169930998701703,
+      "discount_pct": 0.04827841858624393,
+      "internal_score": 0.20717688242228127,
+      "wholesale_price": 1,
+      "quantity_pack": 100,
+      "min_order": -240792,
+      "max_weight": 0.6701449777038672,
+      "tags": null,
+      "api_version": "v2",
+      "legacy_code": "5r5ktrK27hFn9b7",
+      "internal_secret": "wyMm3R5YYVFC",
+      "sku": "OX-1519"
+    },
+    {
+      "price": 0.16213174721530033,
+      "discount_pct": 0.694029492073484,
+      "internal_score": 0.5562607725674484,
+      "wholesale_price": 1,
+      "quantity_pack": 0,
+      "min_order": 109557,
+      "max_weight": 0.7709162397710821,
+      "tags": [
+        "jICW7IlRgT",
+        "GGOR1OcrN3v",
+        "kTZseUx7Abv",
+        "mh8irUytExXiv"
+      ],
+      "api_version": "v2",
+      "legacy_code": "5NEnUXoYShM8KC",
+      "internal_secret": "DAEQZhUfbHa4",
+      "sku": "ZD-8064"
+    }
+  ],
+  "Shipment": [
+    {
+      "method": "z0C4q9XsIcI2",
+      "shipped_at": "2020-07-06T01:03:50.462567563Z",
+      "tracking_number": "W0Y2dZPlNK2",
+      "status": "shipped"
+    },
+    {
+      "method": "lVcrbL0a",
+      "shipped_at": "2022-03-28T06:23:47.252486278Z",
+      "tracking_number": "EZ0vt4DywGfq",
+      "status": "shipped"
+    },
+    {
+      "method": "nqbiM1HiJb",
+      "shipped_at": "2025-11-12T03:52:33.661369468Z",
+      "tracking_number": "ODV865doger19OO",
+      "status": "pending"
+    },
+    {
+      "method": "GDgKkG8tc",
+      "shipped_at": "2016-06-25T20:39:55.108207053Z",
+      "tracking_number": "uXticIqV57CxQ",
+      "status": "shipped"
+    },
+    {
+      "method": "5cBaHP9w",
+      "shipped_at": "2019-05-30T04:02:06.480222306Z",
+      "tracking_number": "pYPGPt6uRCDNK",
+      "status": "pending"
+    },
+    {
+      "method": "bpSxJ7MwrcDQ",
+      "shipped_at": "2016-04-06T11:38:30.304867809Z",
+      "tracking_number": null,
+      "status": "shipped"
+    },
+    {
+      "method": "MPGclyph8gnOTO",
+      "shipped_at": "2016-07-27T15:43:03.77585578Z",
+      "tracking_number": "qp6YeCIOb3AEA6Y",
+      "status": "shipped"
+    },
+    {
+      "method": "KJ7WreUa1quz9",
+      "shipped_at": "2017-09-12T15:21:33.543446268Z",
+      "tracking_number": "GA6wJ5LQT",
+      "status": "shipped"
+    },
+    {
+      "method": "QKfjdqMv",
+      "shipped_at": "2025-12-07T19:57:21.189473897Z",
+      "tracking_number": null,
+      "status": "pending"
+    },
+    {
+      "method": "YI3o05sF",
+      "shipped_at": "2026-07-13T20:12:56.350566273Z",
+      "tracking_number": "uSrdSWXfy",
+      "status": "pending"
+    },
+    {
+      "method": "1ESpnEXcHl",
+      "shipped_at": "2020-07-23T11:40:10.750717269Z",
+      "tracking_number": "e0wa5l6vkwgp",
+      "status": "shipped"
+    },
+    {
+      "method": "Ndh8oQWweH",
+      "shipped_at": "2022-01-15T08:13:01.950098203Z",
+      "tracking_number": "SRAX1jh8Nrv3f",
+      "status": "shipped"
+    },
+    {
+      "method": null,
+      "shipped_at": "2022-09-05T21:19:58.231196955Z",
+      "tracking_number": null,
+      "status": "delivered"
+    },
+    {
+      "method": "mtUzfJ2pyWVjc7RO",
+      "shipped_at": "2021-03-03T04:43:28.074763106Z",
+      "tracking_number": "Ul6MtlB6Bv",
+      "status": "delivered"
+    },
+    {
+      "method": "sxPgKs7l",
+      "shipped_at": "2020-02-10T13:02:45.127154784Z",
+      "tracking_number": "8hIEpQ6vCuKd64BF",
+      "status": "pending"
+    }
+  ]
+}

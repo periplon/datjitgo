@@ -1,0 +1,1806 @@
+{
+  "EnumSampler": [
+    {
+      "color": "yellow",
+      "tier": "enterprise",
+      "priority": "low",
+      "status": "review",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "high",
+      "status": "todo",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "pro",
+      "priority": "high",
+      "status": "review",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "high",
+      "status": "in_progress",
+      "mood": "neutral"
+    },
+    {
+      "color": "blue",
+      "tier": "pro",
+      "priority": "high",
+      "status": "cancelled",
+      "mood": "sad"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "high",
+      "status": "review",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "enterprise",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "neutral"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "high",
+      "status": "done",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "high",
+      "status": "done",
+      "mood": "neutral"
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "high",
+      "status": "review",
+      "mood": "happy"
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "critical",
+      "status": "review",
+      "mood": "neutral"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": "neutral"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "high",
+      "status": "todo",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "critical",
+      "status": "cancelled",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "review",
+      "mood": "happy"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "critical",
+      "status": "backlog",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "high",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "review",
+      "mood": "neutral"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "enterprise",
+      "priority": "critical",
+      "status": "review",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": "happy"
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "critical",
+      "status": "todo",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "critical",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "pro",
+      "priority": "high",
+      "status": "backlog",
+      "mood": "neutral"
+    },
+    {
+      "color": "blue",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "high",
+      "status": "done",
+      "mood": "happy"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "medium",
+      "status": "backlog",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "sad"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "high",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "critical",
+      "status": "cancelled",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": "neutral"
+    },
+    {
+      "color": "red",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "todo",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "critical",
+      "status": "cancelled",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "todo",
+      "mood": "happy"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "neutral"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": "sad"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "low",
+      "status": "backlog",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "high",
+      "status": "done",
+      "mood": "neutral"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "enterprise",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "happy"
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "critical",
+      "status": "cancelled",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "medium",
+      "status": "review",
+      "mood": "neutral"
+    },
+    {
+      "color": "blue",
+      "tier": "enterprise",
+      "priority": "low",
+      "status": "cancelled",
+      "mood": "sad"
+    },
+    {
+      "color": "red",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "low",
+      "status": "in_progress",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "pro",
+      "priority": "high",
+      "status": "review",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": "happy"
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "high",
+      "status": "review",
+      "mood": "neutral"
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "medium",
+      "status": "todo",
+      "mood": "sad"
+    },
+    {
+      "color": "red",
+      "tier": "enterprise",
+      "priority": "medium",
+      "status": "todo",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "critical",
+      "status": "backlog",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "pro",
+      "priority": "low",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": "happy"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": "neutral"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "backlog",
+      "mood": "neutral"
+    },
+    {
+      "color": "red",
+      "tier": "pro",
+      "priority": "critical",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "high",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "happy"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "critical",
+      "status": "in_progress",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": "neutral"
+    },
+    {
+      "color": "red",
+      "tier": "pro",
+      "priority": "critical",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "high",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "critical",
+      "status": "backlog",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "enterprise",
+      "priority": "low",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "high",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "high",
+      "status": "backlog",
+      "mood": "sad"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "critical",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "low",
+      "status": "cancelled",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "pro",
+      "priority": "high",
+      "status": "done",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "review",
+      "mood": "happy"
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "medium",
+      "status": "review",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "medium",
+      "status": "todo",
+      "mood": "neutral"
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": "sad"
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "low",
+      "status": "in_progress",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "high",
+      "status": "todo",
+      "mood": null
+    },
+    {
+      "color": "blue",
+      "tier": "free",
+      "priority": "medium",
+      "status": "in_progress",
+      "mood": "sad"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "review",
+      "mood": null
+    },
+    {
+      "color": "green",
+      "tier": "free",
+      "priority": "high",
+      "status": "cancelled",
+      "mood": null
+    },
+    {
+      "color": "yellow",
+      "tier": "pro",
+      "priority": "high",
+      "status": "review",
+      "mood": "happy"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "review",
+      "mood": null
+    },
+    {
+      "color": "red",
+      "tier": "free",
+      "priority": "low",
+      "status": "todo",
+      "mood": "neutral"
+    },
+    {
+      "color": "yellow",
+      "tier": "free",
+      "priority": "low",
+      "status": "done",
+      "mood": "neutral"
+    }
+  ],
+  "DistSampler": [
+    {
+      "score": 43,
+      "income": 508.8,
+      "wait_time": 0.76,
+      "attempts": 2,
+      "rank": 237,
+      "temperature": 70,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 58,
+      "income": 398.24,
+      "wait_time": 0.25,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 19,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 71,
+      "income": 33.37,
+      "wait_time": 0.24,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 85,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 44,
+      "income": 4264.96,
+      "wait_time": 0.62,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 14,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 44,
+      "income": 3904.42,
+      "wait_time": 0.09,
+      "attempts": 3,
+      "rank": 634,
+      "temperature": 72,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 47,
+      "income": 24.68,
+      "wait_time": 0.5,
+      "attempts": 2,
+      "rank": 2,
+      "temperature": 5,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 34,
+      "income": 750.71,
+      "wait_time": 0.38,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 78,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 68,
+      "income": 71.58,
+      "wait_time": 0.25,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 20,
+      "optional_name": "lMEJ1Z7Ocdr",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 50,
+      "income": 8,
+      "wait_time": 0.83,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 0,
+      "optional_name": "lXEsOdiJT7k1D",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 43,
+      "income": 55.39,
+      "wait_time": 0.28,
+      "attempts": 4,
+      "rank": 54,
+      "temperature": 79,
+      "optional_name": "nIouWDjcgClQ0",
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 42,
+      "income": 663.04,
+      "wait_time": 0.6,
+      "attempts": 3,
+      "rank": 22,
+      "temperature": 75,
+      "optional_name": "oVcHar1SX",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 78,
+      "income": 425.75,
+      "wait_time": 0.31,
+      "attempts": 4,
+      "rank": 1,
+      "temperature": 38,
+      "optional_name": "XpeZtxdySOB9",
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 54,
+      "income": 573.08,
+      "wait_time": 0.19,
+      "attempts": 2,
+      "rank": 24,
+      "temperature": 24,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 48,
+      "income": 118.17,
+      "wait_time": 0.39,
+      "attempts": 4,
+      "rank": 1,
+      "temperature": 72,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": null
+    },
+    {
+      "score": 34,
+      "income": 641.9,
+      "wait_time": 0.01,
+      "attempts": 1,
+      "rank": 17,
+      "temperature": 11,
+      "optional_name": "NF07ePHDFT45n",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 55,
+      "income": 5160.39,
+      "wait_time": 1.1,
+      "attempts": 9,
+      "rank": 1,
+      "temperature": 61,
+      "optional_name": "qzZ6HA47BkH",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 50,
+      "income": 122.37,
+      "wait_time": 1.07,
+      "attempts": 2,
+      "rank": 2,
+      "temperature": 17,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 62,
+      "income": 698.94,
+      "wait_time": 0.04,
+      "attempts": 3,
+      "rank": 1,
+      "temperature": 73,
+      "optional_name": "wJGLmSLtc",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 66,
+      "income": 1139.26,
+      "wait_time": 1.78,
+      "attempts": 1,
+      "rank": 4,
+      "temperature": 11,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 57,
+      "income": 2125.05,
+      "wait_time": 0.3,
+      "attempts": 1,
+      "rank": 7,
+      "temperature": 29,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 25,
+      "income": 6007.06,
+      "wait_time": 0.02,
+      "attempts": 3,
+      "rank": 1,
+      "temperature": 24,
+      "optional_name": "c5sbXl4g",
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 87,
+      "income": 1447.03,
+      "wait_time": 0.26,
+      "attempts": 3,
+      "rank": 7,
+      "temperature": 70,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 57,
+      "income": 1219.28,
+      "wait_time": 0.66,
+      "attempts": 2,
+      "rank": 2,
+      "temperature": 82,
+      "optional_name": "72VOo2boUTmg",
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 69,
+      "income": 42.51,
+      "wait_time": 1.04,
+      "attempts": 3,
+      "rank": 167,
+      "temperature": 31,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 58,
+      "income": 795.71,
+      "wait_time": 0.13,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 58,
+      "optional_name": "1CNziFIl",
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 25,
+      "income": 392.55,
+      "wait_time": 0.45,
+      "attempts": 3,
+      "rank": 1,
+      "temperature": 90,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 33,
+      "income": 4940.53,
+      "wait_time": 0.54,
+      "attempts": 5,
+      "rank": 2,
+      "temperature": 93,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 62,
+      "income": 580.12,
+      "wait_time": 0.67,
+      "attempts": 3,
+      "rank": 3,
+      "temperature": 33,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 45,
+      "income": 259781.84,
+      "wait_time": 0.98,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 78,
+      "optional_name": "GqUNlcWSn4Uw",
+      "optional_score": null,
+      "optional_flag": null
+    },
+    {
+      "score": 44,
+      "income": 198.07,
+      "wait_time": 0.8,
+      "attempts": 8,
+      "rank": 1,
+      "temperature": 11,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 61,
+      "income": 1206.17,
+      "wait_time": 0.2,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 30,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": false
+    },
+    {
+      "score": 27,
+      "income": 983.7,
+      "wait_time": 0.11,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 34,
+      "optional_name": "IhUoaLQSYC",
+      "optional_score": null,
+      "optional_flag": null
+    },
+    {
+      "score": 41,
+      "income": 489.94,
+      "wait_time": 0.98,
+      "attempts": 1,
+      "rank": 36,
+      "temperature": 85,
+      "optional_name": "vPxsUk7VQotLT",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 68,
+      "income": 168.34,
+      "wait_time": 0.78,
+      "attempts": 6,
+      "rank": 34,
+      "temperature": 29,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 44,
+      "income": 115.38,
+      "wait_time": 0.56,
+      "attempts": 2,
+      "rank": 4,
+      "temperature": 35,
+      "optional_name": "BAvNqf7jDOQU59",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 70,
+      "income": 22.31,
+      "wait_time": 0.24,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 81,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 56,
+      "income": 3373.45,
+      "wait_time": 0.32,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 26,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 48,
+      "income": 126821.62,
+      "wait_time": 1.02,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 74,
+      "optional_name": "heBC8jpJo",
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 50,
+      "income": 4448.85,
+      "wait_time": 1.6,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 80,
+      "optional_name": "XSe5SoxH85nC",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 54,
+      "income": 998.82,
+      "wait_time": 0.32,
+      "attempts": 3,
+      "rank": 88,
+      "temperature": 81,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 71,
+      "income": 176.83,
+      "wait_time": 0.71,
+      "attempts": 1,
+      "rank": 10,
+      "temperature": 18,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 59,
+      "income": 537.41,
+      "wait_time": 0.35,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 92,
+      "optional_name": "PDNGDSEpF",
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 46,
+      "income": 309.83,
+      "wait_time": 0.17,
+      "attempts": 4,
+      "rank": 6,
+      "temperature": 27,
+      "optional_name": "Oz1Epn6WAG",
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 67,
+      "income": 1622.65,
+      "wait_time": 0.11,
+      "attempts": 1,
+      "rank": 4,
+      "temperature": 25,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 44,
+      "income": 20.83,
+      "wait_time": 0.43,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 85,
+      "optional_name": "Vn8c7rzgL",
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 44,
+      "income": 124.29,
+      "wait_time": 1.02,
+      "attempts": 2,
+      "rank": 1,
+      "temperature": 15,
+      "optional_name": "BkmN6AJWsfqtoq",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 30,
+      "income": 206.73,
+      "wait_time": 0.22,
+      "attempts": 1,
+      "rank": 36,
+      "temperature": 83,
+      "optional_name": "QxwNm3vaNBTQ1e",
+      "optional_score": 100,
+      "optional_flag": false
+    },
+    {
+      "score": 52,
+      "income": 1304.58,
+      "wait_time": 0.55,
+      "attempts": 6,
+      "rank": 14,
+      "temperature": 85,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 58,
+      "income": 435.62,
+      "wait_time": 0.07,
+      "attempts": 1,
+      "rank": 16,
+      "temperature": 83,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 57,
+      "income": 873.72,
+      "wait_time": 1.12,
+      "attempts": 1,
+      "rank": 140,
+      "temperature": 14,
+      "optional_name": "gE6979l6q1Qwue",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 49,
+      "income": 39.66,
+      "wait_time": 0.11,
+      "attempts": 2,
+      "rank": 14,
+      "temperature": 15,
+      "optional_name": "javocDLCr",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 23,
+      "income": 252.86,
+      "wait_time": 1.22,
+      "attempts": 1,
+      "rank": 7,
+      "temperature": 18,
+      "optional_name": "KwcF8G0cx8",
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 64,
+      "income": 4293.22,
+      "wait_time": 0.25,
+      "attempts": 5,
+      "rank": 16,
+      "temperature": 82,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 46,
+      "income": 507.43,
+      "wait_time": 0.79,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 7,
+      "optional_name": "dPCYc6K6mxK",
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 64,
+      "income": 968.43,
+      "wait_time": 2.44,
+      "attempts": 3,
+      "rank": 1,
+      "temperature": 69,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 74,
+      "income": 72.99,
+      "wait_time": 0.2,
+      "attempts": 1,
+      "rank": 6,
+      "temperature": 76,
+      "optional_name": "MkBaOszkfniX",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 37,
+      "income": 190.4,
+      "wait_time": 0.28,
+      "attempts": 2,
+      "rank": 2,
+      "temperature": 76,
+      "optional_name": "5vv4sYbpFuSOCfwg",
+      "optional_score": 100,
+      "optional_flag": false
+    },
+    {
+      "score": 16,
+      "income": 1253.66,
+      "wait_time": 0.44,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 8,
+      "optional_name": "7jD4ep6oWan",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 90,
+      "income": 718.4,
+      "wait_time": 0.23,
+      "attempts": 3,
+      "rank": 2,
+      "temperature": 92,
+      "optional_name": "weeLV7etSNSC",
+      "optional_score": 100,
+      "optional_flag": false
+    },
+    {
+      "score": 78,
+      "income": 1243.13,
+      "wait_time": 0.23,
+      "attempts": 1,
+      "rank": 5,
+      "temperature": 72,
+      "optional_name": "kWWmkcKXaRaxB",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 62,
+      "income": 3212.68,
+      "wait_time": 0.52,
+      "attempts": 2,
+      "rank": 18,
+      "temperature": 15,
+      "optional_name": "YdkT7xSnzRbR9TAK",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 41,
+      "income": 414.52,
+      "wait_time": 0.25,
+      "attempts": 1,
+      "rank": 21,
+      "temperature": 85,
+      "optional_name": "rb0KW5XtZ7u",
+      "optional_score": 100,
+      "optional_flag": false
+    },
+    {
+      "score": 52,
+      "income": 4295.06,
+      "wait_time": 1.02,
+      "attempts": 6,
+      "rank": 1,
+      "temperature": 14,
+      "optional_name": "pBx6urBcE",
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 69,
+      "income": 1067.32,
+      "wait_time": 0.42,
+      "attempts": 6,
+      "rank": 5,
+      "temperature": 8,
+      "optional_name": "7FfYd26RBc",
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 59,
+      "income": 261.75,
+      "wait_time": 0.07,
+      "attempts": 3,
+      "rank": 3,
+      "temperature": 81,
+      "optional_name": "qVEx2t3rsmR4ev",
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 55,
+      "income": 1624.01,
+      "wait_time": 0.92,
+      "attempts": 3,
+      "rank": 4,
+      "temperature": 97,
+      "optional_name": "to4taG3zqQt",
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 62,
+      "income": 378.03,
+      "wait_time": 0.12,
+      "attempts": 4,
+      "rank": 18,
+      "temperature": 83,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 44,
+      "income": 2870.96,
+      "wait_time": 0.73,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 16,
+      "optional_name": "InVnvzT4",
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 57,
+      "income": 191.77,
+      "wait_time": 0.26,
+      "attempts": 5,
+      "rank": 21,
+      "temperature": 11,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 49,
+      "income": 6436.78,
+      "wait_time": 1.77,
+      "attempts": 4,
+      "rank": 106,
+      "temperature": 12,
+      "optional_name": "OCtcZqFH8S5NfMj",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 53,
+      "income": 6947.65,
+      "wait_time": 0.3,
+      "attempts": 1,
+      "rank": 6,
+      "temperature": 84,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": null
+    },
+    {
+      "score": 58,
+      "income": 11912.07,
+      "wait_time": 0.38,
+      "attempts": 5,
+      "rank": 318,
+      "temperature": 90,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 59,
+      "income": 633.75,
+      "wait_time": 0.31,
+      "attempts": 2,
+      "rank": 2,
+      "temperature": 76,
+      "optional_name": "c39CE2Ozx",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 32,
+      "income": 747.81,
+      "wait_time": 0.21,
+      "attempts": 1,
+      "rank": 4,
+      "temperature": 9,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 51,
+      "income": 9939.87,
+      "wait_time": 0.07,
+      "attempts": 1,
+      "rank": 2,
+      "temperature": 25,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": true
+    },
+    {
+      "score": 71,
+      "income": 238.42,
+      "wait_time": 0.99,
+      "attempts": 1,
+      "rank": 2,
+      "temperature": 84,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": false
+    },
+    {
+      "score": 8,
+      "income": 22.53,
+      "wait_time": 0.43,
+      "attempts": 6,
+      "rank": 23,
+      "temperature": 27,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 56,
+      "income": 12351.64,
+      "wait_time": 0.99,
+      "attempts": 1,
+      "rank": 2,
+      "temperature": 15,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": null
+    },
+    {
+      "score": 48,
+      "income": 114.45,
+      "wait_time": 0.33,
+      "attempts": 5,
+      "rank": 1,
+      "temperature": 19,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 65,
+      "income": 386.39,
+      "wait_time": 0.39,
+      "attempts": 7,
+      "rank": 4,
+      "temperature": 8,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 46,
+      "income": 693.76,
+      "wait_time": 0.19,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 72,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 37,
+      "income": 410.32,
+      "wait_time": 1.44,
+      "attempts": 1,
+      "rank": 13,
+      "temperature": 94,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": null
+    },
+    {
+      "score": 62,
+      "income": 139.98,
+      "wait_time": 0.01,
+      "attempts": 1,
+      "rank": 22,
+      "temperature": 75,
+      "optional_name": null,
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 44,
+      "income": 396.89,
+      "wait_time": 0.86,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 30,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 62,
+      "income": 359.51,
+      "wait_time": 0.43,
+      "attempts": 1,
+      "rank": 1,
+      "temperature": 13,
+      "optional_name": "x4EXRsYW2EzHDg",
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 36,
+      "income": 275.38,
+      "wait_time": 0.53,
+      "attempts": 1,
+      "rank": 5,
+      "temperature": 86,
+      "optional_name": "ffruKr8dNmZtG7F",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 44,
+      "income": 1939.24,
+      "wait_time": 0.73,
+      "attempts": 1,
+      "rank": 4,
+      "temperature": 29,
+      "optional_name": "7b56odcEfseg",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 58,
+      "income": 14156.97,
+      "wait_time": 0.12,
+      "attempts": 7,
+      "rank": 66,
+      "temperature": 88,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 87,
+      "income": 5276.29,
+      "wait_time": 0.51,
+      "attempts": 3,
+      "rank": 3,
+      "temperature": 32,
+      "optional_name": "qME6iihYflGcL",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 55,
+      "income": 2827.15,
+      "wait_time": 0.27,
+      "attempts": 1,
+      "rank": 4,
+      "temperature": 76,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 75,
+      "income": 516.7,
+      "wait_time": 1.08,
+      "attempts": 4,
+      "rank": 425,
+      "temperature": 72,
+      "optional_name": "aNIdNbjPr",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 40,
+      "income": 66.97,
+      "wait_time": 0.17,
+      "attempts": 6,
+      "rank": 2,
+      "temperature": 72,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": false
+    },
+    {
+      "score": 62,
+      "income": 1200.96,
+      "wait_time": 0.08,
+      "attempts": 16,
+      "rank": 1,
+      "temperature": 78,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 16,
+      "income": 2565.01,
+      "wait_time": 1.01,
+      "attempts": 9,
+      "rank": 31,
+      "temperature": 24,
+      "optional_name": "xakzMf0KKi",
+      "optional_score": null,
+      "optional_flag": false
+    },
+    {
+      "score": 44,
+      "income": 987.8,
+      "wait_time": 0.92,
+      "attempts": 8,
+      "rank": 7,
+      "temperature": 10,
+      "optional_name": "4XA0LOlD",
+      "optional_score": null,
+      "optional_flag": true
+    },
+    {
+      "score": 57,
+      "income": 3811.5,
+      "wait_time": 0.03,
+      "attempts": 1,
+      "rank": 12,
+      "temperature": 9,
+      "optional_name": null,
+      "optional_score": 100,
+      "optional_flag": null
+    },
+    {
+      "score": 62,
+      "income": 162.82,
+      "wait_time": 0.15,
+      "attempts": 6,
+      "rank": 6,
+      "temperature": 85,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 52,
+      "income": 129.81,
+      "wait_time": 0.62,
+      "attempts": 4,
+      "rank": 1,
+      "temperature": 72,
+      "optional_name": "KrYtEVbSrt",
+      "optional_score": 100,
+      "optional_flag": true
+    },
+    {
+      "score": 56,
+      "income": 1057.02,
+      "wait_time": 0.87,
+      "attempts": 1,
+      "rank": 4,
+      "temperature": 85,
+      "optional_name": "7MmSMSLbY7h",
+      "optional_score": 0,
+      "optional_flag": null
+    },
+    {
+      "score": 39,
+      "income": 13719.59,
+      "wait_time": 0.42,
+      "attempts": 6,
+      "rank": 6,
+      "temperature": 85,
+      "optional_name": null,
+      "optional_score": 0,
+      "optional_flag": null
+    }
+  ]
+}

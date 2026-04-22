@@ -1,0 +1,101 @@
+{
+  "Customer": [
+    {
+      "name": "Rachel Sanchez",
+      "tier": "free",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "William Wright",
+      "tier": "premium",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Melissa Torres",
+      "tier": "premium",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Dennis Anderson",
+      "tier": "basic",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Edward Baker",
+      "tier": "premium",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Christine Lopez",
+      "tier": "free",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Sandra White",
+      "tier": "basic",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Jerry Johnson",
+      "tier": "premium",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Ashley Wang",
+      "tier": "basic",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    },
+    {
+      "name": "Karen Patel",
+      "tier": "premium",
+      "billing_address": "Address",
+      "shipping_address": "Address",
+      "contact": "ContactInfo"
+    }
+  ],
+  "Vendor": [
+    {
+      "company": "Zenith Dynamics Inc.",
+      "hq_address": "Address",
+      "support": "ContactInfo"
+    },
+    {
+      "company": "Matrix Systems LLC",
+      "hq_address": "Address",
+      "support": "ContactInfo"
+    },
+    {
+      "company": "Fusion Intelligence Corp.",
+      "hq_address": "Address",
+      "support": "ContactInfo"
+    },
+    {
+      "company": "Stellar Networks Ltd.",
+      "hq_address": "Address",
+      "support": "ContactInfo"
+    },
+    {
+      "company": "Pulse Digital Labs",
+      "hq_address": "Address",
+      "support": "ContactInfo"
+    }
+  ]
+}
