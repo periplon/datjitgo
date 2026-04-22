@@ -5,6 +5,12 @@ import (
 	"github.com/jmcarbo/datjitgo/core/model"
 )
 
+// Plan returns the entity names of doc in topological order. It is the
+// exported entry point for callers (e.g. the facade package's validator)
+// that need to discover the dependency order or detect cycles without
+// running a full Generate. See plan for implementation details.
+func Plan(doc *model.Document) ([]string, error) { return plan(doc) }
+
 // plan returns the entity names of doc in topological order using Kahn's
 // algorithm. Reference fields whose Target is "self" or equal to the hosting
 // entity are ignored. Ties are broken by document insertion order so output

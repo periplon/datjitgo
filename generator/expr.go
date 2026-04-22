@@ -31,6 +31,15 @@ const (
 	exprIn
 )
 
+// ParseExpr is the exported validator-facing entry point: it parses src as
+// an expression and returns an error if the source is not syntactically
+// well-formed. The returned AST is intentionally opaque; callers that need
+// to evaluate expressions should go through a full Generate.
+func ParseExpr(src string) error {
+	_, err := parseExpr(src)
+	return err
+}
+
 // parseExpr is the top-level entry point: it compiles src into an exprNode.
 // Errors are wrapped as *errors.Error{Kind: KindGeneration}.
 func parseExpr(src string) (exprNode, error) {

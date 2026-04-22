@@ -1,0 +1,104 @@
+package datjit
+
+import (
+	"github.com/jmcarbo/datjitgo/core/errors"
+	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/jmcarbo/datjitgo/generator"
+)
+
+// Option mutates a Service during construction. Options are applied in the
+// order they are passed to New(); later options override earlier ones when
+// they touch the same field.
+type Option func(*Service) error
+
+// WithParser swaps in an alternative ports.Parser implementation.
+func WithParser(p ports.Parser) Option {
+	return func(s *Service) error {
+		if p == nil {
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithParser: nil parser"}
+		}
+		s.parser = p
+		return nil
+	}
+}
+
+// WithGenerator swaps in an alternative ports.Generator implementation.
+func WithGenerator(g ports.Generator) Option {
+	return func(s *Service) error {
+		if g == nil {
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithGenerator: nil generator"}
+		}
+		s.gen = g
+		return nil
+	}
+}
+
+// WithWriter registers (or replaces) a writer under the key returned by its
+// Format() method.
+func WithWriter(w ports.Writer) Option {
+	return func(s *Service) error {
+		if w == nil {
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithWriter: nil writer"}
+		}
+		if s.writers == nil {
+			s.writers = map[string]ports.Writer{}
+		}
+		s.writers[w.Format()] = w
+		return nil
+	}
+}
+
+// WithCorpus replaces the corpus provider and rebinds the built-in generator
+// to use it. If a custom generator has been installed via WithGenerator it
+// is left untouched, since the façade cannot know how to rebind an
+// arbitrary generator implementation.
+func WithCorpus(c ports.CorpusProvider) Option {
+	return func(s *Service) error {
+		if c == nil {
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithCorpus: nil corpus"}
+		}
+		s.corpus = c
+		// Only rebind when the generator is the built-in engine: other
+		// implementations might hold their own corpus reference.
+		if _, ok := s.gen.(*generator.Engine); ok {
+			s.gen = generator.New(c)
+		}
+		return nil
+	}
+}
+
+// WithSeed pins the seed used for every subsequent Generate call. Mirrors
+// the ports.GenerateOptions.SeedOverride override precedence.
+func WithSeed(seed int64) Option {
+	return func(s *Service) error {
+		v := seed
+		s.seed = &v
+		return nil
+	}
+}
+
+// WithLocale pins the locale applied to every subsequent Generate call.
+func WithLocale(loc string) Option {
+	return func(s *Service) error {
+		s.locale = loc
+		return nil
+	}
+}
+
+// WithVolume replaces the per-entity volume override map wholesale. Pass an
+// empty map (or don't call this option) to fall back to the document-declared
+// volumes.
+func WithVolume(v map[string]int) Option {
+	return func(s *Service) error {
+		if v == nil {
+			s.volumes = nil
+			return nil
+		}
+		out := make(map[string]int, len(v))
+		for k, val := range v {
+			out[k] = val
+		}
+		s.volumes = out
+		return nil
+	}
+}
