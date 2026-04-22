@@ -1,0 +1,8 @@
+domain: test_invalid
+version: 0.1.0
+seed: 1
+
+entities:
+  Post:
+    id: uuid @primary
+    author: ->Ghost
