@@ -1,0 +1,34 @@
+domain: accounting
+seed: 42
+
+volume:
+  AccountGroup: 10
+  SpanishAccount: 10
+  GermanAccount: 10
+  FullDetail: 10
+
+entities:
+  AccountGroup:
+    country: accounting.country
+    group_code: accounting.group
+    group_name: accounting.group_name
+    group_name_en: accounting.group_name_en
+
+  SpanishAccount:
+    group_code: accounting.group("ES")
+    group_name: accounting.group_name("ES")
+    subgroup_code: accounting.subgroup("ES")
+    subgroup_name: accounting.subgroup_name("ES")
+    account_code: accounting.account("ES")
+    account_name: accounting.account_name("ES")
+    account_name_en: accounting.account_name_en("ES")
+
+  GermanAccount:
+    account_code: accounting.account("DE")
+    account_name: accounting.account_name("DE")
+    account_name_en: accounting.account_name_en("DE")
+
+  FullDetail:
+    country: accounting.country
+    full_code: accounting.account_full
+    full_name: accounting.account_full_name

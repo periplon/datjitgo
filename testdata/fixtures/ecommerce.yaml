@@ -1,0 +1,32 @@
+domain: test_ecommerce
+version: 0.1.0
+seed: 42
+
+volume:
+  Order: 20
+  OrderItem: 50
+  Return: 10
+  Shipment: 15
+
+entities:
+  Order:
+    id: uuid @primary
+    status: ecommerce.order_status
+    payment_method: ecommerce.payment_method
+    fulfillment: ecommerce.fulfillment_status
+    discount: ecommerce.discount_type
+
+  OrderItem:
+    id: uuid @primary
+    department: ecommerce.department
+    aisle: ecommerce.aisle
+    category: ecommerce.product_category
+
+  Return:
+    id: uuid @primary
+    reason: ecommerce.return_reason
+
+  Shipment:
+    id: uuid @primary
+    carrier: ecommerce.shipping_carrier
+    tracking: ecommerce.tracking_number

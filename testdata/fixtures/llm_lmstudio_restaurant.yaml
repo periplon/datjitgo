@@ -1,0 +1,44 @@
+domain: restaurant_data
+version: 0.1.0
+seed: 42
+
+generation:
+  llm:
+    provider: lmstudio
+    endpoint: http://localhost:1234/v1
+    model: zai-org/glm-4.7-flash
+    temperature: 0.9
+
+volume:
+  Restaurant: 8
+  MenuItem: 30
+  CustomerReview: 20
+
+entities:
+  Restaurant:
+    id: uuid @primary
+    name: 'string @llm("Invent a unique restaurant name, can be playful or elegant")'
+    cuisine: enum(italian, japanese, mexican, thai, french, indian, american, mediterranean)
+    description: 'string @llm("Write a 2-sentence restaurant description for a food guide", temperature: 0.7)'
+    price_range: enum($, $$, $$$, $$$$) @dist(15, 40, 30, 15)
+    neighborhood: address.city
+    michelin_stars: int @range(0..3)
+
+  MenuItem:
+    id: uuid @primary
+    restaurant: ->Restaurant
+    name: 'string @llm("Invent a creative dish name that sounds appetizing")'
+    description: 'string @llm("Write a short menu description highlighting key ingredients and preparation, max 20 words", temperature: 0.8)'
+    price: float @range(8.50..65.00) @dist(lognormal)
+    course: enum(appetizer, main, dessert, drink) @dist(25, 40, 20, 15)
+    vegetarian: bool @dist(30, 70)
+    spicy: bool @dist(20, 80)
+
+  CustomerReview:
+    id: uuid @primary
+    restaurant: ->Restaurant
+    reviewer: person.full
+    rating: int @range(1..5) @dist(normal, mu=3.8, sigma=0.9)
+    title: 'string @llm("Write a short restaurant review title that reflects the rating", temperature: 0.6)'
+    body: 'string @llm("Write a 2-3 sentence restaurant review from a real customer perspective. Mention food, service, or ambiance")'
+    visit_date: date @range(2024-01-01..2025-12-31)

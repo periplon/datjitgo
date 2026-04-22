@@ -1,0 +1,31 @@
+domain: test_llm_fields
+version: 0.1.0
+seed: 42
+
+generation:
+  llm:
+    endpoint: http://localhost:11434
+    model: llama3
+    temperature: 0.7
+
+volume:
+  Product: 5
+  Review: 10
+
+entities:
+  Product:
+    id: uuid @primary
+    name: product.title
+    price: float @range(9.99..999.99) @dist(lognormal)
+    description: 'string @llm("Write a compelling 1-2 sentence product description for a consumer electronics item")'
+    tagline: 'string @llm("Create a short catchy marketing tagline, max 8 words", temperature: 1.2)'
+    category: enum(electronics, audio, wearables, smart_home, accessories)
+
+  Review:
+    id: uuid @primary
+    product: ->Product
+    rating: int @range(1..5)
+    title: 'string @llm("Write a short review title that matches the rating", temperature: 0.5)'
+    body: 'string @llm("Write a realistic 2-3 sentence product review. Be specific about features")'
+    reviewer_name: person.full
+    verified: bool @dist(80, 20)

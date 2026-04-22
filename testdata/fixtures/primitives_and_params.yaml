@@ -1,0 +1,25 @@
+domain: test_primitives
+version: 0.1.0
+seed: 42
+
+volume:
+  AllPrimitives: 20
+
+entities:
+  AllPrimitives:
+    id: uuid @primary
+    label: string
+    label_bounded: string(50)
+    count: int
+    count_32: int(32)
+    ratio: float
+    ratio_32: float(32)
+    price: decimal(10, 2)
+    active: bool
+    created: datetime
+    birthday: date
+    alarm: time
+    elapsed: duration
+    token: uuid
+    payload: bytes
+    payload_small: bytes(64)

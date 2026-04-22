@@ -1,0 +1,41 @@
+domain: test_entity_meta
+version: 0.1.0
+seed: 42
+
+volume:
+  AuditLog: 20
+  User: 10
+  Post: 15
+  Config: 5
+
+entities:
+  # Entity with timestamps
+  User:
+    _meta: "@timestamps"
+    id: uuid @primary
+    name: person.full
+    email: email @unique
+
+  # Entity with timestamps and soft_delete
+  Post:
+    _meta: "@timestamps @soft_delete"
+    id: uuid @primary
+    author: ->User
+    title: string @len(5..100)
+    body: text.paragraph
+
+  # Readonly entity
+  AuditLog:
+    _meta: "@readonly @timestamps"
+    id: uuid @primary
+    actor: ->User
+    action: enum(create, update, delete)
+    entity_type: string
+    timestamp: datetime @auto
+
+  # Paginated entity
+  Config:
+    _meta: "@paginated(25)"
+    id: uuid @primary
+    key: string @unique
+    value: string

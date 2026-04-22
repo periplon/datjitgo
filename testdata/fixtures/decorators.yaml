@@ -1,0 +1,40 @@
+domain: test_decorators
+version: 0.1.0
+seed: 42
+
+volume:
+  Constrained: 50
+  Patterned: 20
+
+entities:
+  Constrained:
+    id: uuid @primary
+    # Range constraints
+    age: int @range(18..65)
+    price: float @range(0.01..999.99)
+    rating: decimal(3, 1) @range(0..5)
+    start_date: date @range(2020-01-01..2025-12-31)
+    # Min/max
+    quantity: int @min(0) @max(1000)
+    # Length constraint
+    title: string @len(5..50)
+    short_code: string @len(3..6)
+    # Identity decorators
+    email: email @unique
+    badge: string @unique @immutable
+    # Optionals and defaults
+    nickname: string @optional
+    status: enum(active, pending, disabled) @default("pending")
+    # Not empty
+    description: string @not_empty @len(1..200)
+    # Values allowlist
+    category: string @values(electronics, clothing, food, books)
+
+  Patterned:
+    id: uuid @primary
+    # Template patterns
+    sku: string @pattern("SKU-{AA}-{0000}")
+    project_code: string @pattern("{AAA}-{000}")
+    slug: string @pattern("{word}-{word}-{0000}")
+    hex_token: string @pattern("{########}")
+    serial: string @pattern("SN-{seq}-{AA}")

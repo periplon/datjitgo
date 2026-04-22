@@ -1,0 +1,37 @@
+domain: test_named_types
+version: 0.1.0
+seed: 42
+
+volume:
+  Customer: 10
+  Vendor: 5
+
+types:
+  Address:
+    street: address.street
+    city: address.city
+    state: address.state
+    zip: address.zip
+    country: address.country @default("US")
+
+  ContactInfo:
+    email: email
+    phone: phone
+
+enums:
+  Tier: [free, basic, premium, enterprise]
+
+entities:
+  Customer:
+    id: uuid @primary
+    name: person.full
+    tier: Tier @dist(40, 30, 20, 10)
+    billing_address: Address
+    shipping_address: Address
+    contact: ContactInfo
+
+  Vendor:
+    id: uuid @primary
+    company: company.name
+    hq_address: Address
+    support: ContactInfo

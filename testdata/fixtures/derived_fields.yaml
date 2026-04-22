@@ -1,0 +1,35 @@
+domain: test_derived
+version: 0.1.0
+seed: 42
+
+volume:
+  Product: 20
+  LineItem: 50
+
+entities:
+  Product:
+    id: uuid @primary
+    name: product.title
+    base_price: float @range(10..500)
+    tax_rate: float @range(0.05..0.25)
+    # Derived: arithmetic
+    tax_amount: float @derived(base_price * tax_rate)
+    total_price: float @derived(base_price + tax_amount)
+    # Derived: string functions
+    slug: string @derived(slug(name))
+    name_lower: string @derived(lower(name))
+    name_upper: string @derived(upper(name))
+    # Derived: concat
+    display: string @derived(concat(name, " - $", base_price))
+    # Derived: conditional
+    price_tier: string @derived(if(base_price > 200, "premium", "standard"))
+
+  LineItem:
+    id: uuid @primary
+    product: ->Product
+    quantity: int @range(1..20)
+    unit_price: float @range(5..500)
+    # Derived: arithmetic
+    subtotal: float @derived(quantity * unit_price)
+    # Derived: rounding
+    rounded_total: float @derived(round(subtotal, 2))

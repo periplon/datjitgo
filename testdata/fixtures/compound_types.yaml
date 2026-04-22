@@ -1,0 +1,20 @@
+domain: test_compound_types
+version: 0.1.0
+seed: 42
+
+volume:
+  Record: 15
+
+entities:
+  Record:
+    id: uuid @primary
+    # List of strings
+    tags: "[string]"
+    # Map
+    metadata: "{string: int}"
+    # Tuple
+    coordinates: "(float, float)"
+    # Nullable
+    nickname: string?
+    # Union type
+    flexible_id: "string | int"

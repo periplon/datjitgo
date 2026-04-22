@@ -1,0 +1,14 @@
+domain: test_minimal
+version: 0.1.0
+seed: 42
+
+volume:
+  User: 10
+
+entities:
+  User:
+    id: uuid @primary
+    name: person.full
+    email: email @unique @from(name)
+    age: int @range(18..65)
+    active: bool
