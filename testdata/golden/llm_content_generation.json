@@ -1,0 +1,173 @@
+{
+  "Author": [
+    {
+      "name": "Ashley Harris",
+      "bio": "Simple solutions are often the hardest to design.",
+      "expertise": "devops"
+    },
+    {
+      "name": "David Williams",
+      "bio": "Focus on the fundamentals and the rest tends to follow.",
+      "expertise": "devops"
+    },
+    {
+      "name": "Christine Kim",
+      "bio": "Data drives decisions in every part of the business.",
+      "expertise": "mobile"
+    }
+  ],
+  "BlogPost": [
+    {
+      "author": "02f58956-7396-483f-95d0-77d469fbc3b7",
+      "title": "Data drives decisions in every part of the business.",
+      "slug": "item-2750",
+      "excerpt": "After careful review, the committee approved the revised proposal.",
+      "body": "People remember how you made them feel, not what you said.",
+      "tags": [
+        "aMtUB4SRDF",
+        "ldGocEi75XD4W",
+        "idHPUiS3b"
+      ],
+      "published_at": "2017-06-22T18:35:58.964123852Z",
+      "read_time_minutes": 3
+    },
+    {
+      "author": "02f58956-7396-483f-95d0-77d469fbc3b7",
+      "title": "Users surprise you if you actually listen to them.",
+      "slug": "item-6196",
+      "excerpt": "The details are what separate a good product from a great one.",
+      "body": "Software is a conversation with the future.",
+      "tags": [
+        "ZeYkET5018p",
+        "Nr7th4otO9u9CM",
+        "JRf413ur"
+      ],
+      "published_at": "2025-07-21T17:57:33.2042556Z",
+      "read_time_minutes": 20
+    },
+    {
+      "author": "07bddf02-2c2c-4317-844c-9935f5902321",
+      "title": "Success usually follows a long, quiet period of effort.",
+      "slug": "item-8393",
+      "excerpt": "Shipping small, meaningful improvements beats waiting for perfection.",
+      "body": "Careful planning saved the project from an expensive detour.",
+      "tags": null,
+      "published_at": "2018-05-04T17:52:10.247162922Z",
+      "read_time_minutes": 3
+    },
+    {
+      "author": "02f58956-7396-483f-95d0-77d469fbc3b7",
+      "title": "Iteration is the secret behind every polished product.",
+      "slug": "item-5754",
+      "excerpt": "Writing clearly is thinking clearly, one word at a time.",
+      "body": "Careful planning saved the project from an expensive detour.",
+      "tags": [
+        "4vNgXg5NQe43vY"
+      ],
+      "published_at": "2022-10-29T15:25:43.615487118Z",
+      "read_time_minutes": 20
+    },
+    {
+      "author": "382ec318-bb51-49a9-815b-4db132bc40c3",
+      "title": "Time spent on clarity is always repaid later.",
+      "slug": "item-3766",
+      "excerpt": "Team culture shapes every decision in subtle ways.",
+      "body": "Every solved problem reveals a new one to tackle.",
+      "tags": null,
+      "published_at": "2026-06-14T10:08:53.870601683Z",
+      "read_time_minutes": 20
+    }
+  ],
+  "Comment": [
+    {
+      "post": "49729706-adf2-4b5f-88b3-2d7bed384a31",
+      "commenter_name": "Gary Gonzalez",
+      "body": "Users surprise you if you actually listen to them.",
+      "created_at": "2019-06-23T21:56:44.332318933Z"
+    },
+    {
+      "post": "49729706-adf2-4b5f-88b3-2d7bed384a31",
+      "commenter_name": "John Garcia",
+      "body": "Great systems emerge from countless small, careful choices.",
+      "created_at": "2019-03-25T08:47:43.443025126Z"
+    },
+    {
+      "post": "8f3b3536-2be8-4cc2-8e1c-776d5dd20ab6",
+      "commenter_name": "Amanda Singh",
+      "body": "Trust is the currency of great engineering teams.",
+      "created_at": "2016-06-01T03:53:49.077661324Z"
+    },
+    {
+      "post": "8f3b3536-2be8-4cc2-8e1c-776d5dd20ab6",
+      "commenter_name": "Gregory Hernandez",
+      "body": "Great systems emerge from countless small, careful choices.",
+      "created_at": "2019-05-06T03:53:40.232009761Z"
+    },
+    {
+      "post": "8f3b3536-2be8-4cc2-8e1c-776d5dd20ab6",
+      "commenter_name": "Dorothy King",
+      "body": "Collaboration across teams produced a surprisingly elegant result.",
+      "created_at": "2016-03-22T11:43:25.230650051Z"
+    },
+    {
+      "post": "837d6bba-c86a-4767-9838-d3c4bcdebd56",
+      "commenter_name": "Christine Walker",
+      "body": "Team culture shapes every decision in subtle ways.",
+      "created_at": "2020-07-27T13:08:02.411043837Z"
+    },
+    {
+      "post": "837d6bba-c86a-4767-9838-d3c4bcdebd56",
+      "commenter_name": "James Miller",
+      "body": "A fresh perspective can unlock new possibilities in familiar work.",
+      "created_at": "2022-04-21T23:51:13.816056644Z"
+    },
+    {
+      "post": "a1cba47e-8473-45aa-9649-74a5fb416d9a",
+      "commenter_name": "Jacob Robinson",
+      "body": "Documentation matters more than most people realize.",
+      "created_at": "2021-01-14T16:46:56.694781473Z"
+    },
+    {
+      "post": "837d6bba-c86a-4767-9838-d3c4bcdebd56",
+      "commenter_name": "Shirley Ramirez",
+      "body": "All the data pointed to the same conclusion.",
+      "created_at": "2024-04-12T05:30:10.221801385Z"
+    },
+    {
+      "post": "837d6bba-c86a-4767-9838-d3c4bcdebd56",
+      "commenter_name": "Mary Zhang",
+      "body": "Success usually follows a long, quiet period of effort.",
+      "created_at": "2017-09-29T10:29:14.657657878Z"
+    },
+    {
+      "post": "8f3b3536-2be8-4cc2-8e1c-776d5dd20ab6",
+      "commenter_name": "Daniel Ramirez",
+      "body": "A small team delivered outsized impact on the quarterly roadmap.",
+      "created_at": "2023-07-26T01:18:00.25452797Z"
+    },
+    {
+      "post": "837d6bba-c86a-4767-9838-d3c4bcdebd56",
+      "commenter_name": "Carolyn Moore",
+      "body": "Great systems emerge from countless small, careful choices.",
+      "created_at": "2026-05-22T15:03:16.018140547Z"
+    },
+    {
+      "post": "837d6bba-c86a-4767-9838-d3c4bcdebd56",
+      "commenter_name": "Jennifer Mitchell",
+      "body": "Simple solutions are often the hardest to design.",
+      "created_at": "2017-02-21T16:40:27.077056233Z"
+    },
+    {
+      "post": "ebd35876-9431-44ef-a875-929dc2b9183c",
+      "commenter_name": "Timothy Yang",
+      "body": "Data drives decisions in every part of the business.",
+      "created_at": "2023-04-10T00:57:43.597719862Z"
+    },
+    {
+      "post": "49729706-adf2-4b5f-88b3-2d7bed384a31",
+      "commenter_name": "Jack Adams",
+      "body": "Experimentation is the fastest path to understanding.",
+      "created_at": "2023-05-28T16:46:03.948663089Z"
+    }
+  ]
+}

@@ -563,20 +563,22 @@ func parseRuleMapping(name string, n *yaml.Node) (model.Rule, error) {
 			}
 		case "cross_row":
 			// Cross-row rules carry their own shape; we preserve the raw
-			// YAML text so downstream phases can re-parse.
+			// YAML text in CrossRow so downstream phases can re-parse.
 			out, err := yaml.Marshal(n)
 			if err != nil {
 				return model.Rule{}, locErr(name, n, "cross_row rule: %v", err)
 			}
-			return model.Rule{Expr: string(out), Severity: model.RuleStrict}, nil
+			return model.Rule{
+				Kind:         model.RuleKindCrossRow,
+				CrossRow:     string(out),
+				ErrorMessage: errMsg,
+				Severity:     model.RuleStrict,
+			}, nil
 		}
 	}
 	expr := assert
 	if when != "" {
 		expr = "if " + when + " then " + assert
-	}
-	if errMsg != "" {
-		expr = expr + " // " + errMsg
 	}
 	sev := model.RuleStrict
 	p := 0.0
@@ -593,7 +595,7 @@ func parseRuleMapping(name string, n *yaml.Node) (model.Rule, error) {
 		sev = model.RuleProbabilistic
 		p = *prob
 	}
-	return model.Rule{Expr: expr, Severity: sev, Probability: p}, nil
+	return model.Rule{Expr: expr, ErrorMessage: errMsg, Severity: sev, Probability: p}, nil
 }
 
 // parseTools returns the raw tools section as pass-through map[string]any

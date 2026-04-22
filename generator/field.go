@@ -139,6 +139,24 @@ func (e *Engine) generateField(entity *model.Entity, f *model.Field, row *value.
 		}
 	}
 
+	// 3a. @llm(...) — deterministic stub content (phase 1). Live providers
+	// land in phase 2; for now every @llm field draws a reproducible
+	// sentence from the corpus text pool using a prompt-scoped substream.
+	if d := model.FindDecorator(f.Decorators, "llm"); d != nil {
+		return value.Str(e.stubLLMValue(*d, rng)), nil
+	}
+
+	// 3b. @llm_values(N, "prompt") — materialise N candidate strings, then
+	// sample uniformly. Keeps behaviour aligned with @values so @null_rate
+	// / @unique / @dist compose naturally.
+	if d := model.FindDecorator(f.Decorators, "llm_values"); d != nil {
+		pool := e.llmValuesExpand(*d, rng)
+		if len(pool) > 0 {
+			idx := int(rng.IntN(int64(len(pool))))
+			return value.Str(pool[idx]), nil
+		}
+	}
+
 	// 3. @values(...) — pick from the literal list.
 	if d := model.FindDecorator(f.Decorators, "values"); d != nil && len(d.Args) > 0 {
 		idx := int(rng.IntN(int64(len(d.Args))))

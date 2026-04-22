@@ -68,7 +68,11 @@ func validateDoc(doc *model.Document) error {
 	}
 
 	// Rule expressions — cheap syntactic check via the generator's parser.
+	// Cross-row rules carry a YAML body instead of an expression; skip them.
 	for i, r := range doc.Rules {
+		if r.Kind == model.RuleKindCrossRow {
+			continue
+		}
 		expr := r.Expr
 		// Rules routinely use "if COND then THEN" shorthand; the generator
 		// rewrites this before eval, so we do the same before parsing so

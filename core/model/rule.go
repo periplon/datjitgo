@@ -15,10 +15,24 @@ const (
 	RuleWarn
 )
 
-// Rule is a cross-entity constraint expressed as a raw expression string
-// that the engine parses and evaluates.
+// RuleKind distinguishes the shape of the rule body. Regular rules carry
+// a boolean expression in Expr; cross-row rules carry a YAML-encoded
+// mapping in CrossRow and leave Expr empty.
+type RuleKind int
+
+const (
+	RuleKindExpr RuleKind = iota
+	RuleKindCrossRow
+)
+
+// Rule is a cross-entity constraint. Expression rules put a boolean
+// expression in Expr; cross-row rules carry a YAML body in CrossRow. Both
+// forms may attach an ErrorMessage for reporting on violation.
 type Rule struct {
-	Expr        string
-	Severity    RuleSeverity
-	Probability float64
+	Kind         RuleKind
+	Expr         string
+	ErrorMessage string
+	CrossRow     string // raw YAML for cross_row rules
+	Severity     RuleSeverity
+	Probability  float64
 }

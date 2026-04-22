@@ -1,0 +1,121 @@
+{
+  "Product": [
+    {
+      "name": "Classic Leather Wallet",
+      "price": 375.01,
+      "description": "Writing clearly is thinking clearly, one word at a time.",
+      "tagline": "Simple solutions are often the hardest to design.",
+      "category": "smart_home"
+    },
+    {
+      "name": "Lightweight Aluminum Backpack",
+      "price": 63.98,
+      "description": "Quality is rarely accidental; it follows intention.",
+      "tagline": "All the data pointed to the same conclusion.",
+      "category": "smart_home"
+    },
+    {
+      "name": "Wireless Carbon Fiber Headphones",
+      "price": 366.21,
+      "description": "Careful planning saved the project from an expensive detour.",
+      "tagline": "Simple solutions are often the hardest to design.",
+      "category": "accessories"
+    },
+    {
+      "name": "Compact Ceramic Mug",
+      "price": 110.86,
+      "description": "Focus on the fundamentals and the rest tends to follow.",
+      "tagline": "Reliability begins with simplicity and ends with empathy.",
+      "category": "smart_home"
+    },
+    {
+      "name": "Sleek Carbon Fiber Headphones",
+      "price": 64.98,
+      "description": "Open-source communities drive much of modern software innovation.",
+      "tagline": "Documentation matters more than most people realize.",
+      "category": "accessories"
+    }
+  ],
+  "Review": [
+    {
+      "product": "ab6bc125-e6fd-45a2-a118-a54aee987d36",
+      "rating": 5,
+      "title": "Collaboration across teams produced a surprisingly elegant result.",
+      "body": "Process is important, but outcomes matter more.",
+      "reviewer_name": "William Rodriguez",
+      "verified": true
+    },
+    {
+      "product": "417a8e9a-9455-4a99-9673-8b1af08d8b0d",
+      "rating": 1,
+      "title": "Real progress happens just outside the comfort zone.",
+      "body": "Software is a conversation with the future.",
+      "reviewer_name": "Donald Rivera",
+      "verified": false
+    },
+    {
+      "product": "8b458e2a-c436-4574-8890-0e05c11812c1",
+      "rating": 5,
+      "title": "Every solved problem reveals a new one to tackle.",
+      "body": "Team culture shapes every decision in subtle ways.",
+      "reviewer_name": "Edward Martin",
+      "verified": true
+    },
+    {
+      "product": "417a8e9a-9455-4a99-9673-8b1af08d8b0d",
+      "rating": 1,
+      "title": "Open-source communities drive much of modern software innovation.",
+      "body": "The team celebrated a long-awaited milestone with quiet pride.",
+      "reviewer_name": "Heather Chen",
+      "verified": false
+    },
+    {
+      "product": "8b458e2a-c436-4574-8890-0e05c11812c1",
+      "rating": 1,
+      "title": "Real progress happens just outside the comfort zone.",
+      "body": "Collaboration across teams produced a surprisingly elegant result.",
+      "reviewer_name": "Jessica Johnson",
+      "verified": false
+    },
+    {
+      "product": "4ecf16c6-c10d-4f72-8697-64c4bcbaf64d",
+      "rating": 1,
+      "title": "A fresh perspective can unlock new possibilities in familiar work.",
+      "body": "Focus on the fundamentals and the rest tends to follow.",
+      "reviewer_name": "Kenneth Taylor",
+      "verified": true
+    },
+    {
+      "product": "ab6bc125-e6fd-45a2-a118-a54aee987d36",
+      "rating": 5,
+      "title": "Users surprise you if you actually listen to them.",
+      "body": "Trust is the currency of great engineering teams.",
+      "reviewer_name": "James Rodriguez",
+      "verified": true
+    },
+    {
+      "product": "4ecf16c6-c10d-4f72-8697-64c4bcbaf64d",
+      "rating": 5,
+      "title": "Iteration is the secret behind every polished product.",
+      "body": "Great systems emerge from countless small, careful choices.",
+      "reviewer_name": "Ashley Perez",
+      "verified": true
+    },
+    {
+      "product": "417a8e9a-9455-4a99-9673-8b1af08d8b0d",
+      "rating": 5,
+      "title": "The quick brown fox jumps over the lazy dog.",
+      "body": "Documentation matters more than most people realize.",
+      "reviewer_name": "Steven Singh",
+      "verified": false
+    },
+    {
+      "product": "4ecf16c6-c10d-4f72-8697-64c4bcbaf64d",
+      "rating": 5,
+      "title": "The quick brown fox jumps over the lazy dog.",
+      "body": "After careful review, the committee approved the revised proposal.",
+      "reviewer_name": "Andrew White",
+      "verified": false
+    }
+  ]
+}

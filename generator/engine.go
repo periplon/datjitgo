@@ -5,7 +5,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
 	"github.com/jmcarbo/datjitgo/core/ports"
 	"github.com/jmcarbo/datjitgo/core/value"
@@ -38,10 +37,11 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 	locale := resolveLocale(doc, opts)
 	e.locale = locale
 
-	// LLM early rejection — parsing is permissive but generation is not.
-	if err := rejectLLM(doc); err != nil {
-		return nil, err
-	}
+	// LLM preprocessing: expand @llm_values into @values using corpus-backed
+	// stub content, and push an entity-level _meta @llm down onto every
+	// string-shaped field that has no generator of its own. Phase 1 ships
+	// with a deterministic stub backend; live providers are phase 2.
+	preprocessLLM(doc)
 
 	order, err := plan(doc)
 	if err != nil {
@@ -183,41 +183,6 @@ func resolveVolume(name string, doc *model.Document, opts ports.GenerateOptions)
 		}
 	}
 	return 10
-}
-
-// rejectLLM walks the doc looking for @llm / @llm_values decorators or an
-// active generation.llm config. If any are present we return
-// ErrFeatureDeferred so users see a clear message.
-func rejectLLM(doc *model.Document) error {
-	check := func(decs []model.Decorator, entity, field string) error {
-		for _, d := range decs {
-			if d.Name == "llm" || d.Name == "llm_values" {
-				return &errors.Error{
-					Kind:    errors.KindFeatureDeferred,
-					Entity:  entity,
-					Field:   field,
-					Message: "LLM generation deferred to phase 2",
-				}
-			}
-		}
-		return nil
-	}
-	var firstErr error
-	doc.Entities.Each(func(ename string, e *model.Entity) bool {
-		if err := check(e.Meta, ename, ""); err != nil {
-			firstErr = err
-			return false
-		}
-		e.Fields.Each(func(fname string, f *model.Field) bool {
-			if err := check(f.Decorators, ename, fname); err != nil {
-				firstErr = err
-				return false
-			}
-			return true
-		})
-		return firstErr == nil
-	})
-	return firstErr
 }
 
 // enforceDatasetRules is a cheap post-pass that logs @warn rule violations

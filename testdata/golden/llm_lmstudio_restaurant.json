@@ -1,0 +1,502 @@
+{
+  "Restaurant": [
+    {
+      "name": "Great systems emerge from countless small, careful choices.",
+      "cuisine": "japanese",
+      "description": "Open-source communities drive much of modern software innovation.",
+      "price_range": "$",
+      "neighborhood": "Austin",
+      "michelin_stars": 0
+    },
+    {
+      "name": "Careful planning saved the project from an expensive detour.",
+      "cuisine": "thai",
+      "description": "Open-source communities drive much of modern software innovation.",
+      "price_range": "$$$$",
+      "neighborhood": "New York",
+      "michelin_stars": 3
+    },
+    {
+      "name": "Good design disappears into the user experience.",
+      "cuisine": "french",
+      "description": "Software is a conversation with the future.",
+      "price_range": "$$",
+      "neighborhood": "Colorado Springs",
+      "michelin_stars": 0
+    },
+    {
+      "name": "Writing clearly is thinking clearly, one word at a time.",
+      "cuisine": "american",
+      "description": "Focus on the fundamentals and the rest tends to follow.",
+      "price_range": "$$$$",
+      "neighborhood": "St. Louis",
+      "michelin_stars": 3
+    },
+    {
+      "name": "Experimentation is the fastest path to understanding.",
+      "cuisine": "mediterranean",
+      "description": "Time spent on clarity is always repaid later.",
+      "price_range": "$$",
+      "neighborhood": "Chicago",
+      "michelin_stars": 3
+    },
+    {
+      "name": "A small team delivered outsized impact on the quarterly roadmap.",
+      "cuisine": "american",
+      "description": "Good design disappears into the user experience.",
+      "price_range": "$$$",
+      "neighborhood": "Honolulu",
+      "michelin_stars": 0
+    },
+    {
+      "name": "Real progress happens just outside the comfort zone.",
+      "cuisine": "mexican",
+      "description": "Focus on the fundamentals and the rest tends to follow.",
+      "price_range": "$",
+      "neighborhood": "Houston",
+      "michelin_stars": 3
+    },
+    {
+      "name": "Process is important, but outcomes matter more.",
+      "cuisine": "mediterranean",
+      "description": "Writing clearly is thinking clearly, one word at a time.",
+      "price_range": "$$",
+      "neighborhood": "San Francisco",
+      "michelin_stars": 3
+    }
+  ],
+  "MenuItem": [
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "name": "Real progress happens just outside the comfort zone.",
+      "description": "Users surprise you if you actually listen to them.",
+      "price": 26.37,
+      "course": "drink",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "name": "Success usually follows a long, quiet period of effort.",
+      "description": "Iteration is the secret behind every polished product.",
+      "price": 47.95,
+      "course": "drink",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "name": "Software is a conversation with the future.",
+      "description": "The team celebrated a long-awaited milestone with quiet pride.",
+      "price": 13.39,
+      "course": "dessert",
+      "vegetarian": false,
+      "spicy": false
+    },
+    {
+      "restaurant": "d99631b7-be5f-40c1-a25c-e0390641883a",
+      "name": "Team culture shapes every decision in subtle ways.",
+      "description": "Success usually follows a long, quiet period of effort.",
+      "price": 44,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "name": "Iteration is the secret behind every polished product.",
+      "description": "Users surprise you if you actually listen to them.",
+      "price": 27.92,
+      "course": "main",
+      "vegetarian": false,
+      "spicy": false
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "name": "Documentation matters more than most people realize.",
+      "description": "Users surprise you if you actually listen to them.",
+      "price": 22.98,
+      "course": "main",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "2f321042-4d0e-4489-bb32-50f1b6d61342",
+      "name": "Open-source communities drive much of modern software innovation.",
+      "description": "Data drives decisions in every part of the business.",
+      "price": 33.91,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "name": "Team culture shapes every decision in subtle ways.",
+      "description": "Great systems emerge from countless small, careful choices.",
+      "price": 21.12,
+      "course": "appetizer",
+      "vegetarian": false,
+      "spicy": false
+    },
+    {
+      "restaurant": "d99631b7-be5f-40c1-a25c-e0390641883a",
+      "name": "People remember how you made them feel, not what you said.",
+      "description": "The team celebrated a long-awaited milestone with quiet pride.",
+      "price": 17.73,
+      "course": "main",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "name": "Real progress happens just outside the comfort zone.",
+      "description": "Reliability begins with simplicity and ends with empathy.",
+      "price": 29.83,
+      "course": "main",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "name": "Documentation matters more than most people realize.",
+      "description": "Reliability begins with simplicity and ends with empathy.",
+      "price": 17.39,
+      "course": "main",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "name": "Experimentation is the fastest path to understanding.",
+      "description": "Simple solutions are often the hardest to design.",
+      "price": 16.78,
+      "course": "appetizer",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "2f321042-4d0e-4489-bb32-50f1b6d61342",
+      "name": "After careful review, the committee approved the revised proposal.",
+      "description": "Real progress happens just outside the comfort zone.",
+      "price": 13.56,
+      "course": "main",
+      "vegetarian": false,
+      "spicy": false
+    },
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "name": "Software is a conversation with the future.",
+      "description": "Users surprise you if you actually listen to them.",
+      "price": 12.98,
+      "course": "main",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "name": "After careful review, the committee approved the revised proposal.",
+      "description": "Success usually follows a long, quiet period of effort.",
+      "price": 14.39,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "name": "All the data pointed to the same conclusion.",
+      "description": "Open-source communities drive much of modern software innovation.",
+      "price": 34.66,
+      "course": "dessert",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "name": "Documentation matters more than most people realize.",
+      "description": "The team celebrated a long-awaited milestone with quiet pride.",
+      "price": 25.85,
+      "course": "main",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "name": "All the data pointed to the same conclusion.",
+      "description": "Experimentation is the fastest path to understanding.",
+      "price": 15.45,
+      "course": "appetizer",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "d99631b7-be5f-40c1-a25c-e0390641883a",
+      "name": "The details are what separate a good product from a great one.",
+      "description": "Users surprise you if you actually listen to them.",
+      "price": 22.05,
+      "course": "main",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "name": "Experimentation is the fastest path to understanding.",
+      "description": "A small team delivered outsized impact on the quarterly roadmap.",
+      "price": 42.11,
+      "course": "main",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "name": "Quality is rarely accidental; it follows intention.",
+      "description": "Focus on the fundamentals and the rest tends to follow.",
+      "price": 19.68,
+      "course": "dessert",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "e362de43-1475-4ece-b726-8dbdc7b02135",
+      "name": "Team culture shapes every decision in subtle ways.",
+      "description": "Open-source communities drive much of modern software innovation.",
+      "price": 20.54,
+      "course": "main",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "d99631b7-be5f-40c1-a25c-e0390641883a",
+      "name": "The quick brown fox jumps over the lazy dog.",
+      "description": "The team celebrated a long-awaited milestone with quiet pride.",
+      "price": 21.74,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "name": "Quality is rarely accidental; it follows intention.",
+      "description": "Experimentation is the fastest path to understanding.",
+      "price": 26.78,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": false
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "name": "Users surprise you if you actually listen to them.",
+      "description": "Time spent on clarity is always repaid later.",
+      "price": 31.1,
+      "course": "appetizer",
+      "vegetarian": false,
+      "spicy": true
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "name": "Team culture shapes every decision in subtle ways.",
+      "description": "Team culture shapes every decision in subtle ways.",
+      "price": 19.37,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "2f321042-4d0e-4489-bb32-50f1b6d61342",
+      "name": "Quality is rarely accidental; it follows intention.",
+      "description": "Data drives decisions in every part of the business.",
+      "price": 31.46,
+      "course": "dessert",
+      "vegetarian": false,
+      "spicy": false
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "name": "Documentation matters more than most people realize.",
+      "description": "The best feedback is specific, kind, and on time.",
+      "price": 23.8,
+      "course": "dessert",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "e362de43-1475-4ece-b726-8dbdc7b02135",
+      "name": "All the data pointed to the same conclusion.",
+      "description": "Great systems emerge from countless small, careful choices.",
+      "price": 24.26,
+      "course": "appetizer",
+      "vegetarian": true,
+      "spicy": true
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "name": "Data drives decisions in every part of the business.",
+      "description": "People remember how you made them feel, not what you said.",
+      "price": 19.02,
+      "course": "main",
+      "vegetarian": false,
+      "spicy": false
+    }
+  ],
+  "CustomerReview": [
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "reviewer": "Samantha Mitchell",
+      "rating": 4,
+      "title": "The best feedback is specific, kind, and on time.",
+      "body": "Simple solutions are often the hardest to design.",
+      "visit_date": "2021-05-29T00:00:00Z"
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "reviewer": "Samantha Robinson",
+      "rating": 3,
+      "title": "A fresh perspective can unlock new possibilities in familiar work.",
+      "body": "Writing clearly is thinking clearly, one word at a time.",
+      "visit_date": "2020-03-08T00:00:00Z"
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "reviewer": "Mary Lee",
+      "rating": 4,
+      "title": "Focus on the fundamentals and the rest tends to follow.",
+      "body": "Every solved problem reveals a new one to tackle.",
+      "visit_date": "2025-10-10T00:00:00Z"
+    },
+    {
+      "restaurant": "66af5750-1232-4dc9-8238-8613b5e965e1",
+      "reviewer": "Robert Thompson",
+      "rating": 5,
+      "title": "A fresh perspective can unlock new possibilities in familiar work.",
+      "body": "The team celebrated a long-awaited milestone with quiet pride.",
+      "visit_date": "2022-10-03T00:00:00Z"
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "reviewer": "Angela Thompson",
+      "rating": 4,
+      "title": "Software is a conversation with the future.",
+      "body": "Time spent on clarity is always repaid later.",
+      "visit_date": "2018-07-08T00:00:00Z"
+    },
+    {
+      "restaurant": "851b4984-bad9-454a-8afc-b38ba15b6166",
+      "reviewer": "Deborah Hernandez",
+      "rating": 4,
+      "title": "Success usually follows a long, quiet period of effort.",
+      "body": "The quick brown fox jumps over the lazy dog.",
+      "visit_date": "2021-10-10T00:00:00Z"
+    },
+    {
+      "restaurant": "d99631b7-be5f-40c1-a25c-e0390641883a",
+      "reviewer": "Benjamin Hall",
+      "rating": 4,
+      "title": "Time spent on clarity is always repaid later.",
+      "body": "Success usually follows a long, quiet period of effort.",
+      "visit_date": "2023-08-07T00:00:00Z"
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "reviewer": "Amanda Singh",
+      "rating": 5,
+      "title": "Quality is rarely accidental; it follows intention.",
+      "body": "The best feedback is specific, kind, and on time.",
+      "visit_date": "2025-06-10T00:00:00Z"
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "reviewer": "Sharon Rodriguez",
+      "rating": 2,
+      "title": "Focus on the fundamentals and the rest tends to follow.",
+      "body": "Success usually follows a long, quiet period of effort.",
+      "visit_date": "2023-09-15T00:00:00Z"
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "reviewer": "Raymond Wu",
+      "rating": 5,
+      "title": "A fresh perspective can unlock new possibilities in familiar work.",
+      "body": "Great systems emerge from countless small, careful choices.",
+      "visit_date": "2018-07-29T00:00:00Z"
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "reviewer": "Justin Scott",
+      "rating": 3,
+      "title": "Good design disappears into the user experience.",
+      "body": "Iteration is the secret behind every polished product.",
+      "visit_date": "2017-05-15T00:00:00Z"
+    },
+    {
+      "restaurant": "d99631b7-be5f-40c1-a25c-e0390641883a",
+      "reviewer": "Brandon Nelson",
+      "rating": 5,
+      "title": "All the data pointed to the same conclusion.",
+      "body": "A fresh perspective can unlock new possibilities in familiar work.",
+      "visit_date": "2022-04-21T00:00:00Z"
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "reviewer": "Joshua Sanchez",
+      "rating": 3,
+      "title": "Documentation matters more than most people realize.",
+      "body": "Writing clearly is thinking clearly, one word at a time.",
+      "visit_date": "2020-06-13T00:00:00Z"
+    },
+    {
+      "restaurant": "2f321042-4d0e-4489-bb32-50f1b6d61342",
+      "reviewer": "Stephanie Ramirez",
+      "rating": 2,
+      "title": "People remember how you made them feel, not what you said.",
+      "body": "Software is a conversation with the future.",
+      "visit_date": "2025-07-30T00:00:00Z"
+    },
+    {
+      "restaurant": "e362de43-1475-4ece-b726-8dbdc7b02135",
+      "reviewer": "Samantha Chen",
+      "rating": 3,
+      "title": "A fresh perspective can unlock new possibilities in familiar work.",
+      "body": "A small team delivered outsized impact on the quarterly roadmap.",
+      "visit_date": "2026-10-19T00:00:00Z"
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "reviewer": "Andrew Allen",
+      "rating": 3,
+      "title": "Great systems emerge from countless small, careful choices.",
+      "body": "Iteration is the secret behind every polished product.",
+      "visit_date": "2021-05-05T00:00:00Z"
+    },
+    {
+      "restaurant": "fc5f4fd3-73ee-4663-9bfa-2521cd434249",
+      "reviewer": "Mary Nelson",
+      "rating": 5,
+      "title": "Great systems emerge from countless small, careful choices.",
+      "body": "Careful planning saved the project from an expensive detour.",
+      "visit_date": "2019-09-20T00:00:00Z"
+    },
+    {
+      "restaurant": "16f6abb0-d730-4100-96a0-fd66d94a556f",
+      "reviewer": "Mark Hall",
+      "rating": 2,
+      "title": "The quick brown fox jumps over the lazy dog.",
+      "body": "Iteration is the secret behind every polished product.",
+      "visit_date": "2026-08-06T00:00:00Z"
+    },
+    {
+      "restaurant": "2f321042-4d0e-4489-bb32-50f1b6d61342",
+      "reviewer": "Jason Wilson",
+      "rating": 4,
+      "title": "Quality is rarely accidental; it follows intention.",
+      "body": "The details are what separate a good product from a great one.",
+      "visit_date": "2022-06-06T00:00:00Z"
+    },
+    {
+      "restaurant": "e55c3ce5-f69f-4c79-88d5-c7ff0c960971",
+      "reviewer": "Samuel Williams",
+      "rating": 4,
+      "title": "Team culture shapes every decision in subtle ways.",
+      "body": "Writing clearly is thinking clearly, one word at a time.",
+      "visit_date": "2025-01-19T00:00:00Z"
+    }
+  ]
+}

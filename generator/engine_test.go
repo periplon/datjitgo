@@ -109,14 +109,28 @@ func TestEngineRulesFixtureStrictHolds(t *testing.T) {
 	}
 }
 
-func TestEngineLLMFixtureDeferred(t *testing.T) {
+// TestEngineLLMStubFills confirms that @llm-decorated fields produce
+// non-empty stub content in phase 1 (the deferred-generation path was
+// retired when the deterministic stub backend landed).
+func TestEngineLLMStubFills(t *testing.T) {
 	doc := loadFixture(t, "../testdata/fixtures/llm_field_level.yaml")
-	_, err := newEngine().Generate(doc, ports.GenerateOptions{})
-	if err == nil {
-		t.Fatal("expected ErrFeatureDeferred")
+	ds, err := newEngine().Generate(doc, ports.GenerateOptions{})
+	if err != nil {
+		t.Fatalf("generate: %v", err)
 	}
-	if !stderrors.Is(err, errors.ErrFeatureDeferred) {
-		t.Fatalf("wrong err: %v", err)
+	rows, ok := ds.Entities.Get("Product")
+	if !ok || len(rows) == 0 {
+		t.Fatal("no Product rows")
+	}
+	for i, r := range rows {
+		desc, _ := r.Get("description")
+		tagline, _ := r.Get("tagline")
+		if desc.S == "" {
+			t.Fatalf("row %d: empty description", i)
+		}
+		if tagline.S == "" {
+			t.Fatalf("row %d: empty tagline", i)
+		}
 	}
 }
 

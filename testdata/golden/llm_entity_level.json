@@ -1,0 +1,102 @@
+{
+  "Character": [
+    {
+      "name": "The details are what separate a good product from a great one.",
+      "race": "human",
+      "class": "ranger",
+      "level": 20,
+      "backstory": "The details are what separate a good product from a great one.",
+      "personality_trait": "The details are what separate a good product from a great one.",
+      "catchphrase": "The details are what separate a good product from a great one."
+    },
+    {
+      "name": "Experimentation is the fastest path to understanding.",
+      "race": "halfling",
+      "class": "mage",
+      "level": 1,
+      "backstory": "Experimentation is the fastest path to understanding.",
+      "personality_trait": "Experimentation is the fastest path to understanding.",
+      "catchphrase": "Experimentation is the fastest path to understanding."
+    },
+    {
+      "name": "All the data pointed to the same conclusion.",
+      "race": "elf",
+      "class": "cleric",
+      "level": 20,
+      "backstory": "All the data pointed to the same conclusion.",
+      "personality_trait": "All the data pointed to the same conclusion.",
+      "catchphrase": "All the data pointed to the same conclusion."
+    },
+    {
+      "name": "Iteration is the secret behind every polished product.",
+      "race": "orc",
+      "class": "cleric",
+      "level": 1,
+      "backstory": "Iteration is the secret behind every polished product.",
+      "personality_trait": "Iteration is the secret behind every polished product.",
+      "catchphrase": "Iteration is the secret behind every polished product."
+    },
+    {
+      "name": "All the data pointed to the same conclusion.",
+      "race": "dwarf",
+      "class": "mage",
+      "level": 20,
+      "backstory": "All the data pointed to the same conclusion.",
+      "personality_trait": "All the data pointed to the same conclusion.",
+      "catchphrase": "All the data pointed to the same conclusion."
+    }
+  ],
+  "Location": [
+    {
+      "name": "Great systems emerge from countless small, careful choices.",
+      "terrain": "coast",
+      "description": "Great systems emerge from countless small, careful choices.",
+      "danger_level": 1,
+      "notable_feature": "Great systems emerge from countless small, careful choices."
+    },
+    {
+      "name": "Iteration is the secret behind every polished product.",
+      "terrain": "swamp",
+      "description": "Iteration is the secret behind every polished product.",
+      "danger_level": 1,
+      "notable_feature": "Iteration is the secret behind every polished product."
+    },
+    {
+      "name": "Collaboration across teams produced a surprisingly elegant result.",
+      "terrain": "swamp",
+      "description": "Collaboration across teams produced a surprisingly elegant result.",
+      "danger_level": 1,
+      "notable_feature": "Collaboration across teams produced a surprisingly elegant result."
+    }
+  ],
+  "Quest": [
+    {
+      "location": "9bb40c16-2260-43a9-9b8e-06173f5b3484",
+      "title": "A small team delivered outsized impact on the quarterly roadmap.",
+      "objective": "People remember how you made them feel, not what you said.",
+      "reward_gold": 5000,
+      "difficulty": "hard"
+    },
+    {
+      "location": "859d0077-5ffa-49a6-95e5-e74e9a0f9cf3",
+      "title": "Reliability begins with simplicity and ends with empathy.",
+      "objective": "Reliability begins with simplicity and ends with empathy.",
+      "reward_gold": 5000,
+      "difficulty": "medium"
+    },
+    {
+      "location": "859d0077-5ffa-49a6-95e5-e74e9a0f9cf3",
+      "title": "Simple solutions are often the hardest to design.",
+      "objective": "Experimentation is the fastest path to understanding.",
+      "reward_gold": 5000,
+      "difficulty": "medium"
+    },
+    {
+      "location": "184c3e1a-2ec1-4c15-81c6-717a667ebd84",
+      "title": "Documentation matters more than most people realize.",
+      "objective": "The quick brown fox jumps over the lazy dog.",
+      "reward_gold": 50,
+      "difficulty": "medium"
+    }
+  ]
+}

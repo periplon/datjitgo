@@ -36,9 +36,8 @@ func TestFixtures(t *testing.T) {
 	}
 	for _, fx := range matches {
 		name := strings.TrimSuffix(filepath.Base(fx), ".yaml")
-		if strings.HasPrefix(name, "llm_") {
-			continue
-		}
+		// LLM fixtures are covered too — phase 1 uses a deterministic stub
+		// backend so their output is now reproducible.
 		t.Run(name, func(t *testing.T) {
 			svc := datjit.NewDefault()
 			b, err := os.ReadFile(fx)

@@ -26,7 +26,7 @@ entities:
     slug: slug
     excerpt: 'string @llm("Write a 1-sentence teaser that makes readers want to click")'
     body: 'string @llm("Write an opening paragraph for a technical blog post. Be engaging and informative")'
-    tags: '"[string]" @len(2..5)'
+    tags: '[string] @len(2..5)'
     published_at: 'datetime @range(2024-01-01..2025-12-31)'
     read_time_minutes: int @range(3..20)
 

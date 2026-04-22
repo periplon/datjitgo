@@ -158,9 +158,11 @@ nothing internal.
 
 This release covers everything **except**:
 
-- `@llm` / `@llm_values` — parsed and preserved; generator returns
-  `ErrFeatureDeferred`. LLM adapters (`ollama`, `openai`, `lmstudio`,
-  `vllm`) ship in a future release.
+- Live LLM providers (`ollama`, `openai`, `lmstudio`, `vllm`). `@llm` and
+  `@llm_values` decorators, and entity-level `_meta @llm(...)`, are fully
+  honoured by a **deterministic stub backend** that draws text from the
+  embedded corpus — no network calls. Output is reproducible via the same
+  seed as every other field. Real providers ship in a future release.
 - `datjit corpus update` — stubbed; live downloaders from Census, GeoNames,
   O*NET, GitHub, IANA, Odoo etc. will land in a future release.
 

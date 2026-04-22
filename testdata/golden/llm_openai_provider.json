@@ -1,0 +1,71 @@
+{
+  "Investor": [
+    {
+      "name": "Amanda Garcia",
+      "firm": "Nova Logic Inc.",
+      "focus": "seed"
+    },
+    {
+      "name": "Daniel Clark",
+      "firm": "Nexus Cloud Partners",
+      "focus": "growth"
+    },
+    {
+      "name": "Samuel Taylor",
+      "firm": "Axiom Data Labs",
+      "focus": "growth"
+    }
+  ],
+  "Startup": [
+    {
+      "name": "A small team delivered outsized impact on the quarterly roadmap.",
+      "pitch": "Shipping small, meaningful improvements beats waiting for perfection.",
+      "sector": "cleantech",
+      "stage": "mvp",
+      "funding_usd": 147752,
+      "lead_investor": "52e6a8c9-4033-4fed-bd35-fa6bf82b6761",
+      "tagline": "Open-source communities drive much of modern software innovation.",
+      "founded_year": 2019
+    },
+    {
+      "name": "Trust is the currency of great engineering teams.",
+      "pitch": "The quick brown fox jumps over the lazy dog.",
+      "sector": "ai_ml",
+      "stage": "scale",
+      "funding_usd": 386752,
+      "lead_investor": "9453bb70-e782-4aca-bc24-b706a3ccdd3e",
+      "tagline": "The details are what separate a good product from a great one.",
+      "founded_year": 2018
+    },
+    {
+      "name": "All the data pointed to the same conclusion.",
+      "pitch": "Experimentation is the fastest path to understanding.",
+      "sector": "healthtech",
+      "stage": "scale",
+      "funding_usd": 239636,
+      "lead_investor": "f16929d1-cf8a-4275-b985-6a835f0f3796",
+      "tagline": "Data drives decisions in every part of the business.",
+      "founded_year": 2022
+    },
+    {
+      "name": "Data drives decisions in every part of the business.",
+      "pitch": "People remember how you made them feel, not what you said.",
+      "sector": "fintech",
+      "stage": "mvp",
+      "funding_usd": 7376788,
+      "lead_investor": "52e6a8c9-4033-4fed-bd35-fa6bf82b6761",
+      "tagline": "A small team delivered outsized impact on the quarterly roadmap.",
+      "founded_year": 2019
+    },
+    {
+      "name": "The best feedback is specific, kind, and on time.",
+      "pitch": "Team culture shapes every decision in subtle ways.",
+      "sector": "ai_ml",
+      "stage": "mvp",
+      "funding_usd": 575988,
+      "lead_investor": "f16929d1-cf8a-4275-b985-6a835f0f3796",
+      "tagline": "Good design disappears into the user experience.",
+      "founded_year": 2018
+    }
+  ]
+}
