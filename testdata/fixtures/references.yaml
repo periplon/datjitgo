@@ -1,0 +1,41 @@
+domain: test_references
+version: 0.1.0
+seed: 42
+
+volume:
+  Department: 5
+  Employee: 30
+  Project: 10
+  Task: 50
+
+entities:
+  Department:
+    id: uuid @primary
+    name: company.name @unique
+
+  Employee:
+    id: uuid @primary
+    name: person.full
+    # Required belongs-to
+    department: ->Department
+    # Optional belongs-to
+    mentor: ->Employee?
+    # Self-referential (optional manager)
+    manager: ->self?
+
+  Project:
+    id: uuid @primary
+    name: string @len(5..40)
+    # Required reference
+    owner: ->Employee
+    # Optional reference
+    sponsor: ->Department?
+
+  Task:
+    id: uuid @primary
+    title: string @len(5..80)
+    project: ->Project
+    # Optional assignee
+    assignee: ->Employee? @null_rate(0.15)
+    # Self-referential parent task
+    parent: ->self? @null_rate(0.7)

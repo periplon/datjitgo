@@ -1,0 +1,38 @@
+domain: test_llm_content
+version: 0.1.0
+seed: 42
+
+generation:
+  llm:
+    endpoint: http://localhost:11434
+    model: llama3
+
+volume:
+  BlogPost: 5
+  Author: 3
+  Comment: 15
+
+entities:
+  Author:
+    id: uuid @primary
+    name: person.full
+    bio: 'string @llm("Write a professional author bio in 2 sentences for a tech blog writer")'
+    expertise: enum(frontend, backend, devops, data, security, mobile)
+
+  BlogPost:
+    id: uuid @primary
+    author: ->Author
+    title: 'string @llm("Write a compelling blog post title about software engineering best practices")'
+    slug: slug
+    excerpt: 'string @llm("Write a 1-sentence teaser that makes readers want to click")'
+    body: 'string @llm("Write an opening paragraph for a technical blog post. Be engaging and informative")'
+    tags: '"[string]" @len(2..5)'
+    published_at: 'datetime @range(2024-01-01..2025-12-31)'
+    read_time_minutes: int @range(3..20)
+
+  Comment:
+    id: uuid @primary
+    post: ->BlogPost
+    commenter_name: person.full
+    body: 'string @llm("Write a realistic blog comment. It can be a question, agreement, or constructive feedback")'
+    created_at: datetime @range(2024-01-01..2025-12-31) @after(post.published_at)

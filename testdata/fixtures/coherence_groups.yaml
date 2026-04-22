@@ -1,0 +1,30 @@
+domain: test_coherence
+version: 0.1.0
+seed: 42
+
+volume:
+  Office: 20
+  Employee: 50
+
+entities:
+  Office:
+    id: uuid @primary
+    _coherence:
+      location: [city, state, zip, timezone, phone]
+    city: string
+    state: string
+    zip: string
+    timezone: string
+    phone: string
+
+  Employee:
+    id: uuid @primary
+    _coherence:
+      identity: [first_name, last_name, email, username]
+    first_name: person.first
+    last_name: person.last
+    email: email
+    username: person.username
+    # @from decorator without explicit coherence group
+    name: person.full
+    work_email: email @from(name)

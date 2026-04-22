@@ -1,0 +1,100 @@
+domain: corpus_comprehensive
+version: 0.1.0
+seed: 42
+locale: en-US
+
+volume:
+  Person: 20
+  Organization: 5
+  Address: 20
+  Contact: 10
+  Employment: 10
+  Financial: 10
+  Product: 20
+  Content: 5
+  Technical: 10
+
+entities:
+  Person:
+    id: uuid @primary
+    first_name: person.first
+    last_name: person.last
+    full_name: person.full
+    gender: person.gender
+    prefix: person.prefix
+    dob: person.dob
+    age: person.age
+    username: person.username @unique
+    bio: person.bio
+    avatar: person.avatar
+
+  Organization:
+    id: uuid @primary
+    name: company.name @unique
+    industry: company.industry
+    catch_phrase: company.catch_phrase
+
+  Address:
+    id: uuid @primary
+    full_address: address.full
+    street: address.street
+    city: address.city
+    state: address.state
+    zip: address.zip
+    country: address.country
+    lat: geo.lat
+    lng: geo.lng
+    tz: timezone
+
+  Contact:
+    id: uuid @primary
+    email: email @unique
+    phone: phone
+    mobile: phone.mobile
+    website: url
+    avatar_url: url.avatar
+    image_url: url.image
+
+  Employment:
+    id: uuid @primary
+    org: ->Organization
+    title: job.title
+    department: job.department
+
+  Financial:
+    id: uuid @primary
+    price_usd: currency.usd @range(1..5000)
+    price_eur: currency.eur @range(1..5000)
+    card: credit_card
+    card_type: credit_card.type
+    bank_iban: iban
+    bank_swift: swift
+
+  Product:
+    id: uuid @primary
+    name: product.title
+    description: product.description
+    sku_code: product.sku @unique
+
+  Content:
+    id: uuid @primary
+    word: text.word
+    sentence: text.sentence
+    paragraph: text.paragraph
+    slug_text: text.slug
+
+  Technical:
+    id: uuid @primary
+    ipv4_addr: ipv4
+    ipv6_addr: ipv6
+    mac_addr: mac
+    file_name: file.name
+    file_ext: file.extension
+    mime: file.mime
+    hex_color: color.hex
+    rgb_color: color.rgb
+    color_name: color.name
+    md5: hash.md5
+    sha256: hash.sha256
+    short_code: code
+    item_slug: slug

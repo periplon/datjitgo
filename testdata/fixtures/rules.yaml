@@ -1,0 +1,35 @@
+domain: test_rules
+version: 0.1.0
+seed: 42
+
+volume:
+  User: 10
+  Order: 30
+
+entities:
+  User:
+    id: uuid @primary
+    name: person.full
+    age: int @range(18..80)
+    active: bool
+
+  Order:
+    id: uuid @primary
+    customer: ->User
+    amount: float @range(1..5000)
+    status: enum(pending, shipped, delivered, cancelled)
+    placed_at: datetime
+    shipped_at: datetime?
+    priority: int @range(1..10)
+
+rules:
+  # Simple comparison
+  - User.age >= 18 @strict
+  # Numeric bound
+  - Order.amount > 0 @strict
+  # Conditional rule
+  - if Order.status == "shipped" then Order.shipped_at != null
+  # Probabilistic rule
+  - Order.priority <= 5 @probability(0.8)
+  # Warning-only rule
+  - User.active == true @warn

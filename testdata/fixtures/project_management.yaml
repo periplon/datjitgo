@@ -1,0 +1,42 @@
+domain: project_management
+version: 0.1.0
+seed: 42
+locale: en-US
+
+volume:
+  Organization: 5
+  User: 50
+  Project: 20
+  Task: 200
+
+enums:
+  Priority: [critical, high, medium, low]
+  TaskStatus: [backlog, todo, in_progress, review, done, cancelled]
+
+entities:
+  Organization:
+    id: uuid @primary
+    name: company.name @unique
+    plan: enum(free, team, business, enterprise) @dist(40, 30, 20, 10)
+
+  User:
+    id: uuid @primary
+    org: ->Organization
+    name: person.full
+    email: email @unique @from(name)
+    role: enum(admin, manager, member, viewer) @dist(5, 15, 70, 10)
+
+  Project:
+    id: uuid @primary
+    org: ->Organization
+    name: string @len(3..60)
+    lead: ->User
+    status: enum(planning, active, paused, completed, archived) @dist(10, 50, 10, 20, 10)
+
+  Task:
+    id: uuid @primary
+    project: ->Project
+    title: string @len(5..120)
+    status: TaskStatus @dist(10, 15, 20, 15, 35, 5)
+    priority: Priority @dist(5, 15, 50, 30)
+    assignee: ->User? @null_rate(0.15)

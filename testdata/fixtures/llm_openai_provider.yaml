@@ -1,0 +1,38 @@
+domain: test_llm_openai
+version: 0.1.0
+seed: 42
+
+generation:
+  llm:
+    provider: lmstudio
+    #provider: ollama
+    endpoint: http://localhost:1234/v1
+    #endpoint: http://localhost:11434
+    model: zai-org/glm-4.7-flash
+    #model: mistral-small-4-119b-2603
+    #model: qwen/qwen3.5-35b-a3b
+    #model: qwen3-vl:30b
+    temperature: 0.5
+    max_tokens: 4000
+
+volume:
+  Startup: 5
+  Investor: 3
+
+entities:
+  Investor:
+    id: uuid @primary
+    name: person.full
+    firm: company.name
+    focus: enum(seed, series_a, series_b, growth, late_stage)
+
+  Startup:
+    id: uuid @primary
+    name: 'string @llm("Invent a creative startup name, one or two words") @unique'
+    pitch: 'string @llm("Write a one-sentence startup elevator pitch", temperature: 1.0)'
+    sector: enum(fintech, healthtech, edtech, saas, marketplace, ai_ml, cleantech)
+    stage: enum(idea, mvp, growth, scale) @dist(10, 40, 35, 15)
+    funding_usd: int @range(10000..50000000) @dist(lognormal)
+    lead_investor: ->Investor
+    tagline: 'string @llm("Write a bold 5-word company tagline", temperature: 1.3)'
+    founded_year: int @range(2018..2025) @dist(uniform)

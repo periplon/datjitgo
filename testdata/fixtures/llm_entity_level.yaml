@@ -1,0 +1,43 @@
+domain: test_llm_entity
+version: 0.1.0
+seed: 42
+
+generation:
+  llm:
+    endpoint: http://localhost:11434
+    model: llama3
+    timeout_secs: 90
+
+volume:
+  Character: 5
+  Location: 3
+  Quest: 4
+
+entities:
+  Character:
+    _meta: '@llm("Generate a fantasy RPG character with internally consistent attributes")'
+    id: uuid @primary
+    name: string
+    race: enum(human, elf, dwarf, orc, halfling)
+    class: enum(warrior, mage, rogue, cleric, ranger)
+    level: int @range(1..20)
+    backstory: string
+    personality_trait: string
+    catchphrase: string
+
+  Location:
+    _meta: '@llm("Generate a fantasy world location with rich lore")'
+    id: uuid @primary
+    name: string
+    terrain: enum(forest, mountain, desert, swamp, coast, underground)
+    description: string
+    danger_level: int @range(1..10)
+    notable_feature: string
+
+  Quest:
+    id: uuid @primary
+    location: ->Location
+    title: string @llm("Create an epic quest title for a fantasy RPG")
+    objective: string @llm("Describe a quest objective in 1-2 sentences")
+    reward_gold: int @range(50..5000)
+    difficulty: enum(trivial, easy, medium, hard, legendary) @dist(5, 15, 40, 30, 10)

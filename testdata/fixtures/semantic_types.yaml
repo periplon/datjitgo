@@ -1,0 +1,100 @@
+domain: test_semantic_types
+version: 0.1.0
+seed: 42
+
+volume:
+  Person: 10
+  Contact: 10
+  Location: 10
+  Finance: 10
+  Content: 10
+  Product: 10
+  Identity: 10
+  Network: 10
+  FileInfo: 10
+
+entities:
+  Person:
+    id: uuid @primary
+    full_name: person.full
+    first_name: person.first
+    last_name: person.last
+    prefix: person.prefix
+    username: person.username
+    bio: person.bio
+    avatar: person.avatar
+    gender: person.gender
+    dob: person.dob
+    age: person.age
+
+  Contact:
+    id: uuid @primary
+    email: email
+    phone: phone
+    mobile: phone.mobile
+    landline: phone.landline
+    website: url
+    photo_url: url.image
+    avatar_url: url.avatar
+
+  Location:
+    id: uuid @primary
+    full_address: address.full
+    street: address.street
+    city: address.city
+    state: address.state
+    zip: address.zip
+    country: address.country
+    lat: geo.lat
+    lng: geo.lng
+    tz: timezone
+
+  Finance:
+    id: uuid @primary
+    price_usd: currency.usd
+    price_eur: currency.eur
+    card_number: credit_card
+    card_type: credit_card.type
+    iban_code: iban
+    swift_code: swift
+
+  Content:
+    id: uuid @primary
+    word: text.word
+    sentence: text.sentence
+    paragraph: text.paragraph
+    url_slug: text.slug
+
+  Product:
+    id: uuid @primary
+    title: product.title
+    description: product.description
+    sku: product.sku
+    company: company.name
+    industry: company.industry
+    catch_phrase: company.catch_phrase
+    role: job.title
+    department: job.department
+
+  Identity:
+    id: uuid @primary
+    sku_code: sku
+    slug_id: slug
+    alpha_code: code
+    md5: hash.md5
+    sha256: hash.sha256
+
+  Network:
+    id: uuid @primary
+    ipv4_addr: ipv4
+    ipv6_addr: ipv6
+    mac_addr: mac
+
+  FileInfo:
+    id: uuid @primary
+    filename: file.name
+    ext: file.extension
+    mime: file.mime
+    color_hex: color.hex
+    color_rgb: color.rgb
+    color_name: color.name

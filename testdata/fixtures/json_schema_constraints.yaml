@@ -1,0 +1,41 @@
+domain: json_schema_constraints
+version: 0.1.0
+seed: 42
+
+entities:
+  Product:
+    id: uuid @primary
+    # exclusiveMinimum: 0 (price must be > 0, not >= 0)
+    price: "float @range(0<..10000)"
+    # exclusiveMaximum: 100 (discount must be < 100, not <= 100)
+    discount_pct: "float @range(0..<100)"
+    # Both exclusive: 0 < rating < 10
+    internal_score: "float @range(0<..<10)"
+    # multipleOf: price steps of 0.05
+    wholesale_price: "float @range(1..500) @multiple_of(0.05)"
+    # multipleOf with int
+    quantity_pack: "int @range(1..100) @multiple_of(5)"
+    # emin / emax shorthand
+    min_order: "int @emin(0) @max(1000)"
+    max_weight: "float @min(0) @emax(50)"
+    # uniqueItems on list
+    tags: "[string] @unique_items @len(1..5)"
+    # const via @values with single value
+    api_version: "string @values(v2)"
+    # deprecated field
+    legacy_code: "string @deprecated"
+    # write_only field
+    internal_secret: "string @write_only @sensitive"
+    # examples metadata
+    sku: "string @pattern(\"{AA}-{0000}\") @examples(\"AB-0001\", \"ZZ-9999\")"
+
+  Shipment:
+    id: uuid @primary
+    method: "string? @dependent_required(shipped_at, tracking_number)"
+    shipped_at: datetime?
+    tracking_number: string?
+    status: "enum(pending, shipped, delivered)"
+
+volume:
+  Product: 20
+  Shipment: 15

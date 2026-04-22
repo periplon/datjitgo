@@ -1,0 +1,44 @@
+domain: test_enums_distributions
+version: 0.1.0
+seed: 42
+
+volume:
+  EnumSampler: 100
+  DistSampler: 100
+
+enums:
+  Priority: [critical, high, medium, low]
+  TaskStatus: [backlog, todo, in_progress, review, done, cancelled]
+
+entities:
+  EnumSampler:
+    id: uuid @primary
+    # Inline enum with no distribution (uniform)
+    color: enum(red, green, blue, yellow)
+    # Inline enum with categorical distribution
+    tier: enum(free, pro, enterprise) @dist(70, 25, 5)
+    # Named enum reference (uniform)
+    priority: Priority
+    # Named enum reference with categorical distribution
+    status: TaskStatus @dist(10, 15, 20, 15, 35, 5)
+    # Nullable enum
+    mood: enum(happy, sad, neutral)? @null_rate(0.3)
+
+  DistSampler:
+    id: uuid @primary
+    # Normal distribution on int
+    score: int @range(0..100) @dist(normal, mu=50, sigma=15)
+    # Log-normal on float
+    income: float @range(1..500000) @dist(lognormal)
+    # Exponential on float
+    wait_time: float @range(0..3600) @dist(exponential, lambda=2)
+    # Geometric on int
+    attempts: int @range(1..50) @dist(geometric, p=0.3)
+    # Zipf on int
+    rank: int @range(1..1000) @dist(zipf, s=1.5)
+    # Bimodal on int
+    temperature: int @range(0..100) @dist(bimodal, peaks=20,80)
+    # Null rate on various types
+    optional_name: string @null_rate(0.5)
+    optional_score: int @range(0..100) @null_rate(0.2)
+    optional_flag: bool @null_rate(0.4)

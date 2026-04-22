@@ -1,0 +1,251 @@
+domain: insurance_claims
+version: 1.0.0
+seed: 42
+
+volume:
+  Region: 5
+  Agent: 15
+  Policyholder: 30
+  Policy: 50
+  Claim: 120
+  ClaimLine: 300
+
+enums:
+  ClaimType: [MEDICAL, AUTO, PROPERTY, LIABILITY]
+  ClaimStatus: [SUBMITTED, UNDER_REVIEW, APPROVED, DENIED, APPEALED]
+  ServiceCategory: [EMERGENCY, INPATIENT, OUTPATIENT, PRESCRIPTION, DIAGNOSTIC]
+  CoverageLevel: [BRONZE, SILVER, GOLD, PLATINUM]
+
+entities:
+  Region:
+    id: string @primary @pattern("REG-{000}")
+    tax_rate: float @range(0.0..0.12)
+    regulatory_code: string @values(STRICT, STANDARD, RELAXED)
+
+  Agent:
+    id: uuid @primary
+    region: ->Region
+    license_number: string @unique @pattern("AGT-{000000}")
+    commission_tier: string @values(T1, T2, T3)
+
+  Policyholder:
+    id: uuid @primary
+    region: ->Region
+    risk_score: int @range(100..850)
+    is_corporate: bool
+
+  Policy:
+    id: string @primary @pattern("POL-{000000}")
+    policyholder: ->Policyholder
+    agent: ->Agent?
+    coverage_level: CoverageLevel @dist(15, 40, 30, 15)
+    annual_premium: float @range(500.0..25000.0)
+    deductible: float @values(250.0, 500.0, 1000.0, 2500.0, 5000.0)
+    max_coverage: float @values(50000.0, 100000.0, 250000.0, 500000.0, 1000000.0)
+    is_active: bool @default(true)
+    fraud_flag: int @default(0)
+
+  Claim:
+    id: string @primary @pattern("CLM-{000000}")
+    policy: ->Policy
+    claim_type: ClaimType @dist(40, 25, 20, 15)
+    status: ClaimStatus @dist(10, 25, 40, 15, 10)
+    submitted_amount: float @range(100.0..75000.0)
+    currency_mismatch: int @default(0)
+
+    # --- default_chain: approved amount cascades through override sources ---
+    approved_amount:
+      type: float
+      default_chain:
+        - policy.max_coverage
+        - policy.annual_premium
+      fallback: "0.0"
+
+    # --- default_chain with `when`: adjuster inherits from policy agent when present ---
+    assigned_adjuster:
+      type: string
+      default_chain:
+        - policy.agent.license_number
+      when: "starts_with(claim_type, 'AUTO')"
+      fallback: "'UNASSIGNED'"
+
+    # --- compute: coverage tier determines the payout percentage ---
+    payout_pct:
+      type: float
+      compute:
+        - when: "starts_with(status, 'DENIED')"
+          value: "0.0"
+        - when: "starts_with(status, 'APPROVED')"
+          value: "0.85"
+        - when: "starts_with(status, 'APPEALED')"
+          value: "0.60"
+        - else: "0.0"
+
+    # --- compute: risk category derived from claim type + amount ---
+    risk_category:
+      type: string
+      compute:
+        - when: "starts_with(claim_type, 'LIABILITY')"
+          value: "'HIGH'"
+        - when: "starts_with(claim_type, 'PROPERTY')"
+          value: "'MEDIUM'"
+        - when: "starts_with(claim_type, 'AUTO')"
+          value: "'MEDIUM'"
+        - when: "starts_with(claim_type, 'MEDICAL')"
+          value: "'LOW'"
+        - else: "'UNKNOWN'"
+
+    # --- compute: SLA deadline based on claim type ---
+    sla_days:
+      type: int
+      compute:
+        - when: "starts_with(claim_type, 'MEDICAL')"
+          value: "14"
+        - when: "starts_with(claim_type, 'AUTO')"
+          value: "21"
+        - when: "starts_with(claim_type, 'PROPERTY')"
+          value: "30"
+        - when: "starts_with(claim_type, 'LIABILITY')"
+          value: "45"
+        - else: "30"
+
+    _triggers:
+      - on: policy
+        recompute: [approved_amount, assigned_adjuster]
+      - on: status
+        recompute: [payout_pct]
+      - on: claim_type
+        recompute: [risk_category, sla_days, assigned_adjuster]
+        validate: [amount_ceiling_rule]
+
+  ClaimLine:
+    id: uuid @primary
+    claim: ->Claim
+    service_category: ServiceCategory @dist(15, 20, 35, 20, 10)
+    procedure_code: string @pattern("CPT-{00000}")
+    line_amount: float @range(25.0..15000.0)
+    currency: string @values(USD, EUR, GBP, CAD)
+    is_duplicate: bool @default(false)
+
+    # --- default_chain: billing region cascades from claim -> policy -> policyholder -> region ---
+    billing_region:
+      type: string
+      default_chain:
+        - claim.policy.policyholder.region
+
+    # --- compute: copay based on service category ---
+    copay_amount:
+      type: float
+      compute:
+        - when: "starts_with(service_category, 'EMERGENCY')"
+          value: "150.0"
+        - when: "starts_with(service_category, 'INPATIENT')"
+          value: "500.0"
+        - when: "starts_with(service_category, 'OUTPATIENT')"
+          value: "75.0"
+        - when: "starts_with(service_category, 'PRESCRIPTION')"
+          value: "25.0"
+        - when: "starts_with(service_category, 'DIAGNOSTIC')"
+          value: "50.0"
+        - else: "0.0"
+
+    # --- compute: network status determines allowed amount modifier ---
+    network_modifier:
+      type: string
+      compute:
+        - when: "starts_with(service_category, 'EMERGENCY')"
+          value: "'IN_NETWORK'"
+        - when: "starts_with(currency, 'USD')"
+          value: "'IN_NETWORK'"
+        - else: "'OUT_OF_NETWORK'"
+
+    _triggers:
+      - on: service_category
+        recompute: [copay_amount, network_modifier]
+      - on: currency
+        validate: [currency_consistency_rule]
+
+mcp_tools:
+  verify_policy_coverage:
+    description: "Verify that a policy has active coverage for the given claim type and date"
+    input:
+      policy_id: string
+      claim_type: string
+      claim_date: string
+      submitted_amount: string
+    output:
+      covered: bool
+      remaining_coverage: string
+      deductible_met: bool
+      error: string
+    kind: validation
+
+  check_fraud_score:
+    description: "Run fraud detection scoring on a claim based on historical patterns"
+    input:
+      claim_id: string
+      policy_id: string
+      policyholder_id: string
+      claim_type: string
+      submitted_amount: string
+      region: string
+    output:
+      fraud_score: string
+      risk_level: string
+      flags: string
+    kind: lookup
+
+  get_allowed_procedures:
+    description: "Get the list of covered procedure codes for a given policy and service category"
+    input:
+      policy_id: string
+      service_category: string
+      coverage_level: string
+    output:
+      procedures: string
+    kind: dropdown
+
+  submit_claim_adjudication:
+    description: "Submit a fully validated claim for final adjudication and payment processing"
+    input:
+      claim_id: string
+      approved_amount: string
+      payout_pct: string
+      adjuster_id: string
+      line_items: string
+    output:
+      adjudication_id: string
+      payment_status: string
+      payment_date: string
+    kind: action
+
+rules:
+  # --- String format (backward-compat) ---
+  - Claim.submitted_amount > 0 @strict
+
+  # --- Mapping format with error messages ---
+  - when: "Claim.status == \"APPROVED\""
+    assert: "Claim.submitted_amount != null"
+    error: "Approved claims must have a submitted amount"
+    severity: strict
+
+  - when: "Claim.status == \"DENIED\""
+    assert: "Claim.payout_pct == 0"
+    error: "Denied claims must have a zero payout percentage"
+    severity: warn
+
+  - when: "ClaimLine.service_category == \"EMERGENCY\""
+    assert: "ClaimLine.line_amount > 0"
+    error: "Emergency service lines must have a positive amount"
+    severity: strict
+
+  # --- Cross-row: all lines within a claim must use the same currency ---
+  - cross_row:
+      entity: ClaimLine
+      group_by: claim
+      check: "all_equal(currency)"
+      probability: 0.15
+      on_violation:
+        set:
+          Claim.currency_mismatch: "1"
+        error: "Currency mismatch detected across claim lines. Line {current_line} uses a different currency than Line 1. All lines within a single claim must be billed in the same currency."
