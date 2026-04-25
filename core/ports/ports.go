@@ -4,6 +4,7 @@
 package ports
 
 import (
+	"context"
 	"io"
 
 	"github.com/jmcarbo/datjitgo/core/model"
@@ -30,6 +31,27 @@ type Generator interface {
 	Generate(doc *model.Document, opts GenerateOptions) (*value.Dataset, error)
 }
 
+// LLMRequest is a single text-generation request produced by @llm or
+// @llm_values. Config fields are resolved from generation.llm and any
+// decorator-level overrides before the request reaches a provider.
+type LLMRequest struct {
+	Provider    string
+	Endpoint    string
+	Model       string
+	APIKey      string
+	Prompt      string
+	Temperature *float64
+	MaxTokens   *int
+	TimeoutSecs *int
+}
+
+// LLMProvider completes prompts through a live or test-double backend.
+// The default generator leaves this nil so generation remains deterministic
+// and offline unless callers explicitly opt into a provider.
+type LLMProvider interface {
+	Complete(ctx context.Context, req LLMRequest) (string, error)
+}
+
 // WriteOptions are format-agnostic output knobs.
 type WriteOptions struct {
 	Pretty       bool
@@ -45,8 +67,8 @@ type Writer interface {
 
 // CorpusEntry is one sampleable corpus item.
 type CorpusEntry struct {
-	Name   string
-	Weight float64
+	Name   string  `json:"name"`
+	Weight float64 `json:"weight,omitempty"`
 }
 
 // SampleContext is the per-call state passed to CorpusProvider.Sample.

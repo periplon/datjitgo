@@ -4,6 +4,7 @@ import (
 	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
 	coreplan "github.com/jmcarbo/datjitgo/core/plan"
+	"github.com/jmcarbo/datjitgo/core/ports"
 	corerules "github.com/jmcarbo/datjitgo/core/rules"
 	"github.com/jmcarbo/datjitgo/generator"
 )
@@ -29,13 +30,13 @@ func (s *Service) Validate(doc *model.Document) error {
 	if doc == nil {
 		return &errors.Error{Kind: errors.KindValidation, Message: "nil document"}
 	}
-	return validateDoc(doc)
+	return validateDoc(doc, s.corpus)
 }
 
 // validateDoc is the implementation behind Service.Validate. It is a free
 // function rather than a method to keep the validation logic unit-testable
 // without instantiating a full Service.
-func validateDoc(doc *model.Document) error {
+func validateDoc(doc *model.Document, corpus ports.CorpusProvider) error {
 	// Precompute lookup sets so the per-field checks stay O(1).
 	entitySet := make(map[string]struct{}, doc.Entities.Len())
 	doc.Entities.Each(func(name string, _ *model.Entity) bool {
@@ -57,7 +58,7 @@ func validateDoc(doc *model.Document) error {
 	var firstErr error
 	doc.Entities.Each(func(ename string, ent *model.Entity) bool {
 		ent.Fields.Each(func(fname string, f *model.Field) bool {
-			if err := checkTypeExpr(f.Type, ename, fname, entitySet, typeSet, enumSet); err != nil {
+			if err := checkTypeExpr(f.Type, ename, fname, entitySet, typeSet, enumSet, corpus); err != nil {
 				firstErr = err
 				return false
 			}
@@ -70,7 +71,7 @@ func validateDoc(doc *model.Document) error {
 	}
 	doc.Types.Each(func(tname string, ent *model.Entity) bool {
 		ent.Fields.Each(func(fname string, f *model.Field) bool {
-			if err := checkTypeExpr(f.Type, tname, fname, entitySet, typeSet, enumSet); err != nil {
+			if err := checkTypeExpr(f.Type, tname, fname, entitySet, typeSet, enumSet, corpus); err != nil {
 				firstErr = err
 				return false
 			}
@@ -108,7 +109,7 @@ func validateDoc(doc *model.Document) error {
 // checkTypeExpr walks a TypeExpr and verifies that every Reference target
 // and NamedType name can be resolved against the document-level lookup
 // sets. Composite types are descended recursively.
-func checkTypeExpr(t model.TypeExpr, entity, field string, entities, types map[string]struct{}, enums map[string]model.EnumDef) error {
+func checkTypeExpr(t model.TypeExpr, entity, field string, entities, types map[string]struct{}, enums map[string]model.EnumDef, corpus ports.CorpusProvider) error {
 	switch v := t.(type) {
 	case model.Reference:
 		if v.Target == "self" || v.Target == entity {
@@ -144,7 +145,7 @@ func checkTypeExpr(t model.TypeExpr, entity, field string, entities, types map[s
 			Message: "named type not found: " + v.Name,
 		}
 	case model.Semantic:
-		if !knownSemantic(v) {
+		if !knownSemantic(v, corpus) {
 			return &errors.Error{
 				Kind:    errors.KindValidation,
 				Entity:  entity,
@@ -153,23 +154,23 @@ func checkTypeExpr(t model.TypeExpr, entity, field string, entities, types map[s
 			}
 		}
 	case model.List:
-		return checkTypeExpr(v.Element, entity, field, entities, types, enums)
+		return checkTypeExpr(v.Element, entity, field, entities, types, enums, corpus)
 	case model.Map:
-		if err := checkTypeExpr(v.Key, entity, field, entities, types, enums); err != nil {
+		if err := checkTypeExpr(v.Key, entity, field, entities, types, enums, corpus); err != nil {
 			return err
 		}
-		return checkTypeExpr(v.Value, entity, field, entities, types, enums)
+		return checkTypeExpr(v.Value, entity, field, entities, types, enums, corpus)
 	case model.Tuple:
 		for _, e := range v.Elements {
-			if err := checkTypeExpr(e, entity, field, entities, types, enums); err != nil {
+			if err := checkTypeExpr(e, entity, field, entities, types, enums, corpus); err != nil {
 				return err
 			}
 		}
 	case model.Nullable:
-		return checkTypeExpr(v.Inner, entity, field, entities, types, enums)
+		return checkTypeExpr(v.Inner, entity, field, entities, types, enums, corpus)
 	case model.Union:
 		for _, e := range v.Variants {
-			if err := checkTypeExpr(e, entity, field, entities, types, enums); err != nil {
+			if err := checkTypeExpr(e, entity, field, entities, types, enums, corpus); err != nil {
 				return err
 			}
 		}
@@ -202,9 +203,12 @@ func ruleIndex(i int) string {
 	return "#" + string(buf[pos:])
 }
 
-func knownSemantic(v model.Semantic) bool {
-	_, ok := knownSemanticNames[semanticName(v)]
-	return ok
+func knownSemantic(v model.Semantic, corpus ports.CorpusProvider) bool {
+	name := semanticName(v)
+	if _, ok := knownSemanticNames[name]; ok {
+		return true
+	}
+	return corpus != nil && corpus.Has(name)
 }
 
 func semanticName(v model.Semantic) string {

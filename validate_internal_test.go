@@ -20,11 +20,11 @@ func TestCheckTypeExprCompositeBranches(t *testing.T) {
 		model.Union{Variants: []model.TypeExpr{model.Reference{Target: "User"}, model.NamedType{Name: "Status"}}},
 	}
 	for _, typ := range cases {
-		if err := checkTypeExpr(typ, "User", "field", entities, types, enums); err != nil {
+		if err := checkTypeExpr(typ, "User", "field", entities, types, enums, nil); err != nil {
 			t.Fatalf("%T: %v", typ, err)
 		}
 	}
-	err := checkTypeExpr(model.Map{Key: model.Reference{Target: "Ghost"}, Value: model.Primitive{Kind: model.PrimString}}, "User", "field", entities, types, enums)
+	err := checkTypeExpr(model.Map{Key: model.Reference{Target: "Ghost"}, Value: model.Primitive{Kind: model.PrimString}}, "User", "field", entities, types, enums, nil)
 	if !errors.Is(err, derrs.ErrValidation) {
 		t.Fatalf("expected validation error, got %v", err)
 	}

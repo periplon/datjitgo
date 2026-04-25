@@ -25,7 +25,8 @@ type GenerationConfig struct {
 	LLM          *LLMConfig
 }
 
-// LLMConfig is parsed but not consumed in phase 1 (ErrFeatureDeferred).
+// LLMConfig configures optional live LLM generation. It is inert unless the
+// caller explicitly installs an LLM provider.
 type LLMConfig struct {
 	Provider    string
 	Endpoint    string

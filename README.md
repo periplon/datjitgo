@@ -70,8 +70,9 @@ svc, _ := datjit.New(
     datjit.WithSeed(42),
     datjit.WithLocale("en-US"),
     datjit.WithVolume(map[string]int{"User": 500, "Order": 2000}),
-    datjit.WithCorpus(myCustomCorpus),   // implements ports.CorpusProvider
-    datjit.WithWriter(myProtoWriter),     // implements ports.Writer
+    datjit.WithCorpus(myCustomCorpus),       // implements ports.CorpusProvider
+    datjit.WithLLMProvider(myLLMProvider),   // implements ports.LLMProvider
+    datjit.WithWriter(myProtoWriter),         // implements ports.Writer
 )
 ```
 
@@ -82,7 +83,7 @@ svc, _ := datjit.New(
 | `datjit generate <schema> [flags]`             | Generate data                                      |
 | `datjit validate <schema>`                     | Parse + validate, exit 1 on error                  |
 | `datjit inspect  <schema> [--infer-tools]`     | Print entity/field/rule summary                    |
-| `datjit corpus list \| info \| update`         | Inspect embedded corpus (update is phase-2 stub)   |
+| `datjit corpus list \| info \| update`         | Inspect or refresh embedded/overlay corpus data    |
 | `datjit repl [<schema>]`                       | Interactive session                                |
 | `datjit version`                               | Print version                                      |
 
@@ -99,6 +100,8 @@ svc, _ := datjit.New(
 | `--sql-dialect D`                | `postgres` | `postgres \| mysql \| sqlite`            |
 | `--pretty`                       | `false`    | 2-space indent for JSON/YAML             |
 | `--dry-run`                      | `false`    | Plan only, do not generate               |
+| `--corpus-dir DIR`               | embedded   | Use on-disk corpus overlay               |
+| `--llm-live`                     | `false`    | Call configured live LLM provider        |
 
 ## REPL tour
 
@@ -154,17 +157,17 @@ corpus       embedded name/email/address data
 Dependencies point inward: adapters depend on `core`, `core` depends on
 nothing internal.
 
-## Phase 1 scope
+## Live integrations
 
-This release covers everything **except**:
+By default, `@llm`, `@llm_values`, and entity-level `_meta @llm(...)` use a
+deterministic offline stub so fixture output remains reproducible. Opt into
+network calls with `datjit.WithLLMProvider(...)` or CLI `--llm-live`. Built-in
+HTTP support covers OpenAI-compatible endpoints (`openai`, `lmstudio`, `vllm`)
+and Ollama.
 
-- Live LLM providers (`ollama`, `openai`, `lmstudio`, `vllm`). `@llm` and
-  `@llm_values` decorators, and entity-level `_meta @llm(...)`, are fully
-  honoured by a **deterministic stub backend** that draws text from the
-  embedded corpus — no network calls. Output is reproducible via the same
-  seed as every other field. Real providers ship in a future release.
-- `datjit corpus update` — stubbed; live downloaders from Census, GeoNames,
-  O*NET, GitHub, IANA, Odoo etc. will land in a future release.
+Corpus overlays are JSON arrays of strings or `{ "name": "...", "weight": n }`
+objects. Use `datjit corpus update --source key=url --corpus-dir DIR` to
+download and validate overlay files, then pass `--corpus-dir DIR` to generation.
 
 ## Testing
 

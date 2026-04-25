@@ -253,13 +253,13 @@ func TestGenerateUnknownEntityIsUsageError(t *testing.T) {
 	}
 }
 
-func TestCorpusUpdateIsDeferred(t *testing.T) {
+func TestCorpusUpdateRequiresSource(t *testing.T) {
 	stdout, stderr, code := runCmd(t, "corpus", "update")
-	if code != 0 {
+	if code != 1 {
 		t.Fatalf("exit=%d stderr=%q", code, stderr)
 	}
-	if !strings.Contains(stdout, "phase 2") {
-		t.Fatalf("expected 'phase 2' marker in output, got %q", stdout)
+	if !strings.Contains(stderr, "no corpus update sources") {
+		t.Fatalf("expected missing source error, got stderr=%q stdout=%q", stderr, stdout)
 	}
 }
 

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"
@@ -268,7 +270,12 @@ func TestInternalCobraCommandsExecuteRunEPaths(t *testing.T) {
 	if out := run("corpus", "info"); !strings.Contains(out, "entries:") {
 		t.Fatalf("corpus info output: %q", out)
 	}
-	if out := run("corpus", "update"); !strings.Contains(out, "deferred") {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = w.Write([]byte(`["Remote"]`))
+	}))
+	defer srv.Close()
+	corpusDir := filepath.Join(dir, "corpus")
+	if out := run("corpus", "update", "--corpus-dir", corpusDir, "--source", "person.first_names="+srv.URL); !strings.Contains(out, "updated 1 corpus keys") {
 		t.Fatalf("corpus update output: %q", out)
 	}
 }

@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/jmcarbo/datjitgo"
 	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/jmcarbo/datjitgo/corpus"
 )
 
 // cmdCorpus wires the `datjit corpus <sub>` group.
@@ -23,12 +26,13 @@ func cmdCorpus() *cobra.Command {
 
 // cmdCorpusList prints every corpus key, one per line, sorted.
 func cmdCorpusList() *cobra.Command {
-	return &cobra.Command{
+	var corpusDir string
+	c := &cobra.Command{
 		Use:   "list",
 		Short: "List every key shipped in the embedded corpus",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			keys := datjit.NewDefault().CorpusKeys()
+			keys := corpusService(corpusDir).CorpusKeys()
 			for _, k := range keys {
 				if _, err := fmt.Fprintln(cmd.OutOrStdout(), k); err != nil {
 					return err
@@ -37,33 +41,82 @@ func cmdCorpusList() *cobra.Command {
 			return nil
 		},
 	}
+	c.Flags().StringVar(&corpusDir, "corpus-dir", "", "read corpus overlay files from this directory")
+	return c
 }
 
 // cmdCorpusInfo prints summary counts (keys, total entries) for the
 // embedded corpus.
 func cmdCorpusInfo() *cobra.Command {
-	return &cobra.Command{
+	var corpusDir string
+	c := &cobra.Command{
 		Use:   "info",
 		Short: "Show corpus summary (key count, entry count)",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return printCorpusInfo(cmd.OutOrStdout(), datjit.NewDefault())
+			return printCorpusInfo(cmd.OutOrStdout(), corpusService(corpusDir))
 		},
 	}
+	c.Flags().StringVar(&corpusDir, "corpus-dir", "", "read corpus overlay files from this directory")
+	return c
 }
 
-// cmdCorpusUpdate is a placeholder. Live updates ship in phase 2; today we
-// just let the user know this politely and exit 0.
+// cmdCorpusUpdate downloads configured corpus sources into an on-disk overlay.
 func cmdCorpusUpdate() *cobra.Command {
-	return &cobra.Command{
+	var (
+		corpusDir string
+		source    []string
+	)
+	c := &cobra.Command{
 		Use:   "update",
-		Short: "Refresh the on-disk corpus overlay (phase 2)",
+		Short: "Refresh the on-disk corpus overlay",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			_, err := fmt.Fprintln(cmd.OutOrStdout(), "corpus update is deferred to phase 2")
+			sources, err := corpus.DefaultUpdateSources()
+			if err != nil {
+				return err
+			}
+			for _, raw := range source {
+				src, err := parseCorpusSource(raw)
+				if err != nil {
+					return &usageErr{err: err}
+				}
+				sources = append(sources, src)
+			}
+			updated, err := corpus.Update(context.Background(), corpusDir, sources)
+			if err != nil {
+				return err
+			}
+			dir := corpusDir
+			if dir == "" {
+				dir = corpus.DefaultOverlayDir()
+			}
+			_, err = fmt.Fprintf(cmd.OutOrStdout(), "updated %d corpus keys in %s: %s\n", len(updated), dir, strings.Join(updated, ", "))
 			return err
 		},
 	}
+	c.Flags().StringVar(&corpusDir, "corpus-dir", "", "write corpus overlay files to this directory")
+	c.Flags().StringSliceVar(&source, "source", nil, "download source as key=url; repeat or comma-separate")
+	return c
+}
+
+func corpusService(corpusDir string) *datjit.Service {
+	if corpusDir == "" {
+		return datjit.NewDefault()
+	}
+	svc, err := datjit.New(datjit.WithCorpus(corpus.NewWithOverlay(corpusDir)))
+	if err != nil {
+		return datjit.NewDefault()
+	}
+	return svc
+}
+
+func parseCorpusSource(raw string) (corpus.UpdateSource, error) {
+	key, url, ok := strings.Cut(raw, "=")
+	if !ok || strings.TrimSpace(key) == "" || strings.TrimSpace(url) == "" {
+		return corpus.UpdateSource{}, fmt.Errorf("invalid --source %q (expected key=url)", raw)
+	}
+	return corpus.UpdateSource{Key: strings.TrimSpace(key), URL: strings.TrimSpace(url)}, nil
 }
 
 // resolveCorpusKeys returns the sorted set of keys the given provider resolves.

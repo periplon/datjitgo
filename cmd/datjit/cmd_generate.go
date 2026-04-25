@@ -12,6 +12,8 @@ import (
 
 	"github.com/jmcarbo/datjitgo"
 	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/jmcarbo/datjitgo/corpus"
+	"github.com/jmcarbo/datjitgo/llm"
 )
 
 // cmdGenerate wires the `datjit generate` subcommand.
@@ -27,6 +29,8 @@ func cmdGenerate() *cobra.Command {
 		sqlDialect string
 		pretty     bool
 		dryRun     bool
+		corpusDir  string
+		llmLive    bool
 	)
 
 	c := &cobra.Command{
@@ -58,6 +62,12 @@ func cmdGenerate() *cobra.Command {
 			}
 			if len(volumeMap) > 0 {
 				opts = append(opts, datjit.WithVolume(volumeMap))
+			}
+			if corpusDir != "" {
+				opts = append(opts, datjit.WithCorpus(corpus.NewWithOverlay(corpusDir)))
+			}
+			if llmLive {
+				opts = append(opts, datjit.WithLLMProvider(llm.NewHTTP()))
 			}
 
 			svc, err := datjit.New(opts...)
@@ -115,6 +125,8 @@ func cmdGenerate() *cobra.Command {
 	c.Flags().StringVar(&sqlDialect, "sql-dialect", "postgres", "SQL dialect (postgres|mysql|sqlite) — used with -f sql")
 	c.Flags().BoolVar(&pretty, "pretty", false, "emit human-friendly output where the format supports it")
 	c.Flags().BoolVar(&dryRun, "dry-run", false, "parse and validate only; print the plan and exit 0")
+	c.Flags().StringVar(&corpusDir, "corpus-dir", "", "read corpus overlay files from this directory")
+	c.Flags().BoolVar(&llmLive, "llm-live", false, "call configured live LLM provider instead of deterministic stubs")
 
 	return c
 }
