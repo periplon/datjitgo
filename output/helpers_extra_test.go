@@ -39,6 +39,35 @@ func TestSQLTypeHelpersCoverDialects(t *testing.T) {
 	}
 }
 
+func TestSQLLiteralDialectsAndNilRows(t *testing.T) {
+	if got, err := sqlLiteral(value.Bool(true), "postgres"); err != nil || got != "TRUE" {
+		t.Fatalf("postgres bool = %q, %v", got, err)
+	}
+	if got, err := sqlLiteral(value.Bool(false), "mysql"); err != nil || got != "0" {
+		t.Fatalf("mysql bool = %q, %v", got, err)
+	}
+	if got, err := sqlLiteral(value.Null(), "sqlite"); err != nil || got != "NULL" {
+		t.Fatalf("sqlite null = %q, %v", got, err)
+	}
+
+	doc := model.NewDocument()
+	user := model.NewEntity("User")
+	user.Fields.Set("id", &model.Field{Name: "id", Type: model.Primitive{Kind: model.PrimInt}})
+	user.Fields.Set("active", &model.Field{Name: "active", Type: model.Primitive{Kind: model.PrimBool}})
+	doc.Entities.Set("User", user)
+	ds := value.NewDataset()
+	row := value.NewObject()
+	row.Set("id", value.Int(1))
+	ds.Entities.Set("User", []*value.Object{row, nil})
+	var buf strings.Builder
+	if err := NewSQL().Write(ds, doc, &buf, ports.WriteOptions{SQLDialect: "sqlite"}); err != nil {
+		t.Fatal(err)
+	}
+	if got := buf.String(); !strings.Contains(got, "(1, NULL)") || !strings.Contains(got, "(NULL, NULL)") {
+		t.Fatalf("sqlite insert output:\n%s", got)
+	}
+}
+
 func TestScalarAndQuotingHelpers(t *testing.T) {
 	for _, s := range []string{"", "true", " no ", "-item", "a:b", "line\nbreak"} {
 		if !yamlNeedsQuoting(s) {
@@ -145,6 +174,25 @@ func TestWritersHandleNilDatasetAndValidationBranches(t *testing.T) {
 	ds.Entities.Set("User", []*value.Object{})
 	if err := NewSQL().Write(ds, doc, &buf, ports.WriteOptions{SQLDialect: "oracle"}); err == nil {
 		t.Fatal("expected bad SQL dialect error")
+	}
+}
+
+func TestCSVWritesNilAndMissingCells(t *testing.T) {
+	doc := model.NewDocument()
+	user := model.NewEntity("User")
+	user.Fields.Set("id", &model.Field{Name: "id", Type: model.Primitive{Kind: model.PrimInt}})
+	user.Fields.Set("name", &model.Field{Name: "name", Type: model.Primitive{Kind: model.PrimString}})
+	doc.Entities.Set("User", user)
+	ds := value.NewDataset()
+	row := value.NewObject()
+	row.Set("id", value.Int(1))
+	ds.Entities.Set("User", []*value.Object{row, nil})
+	var buf strings.Builder
+	if err := NewCSV().Write(ds, doc, &buf, ports.WriteOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	if got := buf.String(); !strings.Contains(got, "id,name\n1,\n,\n") {
+		t.Fatalf("csv output:\n%s", got)
 	}
 }
 

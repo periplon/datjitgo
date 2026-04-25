@@ -65,11 +65,91 @@ func TestUpdateRejectsUnsafeKey(t *testing.T) {
 
 func TestDefaultUpdateSourcesFromEnv(t *testing.T) {
 	t.Setenv("DATJIT_CORPUS_SOURCES", "person.first_names=http://example.test/a, address.cities=http://example.test/b")
+	t.Setenv("DATJIT_CORPUS_SOURCE", "company.names=http://example.test/c")
 	srcs, err := DefaultUpdateSources()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(srcs) != 2 || srcs[0].Key != "person.first_names" || srcs[1].Key != "address.cities" {
+	if len(srcs) != 3 || srcs[0].Key != "person.first_names" || srcs[1].Key != "address.cities" || srcs[2].Key != "company.names" {
 		t.Fatalf("sources = %+v", srcs)
+	}
+}
+
+func TestDefaultOverlayDirEnvPrecedence(t *testing.T) {
+	t.Setenv("DATJIT_CORPUS_DIR", "/tmp/datjit-corpus")
+	if got := DefaultOverlayDir(); got != "/tmp/datjit-corpus" {
+		t.Fatalf("overlay dir = %q", got)
+	}
+
+	t.Setenv("DATJIT_CORPUS_DIR", "")
+	t.Setenv("XDG_DATA_HOME", "/tmp/xdg")
+	if got := DefaultOverlayDir(); got != filepath.Join("/tmp/xdg", "datjit", "corpus") {
+		t.Fatalf("xdg overlay dir = %q", got)
+	}
+
+	t.Setenv("XDG_DATA_HOME", "")
+	if got := DefaultOverlayDir(); !filepath.IsAbs(got) || filepath.Base(got) != "corpus" {
+		t.Fatalf("home overlay dir = %q", got)
+	}
+}
+
+func TestDefaultUpdateSourcesRejectsInvalidEnv(t *testing.T) {
+	t.Setenv("DATJIT_CORPUS_SOURCES", "person.first_names=http://example.test/a, bad")
+	if _, err := DefaultUpdateSources(); err == nil {
+		t.Fatal("expected invalid multi-source error")
+	}
+
+	t.Setenv("DATJIT_CORPUS_SOURCES", "")
+	t.Setenv("DATJIT_CORPUS_SOURCE", "missing-url")
+	if _, err := DefaultUpdateSources(); err == nil {
+		t.Fatal("expected invalid single-source error")
+	}
+}
+
+func TestUpdateRejectsMissingSourcesAndFields(t *testing.T) {
+	if _, err := Update(context.Background(), t.TempDir(), nil); err == nil {
+		t.Fatal("expected no sources error")
+	}
+	if _, err := Update(context.Background(), t.TempDir(), []UpdateSource{{Key: "", URL: "http://example.test"}}); err == nil {
+		t.Fatal("expected missing key error")
+	}
+	if _, err := Update(context.Background(), t.TempDir(), []UpdateSource{{Key: "person.first_names"}}); err == nil {
+		t.Fatal("expected missing url error")
+	}
+}
+
+func TestUpdateReportsDownloadHTTPError(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "down", http.StatusBadGateway)
+	}))
+	defer srv.Close()
+
+	_, err := Update(context.Background(), t.TempDir(), []UpdateSource{{Key: "person.first_names", URL: srv.URL}})
+	if err == nil {
+		t.Fatal("expected download error")
+	}
+}
+
+func TestUpdateUsesDefaultOverlayDirAndAtomicWriteErrors(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = w.Write([]byte(`["Remote"]`))
+	}))
+	defer srv.Close()
+
+	dir := t.TempDir()
+	t.Setenv("DATJIT_CORPUS_DIR", dir)
+	updated, err := Update(context.Background(), "", []UpdateSource{{Key: "person.first_names", URL: srv.URL}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(updated) != 1 || updated[0] != "person.first_names" {
+		t.Fatalf("updated = %v", updated)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "data", "person_first_names.json")); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := atomicWrite(filepath.Join(t.TempDir(), "missing", "file.json"), []byte("x")); err == nil {
+		t.Fatal("expected atomicWrite error for missing directory")
 	}
 }

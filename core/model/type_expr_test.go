@@ -15,6 +15,19 @@ func TestTypeExprSealed(t *testing.T) {
 	var _ TypeExpr = Union{Variants: []TypeExpr{Primitive{Kind: PrimString}, Primitive{Kind: PrimInt}}}
 }
 
+func TestTypeExprMarkerMethods(t *testing.T) {
+	Primitive{Kind: PrimString}.typeExpr()
+	Semantic{Namespace: "person", Tag: "full"}.typeExpr()
+	EnumInline{Values: []string{"a", "b"}}.typeExpr()
+	NamedType{Name: "Address"}.typeExpr()
+	Reference{Target: "User", Optional: true}.typeExpr()
+	List{Element: Primitive{Kind: PrimInt}}.typeExpr()
+	Map{Key: Primitive{Kind: PrimString}, Value: Primitive{Kind: PrimInt}}.typeExpr()
+	Tuple{Elements: []TypeExpr{Primitive{Kind: PrimInt}}}.typeExpr()
+	Nullable{Inner: Primitive{Kind: PrimInt}}.typeExpr()
+	Union{Variants: []TypeExpr{Primitive{Kind: PrimString}, Primitive{Kind: PrimInt}}}.typeExpr()
+}
+
 func TestPrimKindString(t *testing.T) {
 	cases := []struct {
 		k    PrimKind

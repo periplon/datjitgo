@@ -28,6 +28,22 @@ func TestDefaultGenerateDocumentUsesRunOptions(t *testing.T) {
 	if got := len(rows); got != 2 {
 		t.Fatalf("generated rows = %d, want 2", got)
 	}
+	if doc.Generation.Seed != nil || doc.Generation.Locale != "" {
+		t.Fatalf("GenerateDocument mutated source generation config: %#v", doc.Generation)
+	}
+	if got := doc.Volume["users"].Exact; got != 0 {
+		t.Fatalf("GenerateDocument mutated source volume = %d, want 0", got)
+	}
+}
+
+func TestNewConstructsRuntimeWithOptions(t *testing.T) {
+	rt, err := New()
+	if err != nil {
+		t.Fatalf("New returned error: %v", err)
+	}
+	if rt == nil || rt.service == nil {
+		t.Fatalf("New runtime = %#v, want service-backed runtime", rt)
+	}
 }
 
 func TestDefaultGenerateEntityReturnsOnlyRequestedEntity(t *testing.T) {
@@ -105,6 +121,14 @@ func TestDefaultGenerateValueSupportsSemanticAndSeed(t *testing.T) {
 	if first.Kind != second.Kind || first.S != second.S {
 		t.Fatalf("GenerateValue with same seed was not deterministic: %#v != %#v", first, second)
 	}
+
+	tagged, err := rt.GenerateValue(ctx, ValueRequest{Semantic: "person.first", UniqueKey: "first_name", Seed: int64Ptr(42)})
+	if err != nil {
+		t.Fatalf("GenerateValue with tagged semantic returned error: %v", err)
+	}
+	if tagged.Kind != value.KindString || tagged.S == "" {
+		t.Fatalf("tagged semantic value = %#v, want string", tagged)
+	}
 }
 
 func TestDefaultGenerateValueSupportsPrimitiveDecorators(t *testing.T) {
@@ -134,6 +158,70 @@ func TestDefaultGenerateValueReturnsValidationError(t *testing.T) {
 	}
 	if !errors.Is(err, coreerrors.ErrValidation) {
 		t.Fatalf("GenerateValue error = %v, want validation kind", err)
+	}
+}
+
+func TestDefaultValidationAndContextErrors(t *testing.T) {
+	ctx := context.Background()
+	doc := testDocument()
+
+	var nilRuntime *Default
+	if _, err := nilRuntime.GenerateDocument(ctx, doc); !errors.Is(err, coreerrors.ErrValidation) {
+		t.Fatalf("nil runtime error = %v, want validation", err)
+	}
+	if _, err := NewDefault().GenerateDocument(ctx, nil); !errors.Is(err, coreerrors.ErrValidation) {
+		t.Fatalf("nil document error = %v, want validation", err)
+	}
+	if _, err := NewDefault().GenerateDocument(ctx, doc, WithEntity("missing")); !errors.Is(err, coreerrors.ErrValidation) {
+		t.Fatalf("missing entity error = %v, want validation", err)
+	}
+
+	canceled, cancel := context.WithCancel(ctx)
+	cancel()
+	if _, err := NewDefault().GenerateDocument(canceled, doc); !errors.Is(err, context.Canceled) {
+		t.Fatalf("canceled GenerateDocument error = %v, want context.Canceled", err)
+	}
+	if _, err := NewDefault().GenerateValue(canceled, ValueRequest{}); !errors.Is(err, context.Canceled) {
+		t.Fatalf("canceled GenerateValue error = %v, want context.Canceled", err)
+	}
+}
+
+func TestRunOptionAndCloneHelpers(t *testing.T) {
+	cfg := applyRunOptions([]RunOption{
+		nil,
+		WithSeed(3),
+		WithLocale("ca-ES"),
+		WithVolumes(nil),
+		WithVolumes(map[string]int{"users": 2, "accounts": 1}),
+		WithEntity("users"),
+	})
+	if cfg.seed == nil || *cfg.seed != 3 || cfg.locale != "ca-ES" || cfg.entity != "users" {
+		t.Fatalf("config = %#v", cfg)
+	}
+	if cfg.volumes["users"] != 2 || cfg.volumes["accounts"] != 1 {
+		t.Fatalf("volumes = %#v", cfg.volumes)
+	}
+
+	if got := semanticType("person.first"); got.Namespace != "person" || got.Tag != "first" {
+		t.Fatalf("semanticType tagged = %#v", got)
+	}
+	if got := semanticType("email"); got.Namespace != "email" || got.Tag != "" {
+		t.Fatalf("semanticType namespace = %#v", got)
+	}
+	if got := filterDataset(nil, "users"); got == nil || got.Entities.Len() != 0 {
+		t.Fatalf("filterDataset nil = %#v", got)
+	}
+	if cloneEntity(nil) != nil {
+		t.Fatal("cloneEntity(nil) returned non-nil")
+	}
+	if cloneField(nil) != nil {
+		t.Fatal("cloneField(nil) returned non-nil")
+	}
+	if cloneDecorators(nil) != nil {
+		t.Fatal("cloneDecorators(nil) returned non-nil")
+	}
+	if cloneInt64Ptr(nil) != nil {
+		t.Fatal("cloneInt64Ptr(nil) returned non-nil")
 	}
 }
 

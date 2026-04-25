@@ -1,6 +1,20 @@
 package generator
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/jmcarbo/datjitgo/core/ports"
+)
+
+type countingRandomizer struct{ next int64 }
+
+func (r *countingRandomizer) Float() float64     { return 0 }
+func (r *countingRandomizer) IntN(n int64) int64 { r.next++; return r.next % n }
+func (r *countingRandomizer) NormFloat() float64 { return 0 }
+func (r *countingRandomizer) ExpFloat() float64  { return 0 }
+func (r *countingRandomizer) Shuffle(int, func(i, j int)) {
+}
+func (r *countingRandomizer) Substream(string) ports.Randomizer { return r }
 
 func TestRNGDeterministic(t *testing.T) {
 	a := NewRand(42)
@@ -85,5 +99,15 @@ func TestIntNZeroOrNegative(t *testing.T) {
 	}
 	if r.IntN(-5) != 0 {
 		t.Fatal("IntN(-5) should return 0")
+	}
+}
+
+func TestUint64OfConcreteAndFallbackRandomizers(t *testing.T) {
+	if got := uint64Of(NewRand(3)); got == 0 {
+		t.Fatal("concrete uint64Of returned zero")
+	}
+	fallback := &countingRandomizer{}
+	if got := uint64Of(fallback); got != (uint64(1)<<32)|uint64(2) {
+		t.Fatalf("fallback uint64Of = %d", got)
 	}
 }

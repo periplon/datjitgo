@@ -475,10 +475,14 @@ func TestSessionAccessorsPromptAndHistoryPath(t *testing.T) {
 	if got := sess.prompt(); got != "datjit[repl_test]> " {
 		t.Fatalf("domain prompt=%q", got)
 	}
+	sess.updatePrompt()
+	if isTTY(strings.NewReader("")) {
+		t.Fatal("strings.Reader should not be a TTY")
+	}
 	dir := t.TempDir()
 	t.Setenv("XDG_STATE_HOME", dir)
 	hp := historyPath()
-	if !strings.Contains(hp, filepath.Join("datjit", "history")) {
+	if hp != filepath.Join(dir, "datjit", "history") {
 		t.Fatalf("history path=%q", hp)
 	}
 }

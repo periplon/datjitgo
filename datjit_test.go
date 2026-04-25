@@ -221,6 +221,60 @@ func TestServiceInspectDefaultVolume(t *testing.T) {
 	}
 }
 
+func TestServiceInspectComplexDependenciesAndToolSurface(t *testing.T) {
+	svc, err := datjit.New(datjit.WithVolume(map[string]int{"Order": 8}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	doc := model.NewDocument()
+	doc.Domain = "inspect_complex"
+	doc.Version = "0.1.0"
+	doc.Enums.Set("Status", model.EnumDef{Name: "Status", Variants: []model.EnumVariant{{Value: "new"}}})
+	doc.Rules = []model.Rule{{Expr: "true"}}
+
+	user := model.NewEntity("User")
+	user.Meta = []model.Decorator{{Name: "readonly"}}
+	user.Fields.Set("id", &model.Field{Name: "id", Type: model.Primitive{Kind: model.PrimString}})
+	doc.Entities.Set("User", user)
+
+	order := model.NewEntity("Order")
+	order.Meta = []model.Decorator{{Name: "immutable"}}
+	order.Fields.Set("user", &model.Field{Name: "user", Type: model.Reference{Target: "User"}})
+	order.Fields.Set("nested", &model.Field{Name: "nested", Type: model.Tuple{Elements: []model.TypeExpr{
+		model.List{Element: model.Reference{Target: "Line"}},
+		model.Map{Key: model.Primitive{Kind: model.PrimString}, Value: model.Nullable{Inner: model.Reference{Target: "Invoice"}}},
+		model.Union{Variants: []model.TypeExpr{model.Reference{Target: "User"}, model.Reference{Target: "self"}}},
+	}}})
+	doc.Entities.Set("Order", order)
+	doc.Entities.Set("Line", model.NewEntity("Line"))
+	doc.Entities.Set("Invoice", model.NewEntity("Invoice"))
+
+	insp, err := svc.Inspect(doc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(insp.Enums) != 1 || len(insp.Rules) != 1 {
+		t.Fatalf("inspection enums/rules = %+v/%+v", insp.Enums, insp.Rules)
+	}
+	orderSummary := insp.Entities[1]
+	if orderSummary.VolumePlan.Exact != 8 {
+		t.Fatalf("override volume = %+v, want exact 8", orderSummary.VolumePlan)
+	}
+	wantDeps := []string{"User", "Line", "Invoice"}
+	if strings.Join(orderSummary.Dependencies, ",") != strings.Join(wantDeps, ",") {
+		t.Fatalf("dependencies = %v, want %v", orderSummary.Dependencies, wantDeps)
+	}
+	if got := datjit.InferToolSurface(user); strings.Join(got, ",") != "list,get" {
+		t.Fatalf("readonly tools = %v", got)
+	}
+	if got := datjit.InferToolSurface(order); strings.Join(got, ",") != "list,get,create" {
+		t.Fatalf("immutable tools = %v", got)
+	}
+	if got := datjit.InferToolSurface(model.NewEntity("Default")); strings.Join(got, ",") != "list,get,create,update,delete" {
+		t.Fatalf("default tools = %v", got)
+	}
+}
+
 func TestServiceCorpusKeys(t *testing.T) {
 	svc := datjit.NewDefault()
 	keys := svc.CorpusKeys()

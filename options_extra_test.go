@@ -1,6 +1,7 @@
 package datjit_test
 
 import (
+	"context"
 	"errors"
 	"io"
 	"os"
@@ -23,6 +24,18 @@ func (w testWriter) Write(_ *value.Dataset, _ *model.Document, out io.Writer, _ 
 	return err
 }
 
+type testGenerator struct{}
+
+func (testGenerator) Generate(*model.Document, ports.GenerateOptions) (*value.Dataset, error) {
+	return value.NewDataset(), nil
+}
+
+type testLLMProvider struct{}
+
+func (testLLMProvider) Complete(context.Context, ports.LLMRequest) (string, error) {
+	return "ok", nil
+}
+
 func TestOptionNilAdaptersReturnErrors(t *testing.T) {
 	if _, err := datjit.New(datjit.WithParser(nil)); err == nil {
 		t.Fatal("expected nil parser error")
@@ -35,6 +48,9 @@ func TestOptionNilAdaptersReturnErrors(t *testing.T) {
 	}
 	if _, err := datjit.New(datjit.WithCorpus(nil)); err == nil {
 		t.Fatal("expected nil corpus error")
+	}
+	if _, err := datjit.New(datjit.WithLLMProvider(nil)); err == nil {
+		t.Fatal("expected nil llm provider error")
 	}
 }
 
@@ -76,6 +92,24 @@ func TestOptionsVolumeLocaleWriterAndGenerateFile(t *testing.T) {
 	}
 	if _, _, err := svc.GenerateFile(filepath.Join(dir, "missing.yaml")); err == nil {
 		t.Fatal("expected missing file error")
+	}
+
+	svc, err = datjit.New(datjit.WithVolume(nil))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := svc.Parse(nil, "nil.yaml"); !errors.Is(err, derrs.ErrValidation) {
+		t.Fatalf("Parse nil reader: %v", err)
+	}
+	if err := svc.Write(value.NewDataset(), nil, "json", nil, datjit.WriteOpts{}); !errors.Is(err, derrs.ErrValidation) {
+		t.Fatalf("Write nil writer: %v", err)
+	}
+	if err := svc.Write(value.NewDataset(), nil, "missing", io.Discard, datjit.WriteOpts{}); !errors.Is(err, derrs.ErrValidation) {
+		t.Fatalf("Write unknown format: %v", err)
+	}
+
+	if _, err := datjit.New(datjit.WithLLMProvider(testLLMProvider{}), datjit.WithGenerator(testGenerator{})); err != nil {
+		t.Fatalf("custom generator/llm options: %v", err)
 	}
 }
 
