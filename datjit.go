@@ -1,11 +1,3 @@
-// Package datjit is the public entry point for the datjitgo library. It
-// wires together the parser, generator, corpus and output adapters into a
-// single Service façade so callers can drive the whole pipeline with a few
-// high-level methods.
-//
-// The stable API lives in this package plus the core/* packages. Concrete
-// adapters (parser/, generator/, output/, corpus/) are internal plumbing
-// that the Service hides behind the ports.* interfaces.
 package datjit
 
 import (

@@ -8,10 +8,12 @@ type OrderedMap[K comparable, V any] struct {
 	m    map[K]V
 }
 
+// NewOrderedMap returns an empty OrderedMap.
 func NewOrderedMap[K comparable, V any]() *OrderedMap[K, V] {
 	return &OrderedMap[K, V]{m: map[K]V{}}
 }
 
+// Set assigns v to k, appending k to the insertion order on first write.
 func (o *OrderedMap[K, V]) Set(k K, v V) {
 	if _, ok := o.m[k]; !ok {
 		o.keys = append(o.keys, k)
@@ -19,17 +21,22 @@ func (o *OrderedMap[K, V]) Set(k K, v V) {
 	o.m[k] = v
 }
 
+// Get returns the value for k and a flag indicating whether the key exists.
 func (o *OrderedMap[K, V]) Get(k K) (V, bool) {
 	v, ok := o.m[k]
 	return v, ok
 }
 
+// Has reports whether k is present in the map.
 func (o *OrderedMap[K, V]) Has(k K) bool {
 	_, ok := o.m[k]
 	return ok
 }
 
-func (o *OrderedMap[K, V]) Len() int  { return len(o.keys) }
+// Len returns the number of keys in the map.
+func (o *OrderedMap[K, V]) Len() int { return len(o.keys) }
+
+// Keys returns a copy of the keys in insertion order.
 func (o *OrderedMap[K, V]) Keys() []K { return append([]K(nil), o.keys...) }
 
 // Each iterates in insertion order. Return false from fn to stop early.
@@ -41,6 +48,7 @@ func (o *OrderedMap[K, V]) Each(fn func(K, V) bool) {
 	}
 }
 
+// Delete removes k from the map and its slot from the insertion order.
 func (o *OrderedMap[K, V]) Delete(k K) {
 	if _, ok := o.m[k]; !ok {
 		return
