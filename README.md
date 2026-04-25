@@ -44,6 +44,27 @@ datjit generate schema.yaml --seed 42 --pretty  # deterministic, pretty-printed
 
 ## Library use
 
+For the common case, use the one-call helpers:
+
+```go
+rows, err := datjit.GenerateRowsFile("schema.yaml", "User",
+    datjit.WithSeed(42),
+)
+if err != nil {
+    panic(err)
+}
+fmt.Println(rows[0]["email"])
+```
+
+You can also return a full plain map or rendered JSON:
+
+```go
+data, _ := datjit.GenerateMapFile("schema.yaml")
+jsonBytes, _ := datjit.GenerateJSONFile("schema.yaml", datjit.WithSeed(42))
+```
+
+For more control, use the service pipeline directly:
+
 ```go
 import (
     "os"
@@ -63,6 +84,14 @@ ds, _ := svc.Generate(doc)
 _ = svc.Write(ds, doc, "json", os.Stdout, datjit.WriteOpts{Pretty: true})
 ```
 
+Common error checks are available without importing `core/errors`:
+
+```go
+if datjit.IsValidationError(err) {
+    // show schema feedback to the caller
+}
+```
+
 All adapters are swappable through functional options:
 
 ```go
@@ -75,6 +104,35 @@ svc, _ := datjit.New(
     datjit.WithWriter(myProtoWriter),         // implements ports.Writer
 )
 ```
+
+## Test helpers
+
+`datjittest` is a testing-only package for deterministic fixtures:
+
+```go
+rows := datjittest.MustRows(t, schema, "User", datjit.WithSeed(42))
+datjittest.AssertGoldenJSON(t, "testdata/users.golden.json", schema, datjit.WithSeed(42))
+```
+
+Use `UpdateGoldenJSON` from an explicit test or update workflow when refreshing
+snapshots.
+
+## Runtime integration
+
+The `runtime` package exposes datjitgo as an embeddable generation backend for
+rule engines and other DSLs:
+
+```go
+rt := djruntime.NewDefault()
+v, err := rt.GenerateValue(context.Background(), djruntime.ValueRequest{
+    Semantic: "email",
+    Seed:     ptrToSeed,
+})
+```
+
+For larger integrations, compile the host DSL into `*model.Document`, then call
+`GenerateDocument`, `GenerateEntity`, or `GenerateRows`. `DocumentCompiler` and
+`CompileFunc` provide the boundary for those compilers.
 
 ## CLI reference
 
