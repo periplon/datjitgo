@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	stderrors "errors"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -204,6 +205,40 @@ func TestEngineCoherenceGroupsPopulated(t *testing.T) {
 		if !strings.Contains(strings.ToLower(email.S), strings.ToLower(first.S)) {
 			t.Fatalf("email %q missing first_name %q", email.S, first.S)
 		}
+	}
+}
+
+func TestEngineGeneratesEveryFixtureAtLowVolume(t *testing.T) {
+	matches, err := filepath.Glob("../testdata/fixtures/*.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(matches) == 0 {
+		t.Fatal("no fixtures found")
+	}
+	for _, path := range matches {
+		t.Run(strings.TrimSuffix(filepath.Base(path), ".yaml"), func(t *testing.T) {
+			doc := loadFixture(t, path)
+			overrides := make(map[string]int, doc.Entities.Len())
+			doc.Entities.Each(func(name string, _ *model.Entity) bool {
+				overrides[name] = 2
+				return true
+			})
+			ds, err := newEngine().Generate(doc, ports.GenerateOptions{VolumeOverride: overrides})
+			if err != nil {
+				t.Fatalf("generate %s: %v", path, err)
+			}
+			doc.Entities.Each(func(name string, _ *model.Entity) bool {
+				rows, ok := ds.Entities.Get(name)
+				if !ok {
+					t.Fatalf("%s missing from dataset", name)
+				}
+				if len(rows) != 2 {
+					t.Fatalf("%s rows=%d want 2", name, len(rows))
+				}
+				return true
+			})
+		})
 	}
 }
 

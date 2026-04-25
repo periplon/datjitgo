@@ -3,6 +3,9 @@ package generator
 import (
 	"math"
 	"testing"
+	"time"
+
+	"github.com/shopspring/decimal"
 
 	"github.com/jmcarbo/datjitgo/core/value"
 )
@@ -118,5 +121,110 @@ func TestExprIfThenRewrite(t *testing.T) {
 	}
 	if got.Kind != value.KindBool || !got.B {
 		t.Fatalf("rule should hold: %+v", got)
+	}
+}
+
+func TestExprAggregateAndDateFunctions(t *testing.T) {
+	data := map[string][]*value.Object{
+		"Order": {
+			mkRow("amount", value.Int(10)),
+			mkRow("amount", value.Int(20)),
+			mkRow("amount", value.Int(30)),
+		},
+	}
+	cases := map[string]value.Value{
+		"sum(Order.amount)":                        value.Int(60),
+		"count(Order.amount)":                      value.Int(3),
+		"avg(Order.amount)":                        value.Float(20),
+		"min(Order.amount)":                        value.Float(10),
+		"max(Order.amount)":                        value.Float(30),
+		`slug("Hello, Datjit Go!")`:                value.Str("hello-datjit-go"),
+		`days_between("2026-01-01", "2026-01-11")`: value.Int(10),
+		`years_since("not-a-date")`:                value.Int(0),
+	}
+	for src, want := range cases {
+		node, err := parseExpr(src)
+		if err != nil {
+			t.Fatalf("parse %q: %v", src, err)
+		}
+		got, err := evalExpr(node, evalEnv{data: data})
+		if err != nil {
+			t.Fatalf("eval %q: %v", src, err)
+		}
+		if !valuesEqual(got, want) {
+			t.Fatalf("%q: got %+v want %+v", src, got, want)
+		}
+	}
+}
+
+func TestExprParseAndEvalErrorBranches(t *testing.T) {
+	if err := ParseExpr("1 + 2"); err != nil {
+		t.Fatal(err)
+	}
+	if err := ParseExpr("(1 +"); err == nil {
+		t.Fatal("expected parse error")
+	}
+	if _, err := evalExpr(exprNode{kind: exprFunc, str: "missing"}, evalEnv{}); err == nil {
+		t.Fatal("expected unknown function error")
+	}
+	if _, err := compareValues(value.Bool(true), value.Str("x")); err == nil {
+		t.Fatal("expected compare error")
+	}
+}
+
+func TestExprDirectEvaluatorBranches(t *testing.T) {
+	obj := value.NewObject()
+	obj.Set("amount", value.Int(7))
+	row := mkRow(
+		"items", value.List([]value.Value{value.Obj(obj)}),
+		"when", value.Time(time.Date(2026, 1, 2, 0, 0, 0, 0, time.UTC)),
+	)
+	data := map[string][]*value.Object{"Order": {mkRow("amount", value.Int(4)), mkRow("amount", value.Int(6))}}
+	if got := resolvePath("items.amount", evalEnv{row: row}); got.Kind != value.KindList || len(got.L) != 1 {
+		t.Fatalf("list path: %+v", got)
+	}
+	if got := resolvePath("Order.amount", evalEnv{data: data}); got.Kind != value.KindList || len(got.L) != 2 {
+		t.Fatalf("entity path: %+v", got)
+	}
+	if got, err := evalBinary("%", value.Float(5.5), value.Float(2)); err != nil || got.F == 0 {
+		t.Fatalf("float modulo: %+v %v", got, err)
+	}
+	if _, err := evalBinary("%", value.Int(1), value.Int(0)); err == nil {
+		t.Fatal("expected modulo by zero error")
+	}
+	if _, err := evalBinary("?", value.Int(1), value.Int(2)); err == nil {
+		t.Fatal("expected unknown operator error")
+	}
+	if _, err := numericOp(value.Str("x"), value.Int(1), func(a, b int64) int64 { return a }, func(a, b float64) float64 { return a }); err == nil {
+		t.Fatal("expected non-numeric error")
+	}
+	if f, ok := asFloat(value.Dec(decimal.NewFromFloat(1.25))); !ok || f != 1.25 {
+		t.Fatalf("decimal float=%v %v", f, ok)
+	}
+	if !valuesEqual(value.Int(1), value.Float(1)) || valuesEqual(value.Null(), value.Int(0)) {
+		t.Fatal("valuesEqual cross-kind mismatch")
+	}
+	if c, err := compareValues(value.Time(time.Unix(1, 0)), value.Time(time.Unix(2, 0))); err != nil || c >= 0 {
+		t.Fatalf("time compare=%d %v", c, err)
+	}
+	for _, v := range []value.Value{value.Bool(false), value.Null(), value.Int(0), value.Float(0), value.Str("")} {
+		if truthy(v) {
+			t.Fatalf("%+v should be falsey", v)
+		}
+	}
+	if !truthy(value.List(nil)) {
+		t.Fatal("list should be truthy")
+	}
+	if got, err := evalIf([]exprNode{{kind: exprLit, val: value.Bool(false)}, {kind: exprLit, val: value.Str("yes")}, {kind: exprLit, val: value.Str("no")}}, evalEnv{}); err != nil || got.S != "no" {
+		t.Fatalf("evalIf false branch: %+v %v", got, err)
+	}
+	if _, err := evalIf(nil, evalEnv{}); err == nil {
+		t.Fatal("expected if arity error")
+	}
+	if got := firstListOrEntity([]value.Value{value.Int(3)}, nil, evalEnv{}); len(got) != 1 || got[0].I != 3 {
+		t.Fatalf("firstList fallback: %+v", got)
+	}
+	if got := firstListOrEntity([]value.Value{value.Int(0)}, []exprNode{{kind: exprPath, str: "Order"}}, evalEnv{data: data}); len(got) != 2 {
+		t.Fatalf("firstList entity: %+v", got)
 	}
 }

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
 	derrs "github.com/jmcarbo/datjitgo/core/errors"
+	"github.com/jmcarbo/datjitgo/core/model"
 )
 
 func openFixture(t *testing.T, name string) *os.File {
@@ -52,6 +52,35 @@ func TestParseMinimalFixture(t *testing.T) {
 	}
 	if v, ok := doc.Volume["User"]; !ok || v.Exact != 10 {
 		t.Fatalf("volume: %+v", doc.Volume)
+	}
+}
+
+func TestParseEveryFixture(t *testing.T) {
+	matches, err := filepath.Glob(filepath.Join("..", "testdata", "fixtures", "*.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(matches) == 0 {
+		t.Fatal("no fixtures found")
+	}
+	for _, path := range matches {
+		t.Run(strings.TrimSuffix(filepath.Base(path), ".yaml"), func(t *testing.T) {
+			f, err := os.Open(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer f.Close()
+			doc, err := New().Parse(f, path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if doc.Domain == "" {
+				t.Fatal("domain should be populated")
+			}
+			if doc.Entities.Len() == 0 {
+				t.Fatal("fixtures should declare entities")
+			}
+		})
 	}
 }
 

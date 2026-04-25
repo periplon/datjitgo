@@ -259,6 +259,30 @@ func TestParseTypeExpr_NestedList(t *testing.T) {
 	}
 }
 
+func TestParseTypeExpr_InvalidInputs(t *testing.T) {
+	cases := []string{
+		"",
+		"string | ",
+		"[]",
+		"{string}",
+		"{: int}",
+		"{string:}",
+		"(int, )",
+		"->",
+		"string(x)",
+		"int(x)",
+		"float(x)",
+		"decimal(x, 2)",
+		"decimal(10, x)",
+		"bytes(x)",
+	}
+	for _, src := range cases {
+		if _, err := parseTypeExpr(src); err == nil {
+			t.Errorf("expected parse error for %q", src)
+		}
+	}
+}
+
 func TestParseTypeExpr_NullableOfList(t *testing.T) {
 	te := mustParseType(t, "[string]?")
 	n, ok := te.(model.Nullable)

@@ -182,3 +182,189 @@ func TestReplFormatSwitch(t *testing.T) {
 		t.Fatalf("expected YAML output to contain `User:`; got:\n%s\nstderr:\n%s", out, errw)
 	}
 }
+
+func TestReplShowSetCorpusFormatsHistoryAndClear(t *testing.T) {
+	minimal := fixture(t, "minimal.yaml")
+	out, errw := runSession(t,
+		"load "+minimal,
+		"show schema",
+		"show entities",
+		"show enums",
+		"show rules",
+		"show volume",
+		"set seed 99",
+		"set locale en-US",
+		"set pretty on",
+		"set sql-dialect sqlite",
+		"set entity User",
+		"set entity none",
+		"set volume User=1",
+		"formats",
+		"corpus list",
+		"corpus info person.full",
+		"history",
+		"clear",
+		"reload",
+		"exit",
+	)
+	for _, want := range []string{"domain:", "User", "seed=99", "locale=en-US", "pretty=true", "sql-dialect=sqlite", "entity=User", "entity=(none)", "json", "person.full", "history"} {
+		if !strings.Contains(out, want) {
+			t.Fatalf("output missing %q:\n%s\nstderr:\n%s", want, out, errw)
+		}
+	}
+	if errw != "" {
+		t.Fatalf("unexpected stderr:\n%s", errw)
+	}
+}
+
+func TestReplCommandErrorsStayInSession(t *testing.T) {
+	out, errw := runSession(t,
+		"show bad",
+		"set seed nope",
+		"set format bogus",
+		"set pretty maybe",
+		"set unknown value",
+		"corpus",
+		"corpus info",
+		"corpus nope",
+		"help nope",
+		"exit",
+	)
+	for _, want := range []string{"no schema loaded", "invalid seed", "unknown format", "pretty must", "unknown set option", "usage: corpus", "unknown corpus", "no help"} {
+		if !strings.Contains(errw, want) {
+			t.Fatalf("stderr missing %q:\n%s\nstdout:\n%s", want, errw, out)
+		}
+	}
+}
+
+func TestReplDirectCommandBranches(t *testing.T) {
+	svc := datjit.NewDefault()
+	doc, err := svc.Parse(strings.NewReader(`domain: direct
+volume:
+  User: 1..3
+enums:
+  Status: [active, inactive]
+entities:
+  User:
+    id: int
+    status: Status
+rules:
+  - User.id > 0 @warn
+`), "direct.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out, errw bytes.Buffer
+	s := New(svc)
+	s.out = &out
+	s.errw = &errw
+	s.state.Doc = doc
+	s.state.Volumes["User"] = 5
+	s.history = []string{"one", "two"}
+
+	for _, args := range [][]string{{}, {"schema"}, {"entities"}, {"enums"}, {"rules"}, {"volume"}, {"unknown"}} {
+		_ = cmdShow(s, args)
+	}
+	for _, args := range [][]string{
+		{"seed"},
+		{"volume", "bad"},
+		{"volume", "User=nope"},
+		{"output", filepath.Join(t.TempDir(), "out.json")},
+	} {
+		_ = cmdSet(s, args)
+	}
+	if _, closer, err := s.openOutput(); err != nil {
+		t.Fatal(err)
+	} else if closer != nil {
+		_ = closer.Close()
+	}
+	_ = cmdValidate(s, nil)
+	_ = cmdInspect(s, []string{"--bad"})
+	_ = cmdCorpus(s, []string{"list"})
+	_ = cmdCorpus(s, []string{"info", "person.full"})
+	_ = cmdFormats(s, nil)
+	_ = cmdHistory(s, nil)
+	_ = cmdClear(s, nil)
+	if err := cmdExit(s, nil); err != errExit {
+		t.Fatalf("exit err=%v", err)
+	}
+	if out.Len() == 0 || errw.Len() == 0 {
+		t.Fatalf("expected both stdout and stderr, out=%q err=%q", out.String(), errw.String())
+	}
+}
+
+func TestReplCompleterNestedAndPaths(t *testing.T) {
+	svc := datjit.NewDefault()
+	sess := New(svc)
+	doc, err := svc.Parse(strings.NewReader(miniReplSchema), "mini.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sess.state.Doc = doc
+	c := newCompleter(sess)
+
+	checkCompletion := func(line, want string) {
+		t.Helper()
+		got, _ := c.Do([]rune(line), len([]rune(line)))
+		if !containsRune(got, want) {
+			t.Fatalf("%q: want %q in %v", line, want, runeSlicesToStrings(got))
+		}
+	}
+	checkCompletion("set f", "ormat")
+	checkCompletion("set format j", "son")
+	checkCompletion("set pretty o", "ff")
+	checkCompletion("set sql-dialect s", "qlite")
+	checkCompletion("set volume U", "ser=")
+	checkCompletion("set entity U", "ser")
+	checkCompletion("show e", "ntities")
+	checkCompletion("corpus i", "nfo")
+	checkCompletion("help lo", "ad")
+
+	dir := t.TempDir()
+	old, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(old) })
+	if err := os.WriteFile(filepath.Join(dir, "schema.yaml"), []byte(miniReplSchema), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chdir(dir); err != nil {
+		t.Fatal(err)
+	}
+	checkCompletion("load sch", "ema.yaml")
+}
+
+func TestSessionAccessorsPromptAndHistoryPath(t *testing.T) {
+	svc := datjit.NewDefault()
+	sess := New(svc)
+	if sess.Service() != svc {
+		t.Fatal("service accessor mismatch")
+	}
+	if sess.State() != sess.state {
+		t.Fatal("state accessor mismatch")
+	}
+	if got := sess.prompt(); got != "datjit> " {
+		t.Fatalf("prompt=%q", got)
+	}
+	doc, err := svc.Parse(strings.NewReader(miniReplSchema), "mini.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sess.state.Doc = doc
+	if got := sess.prompt(); got != "datjit[repl_test]> " {
+		t.Fatalf("domain prompt=%q", got)
+	}
+	dir := t.TempDir()
+	t.Setenv("XDG_STATE_HOME", dir)
+	hp := historyPath()
+	if !strings.Contains(hp, filepath.Join("datjit", "history")) {
+		t.Fatalf("history path=%q", hp)
+	}
+}
+
+const miniReplSchema = `domain: repl_test
+entities:
+  User:
+    id: int
+`

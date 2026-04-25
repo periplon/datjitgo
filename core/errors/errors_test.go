@@ -40,6 +40,30 @@ func TestSentinels(t *testing.T) {
 	}
 }
 
+func TestErrorKindStringsAndHelpers(t *testing.T) {
+	kinds := []ErrorKind{
+		KindUnknown,
+		KindParse,
+		KindValidation,
+		KindGeneration,
+		KindUniquenessExhausted,
+		KindRuleViolated,
+		KindIO,
+		KindFeatureDeferred,
+		KindCorpusMissing,
+		KindCyclicDependency,
+	}
+	for _, k := range kinds {
+		if k.String() == "" {
+			t.Fatalf("empty string for %v", int(k))
+		}
+	}
+	err := Generationf("bad %s", "value")
+	if err.Kind != KindGeneration || err.Message != "bad value" {
+		t.Fatalf("Generationf: %+v", err)
+	}
+}
+
 func TestParsefValidationf(t *testing.T) {
 	p := Parsef(&Location{File: "f", Line: 1, Col: 2}, "bad %s", "token")
 	if p.Kind != KindParse || p.Message != "bad token" {

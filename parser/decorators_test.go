@@ -80,9 +80,9 @@ func TestSplitTypeAndDecorators_QuotedPattern(t *testing.T) {
 
 func TestSplitTypeAndDecorators_RangeExclusive(t *testing.T) {
 	cases := []struct {
-		src              string
-		from, to         string
-		loExcl, hiExcl   bool
+		src            string
+		from, to       string
+		loExcl, hiExcl bool
 	}{
 		{"int @range(1..10)", "1", "10", false, false},
 		{"int @range(1<..10)", "1", "10", true, false},
@@ -247,5 +247,32 @@ func TestSplitTypeAndDecorators_LlmWithComma(t *testing.T) {
 	s := decs[0].Args[0].Literal.(string)
 	if s != "Write a short tagline, max 8 words" {
 		t.Fatalf("prompt=%q", s)
+	}
+}
+
+func TestDecoratorParserAdditionalBranches(t *testing.T) {
+	cases := []string{
+		`string @flag`,
+		`string @values(true, false, null, name)`,
+		`string @range([1..10])`,
+		`string @kv(foo: bar, baz=12)`,
+		`string @pattern("a\"b")`,
+	}
+	for _, src := range cases {
+		if _, decs, err := splitTypeAndDecorators(src); err != nil || len(decs) == 0 {
+			t.Fatalf("%q decs=%+v err=%v", src, decs, err)
+		}
+	}
+}
+
+func TestDecoratorParserInvalidInputs(t *testing.T) {
+	cases := []string{
+		`string @bad(`,
+		`string @bad("unterminated)`,
+	}
+	for _, src := range cases {
+		if _, _, err := splitTypeAndDecorators(src); err == nil {
+			t.Errorf("expected error for %q", src)
+		}
 	}
 }
