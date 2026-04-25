@@ -13,8 +13,8 @@ func cmdVersion() *cobra.Command {
 		Short: "Print datjit version and exit",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			fmt.Fprintf(cmd.OutOrStdout(), "datjit v%s\n", version)
-			return nil
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), "datjit v%s\n", version)
+			return err
 		},
 	}
 }

@@ -2,6 +2,8 @@ package corpus
 
 import (
 	stderrors "errors"
+	"os"
+	"path/filepath"
 	"sort"
 	"testing"
 
@@ -146,6 +148,38 @@ func TestListMissingKeyErrorsCorpusMissing(t *testing.T) {
 	}
 	if !stderrors.Is(err, errors.ErrCorpusMissing) {
 		t.Fatalf("wrong error kind: %v", err)
+	}
+}
+
+func TestOverlayReplacesEmbeddedCorpusKey(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "person_first_names.json")
+	if err := os.WriteFile(path, []byte(`["OverlayOnly"]`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	p := NewWithOverlay(dir)
+	entries, err := p.List("en-US", "person.first_names")
+	if err != nil {
+		t.Fatalf("List overlay key: %v", err)
+	}
+	if len(entries) != 1 || entries[0].Name != "OverlayOnly" {
+		t.Fatalf("overlay entries = %+v, want only OverlayOnly", entries)
+	}
+}
+
+func TestOverlayAddsKeys(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "custom_animals.json"), []byte(`["otter"]`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	p := NewWithOverlay(dir)
+	if !p.Has("custom.animals") {
+		t.Fatal("overlay-only key was not resolvable")
+	}
+	keys := p.Keys()
+	i := sort.SearchStrings(keys, "custom.animals")
+	if i >= len(keys) || keys[i] != "custom.animals" {
+		t.Fatalf("Keys() = %v, want custom.animals", keys)
 	}
 }
 

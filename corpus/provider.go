@@ -6,6 +6,8 @@ package corpus
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"sync"
@@ -15,15 +17,45 @@ import (
 	"github.com/jmcarbo/datjitgo/core/value"
 )
 
-// Provider implements ports.CorpusProvider using JSON files compiled in via
-// go:embed. Loaded corpora are cached after first access. An optional overlay
-// directory may supply additional or replacement JSON files at runtime (the
-// phase-1 implementation records the directory but does not yet consult disk).
+// Provider implements ports.CorpusProvider using JSON files compiled into the
+// binary. Loaded corpora are cached after first access. An optional overlay
+// directory may supply additional or replacement JSON files at runtime.
 type Provider struct {
 	overlayDir string
 
 	mu    sync.RWMutex
 	cache map[string][]ports.CorpusEntry
+}
+
+// embeddedKeys is the canonical list of keys shipped in corpus/data.
+var embeddedKeys = []string{
+	"address.cities",
+	"address.countries",
+	"address.states",
+	"address.streets",
+	"address.zip_prefixes",
+	"color.names",
+	"company.catch_phrases",
+	"company.industries",
+	"company.names",
+	"email_domains",
+	"file.extensions",
+	"job.departments",
+	"job.titles",
+	"mime.types",
+	"person.bios",
+	"person.first_names",
+	"person.last_names",
+	"person.prefixes",
+	"person.suffixes",
+	"person.usernames",
+	"phone_area_codes",
+	"product.descriptions",
+	"product.titles",
+	"text.paragraphs",
+	"text.sentences",
+	"text.words",
+	"timezones",
 }
 
 // NewEmbedded returns a Provider that reads only from the embedded JSON files.
@@ -46,6 +78,32 @@ func NewWithOverlay(baseDir string) *Provider {
 func (p *Provider) Has(key string) bool {
 	_, err := p.load(key)
 	return err == nil
+}
+
+// Keys returns the corpus keys this provider can resolve.
+func (p *Provider) Keys() []string {
+	if p == nil {
+		return nil
+	}
+	seen := map[string]struct{}{}
+	out := make([]string, 0, len(embeddedKeys))
+	for _, k := range embeddedKeys {
+		if p.Has(k) {
+			seen[k] = struct{}{}
+			out = append(out, k)
+		}
+	}
+	for _, k := range p.overlayKeys() {
+		if _, ok := seen[k]; ok {
+			continue
+		}
+		if p.Has(k) {
+			out = append(out, k)
+			seen[k] = struct{}{}
+		}
+	}
+	sort.Strings(out)
+	return out
 }
 
 // List returns every entry for key in deterministic (alphabetical) order.
@@ -113,8 +171,13 @@ func (p *Provider) load(key string) ([]ports.CorpusEntry, error) {
 	}
 	p.mu.RUnlock()
 
-	name := "data/" + strings.ReplaceAll(key, ".", "_") + ".json"
-	raw, err := embedded.ReadFile(name)
+	raw, err := p.readOverlay(key)
+	if err == nil {
+		return p.cacheEntries(key, raw)
+	}
+
+	name := "data/" + corpusFilename(key)
+	raw, err = embedded.ReadFile(name)
 	if err != nil {
 		return nil, &errors.Error{
 			Kind:    errors.KindCorpusMissing,
@@ -122,6 +185,10 @@ func (p *Provider) load(key string) ([]ports.CorpusEntry, error) {
 			Cause:   err,
 		}
 	}
+	return p.cacheEntries(key, raw)
+}
+
+func (p *Provider) cacheEntries(key string, raw []byte) ([]ports.CorpusEntry, error) {
 	entries, err := parseEntries(raw)
 	if err != nil {
 		return nil, &errors.Error{
@@ -139,6 +206,66 @@ func (p *Provider) load(key string) ([]ports.CorpusEntry, error) {
 	p.mu.Unlock()
 
 	return entries, nil
+}
+
+func (p *Provider) readOverlay(key string) ([]byte, error) {
+	if p == nil || p.overlayDir == "" {
+		return nil, os.ErrNotExist
+	}
+	names := []string{
+		corpusFilename(key),
+		key + ".json",
+		filepath.Join("data", corpusFilename(key)),
+		filepath.Join("data", key+".json"),
+	}
+	for _, name := range names {
+		raw, err := os.ReadFile(filepath.Join(p.overlayDir, name))
+		if err == nil {
+			return raw, nil
+		}
+	}
+	return nil, os.ErrNotExist
+}
+
+func (p *Provider) overlayKeys() []string {
+	if p == nil || p.overlayDir == "" {
+		return nil
+	}
+	reverse := map[string]string{}
+	for _, k := range embeddedKeys {
+		reverse[strings.TrimSuffix(corpusFilename(k), ".json")] = k
+	}
+	seen := map[string]struct{}{}
+	var out []string
+	for _, dir := range []string{p.overlayDir, filepath.Join(p.overlayDir, "data")} {
+		entries, err := os.ReadDir(dir)
+		if err != nil {
+			continue
+		}
+		for _, entry := range entries {
+			if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".json") {
+				continue
+			}
+			base := strings.TrimSuffix(entry.Name(), ".json")
+			key := base
+			if known, ok := reverse[base]; ok {
+				key = known
+			} else if !strings.Contains(base, ".") {
+				key = strings.ReplaceAll(base, "_", ".")
+			}
+			if _, ok := seen[key]; ok {
+				continue
+			}
+			seen[key] = struct{}{}
+			out = append(out, key)
+		}
+	}
+	sort.Strings(out)
+	return out
+}
+
+func corpusFilename(key string) string {
+	return strings.ReplaceAll(key, ".", "_") + ".json"
 }
 
 // parseEntries accepts the JSON array format described in the spec:

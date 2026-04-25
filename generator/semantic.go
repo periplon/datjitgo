@@ -2,6 +2,7 @@ package generator
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/jmcarbo/datjitgo/core/errors"
@@ -183,9 +184,12 @@ func (e *Engine) generateSemantic(st model.Semantic, rng ports.Randomizer) (valu
 
 	case "currency.usd", "currency.eur":
 		lo, hi := 1.0, 1000.0
-		if len(st.Params) == 2 {
-			// TODO: honour explicit params (e.g. currency.usd(0..100)).
-			lo, hi = 1, 1000
+		if len(st.Params) >= 2 {
+			if parsedLo, err := strconv.ParseFloat(strings.TrimSpace(st.Params[0]), 64); err == nil {
+				if parsedHi, err := strconv.ParseFloat(strings.TrimSpace(st.Params[1]), 64); err == nil && parsedHi >= parsedLo {
+					lo, hi = parsedLo, parsedHi
+				}
+			}
 		}
 		return value.Float(roundTo(lo+rng.Float()*(hi-lo), 2)), nil
 

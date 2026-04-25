@@ -164,12 +164,21 @@ func parseVolumeValue(name string, v *yaml.Node) (model.VolumeSpec, error) {
 			if err != nil {
 				return model.VolumeSpec{}, locErr(name, v, "volume range hi: %v", err)
 			}
+			if lo < 0 || hi < 0 {
+				return model.VolumeSpec{}, locErr(name, v, "volume range cannot be negative")
+			}
+			if lo > hi {
+				return model.VolumeSpec{}, locErr(name, v, "volume range lower bound exceeds upper bound")
+			}
 			return model.VolumeSpec{Min: lo, Max: hi}, nil
 		}
 		// Plain integer
 		n, err := strconv.Atoi(v.Value)
 		if err != nil {
 			return model.VolumeSpec{}, locErr(name, v, "invalid volume: %q", v.Value)
+		}
+		if n < 0 {
+			return model.VolumeSpec{}, locErr(name, v, "volume cannot be negative")
 		}
 		return model.VolumeSpec{Exact: n}, nil
 	}

@@ -180,7 +180,7 @@ func (s *Service) GenerateFile(path string) (*value.Dataset, *model.Document, er
 			Cause:   err,
 		}
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	doc, err := s.Parse(f, path)
 	if err != nil {
 		return nil, nil, err

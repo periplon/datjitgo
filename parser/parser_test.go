@@ -392,7 +392,7 @@ func TestParseAllFixtures(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer f.Close()
+			defer func() { _ = f.Close() }()
 			doc, err := New().Parse(f, base)
 			if err != nil {
 				t.Fatalf("parse %s: %v", base, err)

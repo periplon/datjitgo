@@ -9,38 +9,6 @@ import (
 	"github.com/jmcarbo/datjitgo/core/value"
 )
 
-// preprocessLLM normalises LLM-related decorators onto shapes the regular
-// field pipeline can handle. It:
-//
-//  1. For every @llm_values(N, "prompt") on a field, synthesises N stub
-//     values and rewrites the decorator into @values(s1, s2, ...). The
-//     stub values are deterministic given the seed, so later sampling is
-//     reproducible.
-//  2. For every entity whose _meta carries @llm(...), walks each field and,
-//     if the field is a plain string (Primitive PrimString) with no
-//     existing generator of its own (no @llm, @pattern, @values, @derived,
-//     @compute, @default_chain, @primary, @auto, reference), appends a
-//     synthetic @llm("...") decorator so the field picks up the stub.
-//
-// Phase 1 uses a deterministic stub backend; phase 2 will swap in real
-// provider adapters (ollama, openai, lmstudio, vllm).
-func preprocessLLM(doc *model.Document) {
-	if doc == nil || doc.Entities == nil {
-		return
-	}
-	doc.Entities.Each(func(_ string, ent *model.Entity) bool {
-		entityLevelLLM := findLLM(ent.Meta)
-		ent.Fields.Each(func(_ string, f *model.Field) bool {
-			// Entity-level @llm fallback: push onto generatable string fields.
-			if entityLevelLLM != nil && shouldInheritEntityLLM(f) {
-				f.Decorators = append(f.Decorators, *entityLevelLLM)
-			}
-			return true
-		})
-		return true
-	})
-}
-
 // findLLM returns the first @llm decorator in decs, or nil if absent.
 func findLLM(decs []model.Decorator) *model.Decorator {
 	for i := range decs {

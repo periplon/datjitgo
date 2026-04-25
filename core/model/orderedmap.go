@@ -29,8 +29,8 @@ func (o *OrderedMap[K, V]) Has(k K) bool {
 	return ok
 }
 
-func (o *OrderedMap[K, V]) Len() int    { return len(o.keys) }
-func (o *OrderedMap[K, V]) Keys() []K   { return append([]K(nil), o.keys...) }
+func (o *OrderedMap[K, V]) Len() int  { return len(o.keys) }
+func (o *OrderedMap[K, V]) Keys() []K { return append([]K(nil), o.keys...) }
 
 // Each iterates in insertion order. Return false from fn to stop early.
 func (o *OrderedMap[K, V]) Each(fn func(K, V) bool) {

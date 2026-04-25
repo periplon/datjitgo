@@ -3,99 +3,294 @@
     {
       "name": "Rachel Sanchez",
       "tier": "free",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "1024 Garden",
+        "city": "San Antonio",
+        "state": "Idaho",
+        "zip": "69656",
+        "country": "Hungary"
+      },
+      "shipping_address": {
+        "street": "1024 Garden",
+        "city": "San Antonio",
+        "state": "Idaho",
+        "zip": "69656",
+        "country": "Hungary"
+      },
+      "contact": {
+        "email": "ronald.williams@hotmail.com",
+        "phone": "+1-510-918-1253"
+      }
     },
     {
       "name": "William Wright",
       "tier": "premium",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "6152 Lake",
+        "city": "Mesa",
+        "state": "Delaware",
+        "zip": "94809",
+        "country": "Chile"
+      },
+      "shipping_address": {
+        "street": "6152 Lake",
+        "city": "Mesa",
+        "state": "Delaware",
+        "zip": "94809",
+        "country": "Chile"
+      },
+      "contact": {
+        "email": "frank.carter@yahoo.com",
+        "phone": "+1-202-360-9895"
+      }
     },
     {
       "name": "Melissa Torres",
       "tier": "premium",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "7989 Willow",
+        "city": "Jacksonville",
+        "state": "Iowa",
+        "zip": "48595",
+        "country": "Philippines"
+      },
+      "shipping_address": {
+        "street": "7989 Willow",
+        "city": "Jacksonville",
+        "state": "Iowa",
+        "zip": "48595",
+        "country": "Philippines"
+      },
+      "contact": {
+        "email": "brandon.garcia@example.com",
+        "phone": "+1-305-775-4105"
+      }
     },
     {
       "name": "Dennis Anderson",
       "tier": "basic",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "9023 Birch",
+        "city": "Pittsburgh",
+        "state": "Nebraska",
+        "zip": "85131",
+        "country": "China"
+      },
+      "shipping_address": {
+        "street": "9023 Birch",
+        "city": "Pittsburgh",
+        "state": "Nebraska",
+        "zip": "85131",
+        "country": "China"
+      },
+      "contact": {
+        "email": "alexander.wu@yahoo.com",
+        "phone": "+1-213-112-9405"
+      }
     },
     {
       "name": "Edward Baker",
       "tier": "premium",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "8354 Spring",
+        "city": "Fresno",
+        "state": "Kansas",
+        "zip": "22673",
+        "country": "Australia"
+      },
+      "shipping_address": {
+        "street": "8354 Spring",
+        "city": "Fresno",
+        "state": "Kansas",
+        "zip": "22673",
+        "country": "Australia"
+      },
+      "contact": {
+        "email": "brandon.baker@gmail.com",
+        "phone": "+1-512-904-3891"
+      }
     },
     {
       "name": "Christine Lopez",
       "tier": "free",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "3710 Park",
+        "city": "New York",
+        "state": "Kentucky",
+        "zip": "83288",
+        "country": "Vietnam"
+      },
+      "shipping_address": {
+        "street": "3710 Park",
+        "city": "New York",
+        "state": "Kentucky",
+        "zip": "83288",
+        "country": "Vietnam"
+      },
+      "contact": {
+        "email": "maria.anderson@gmx.com",
+        "phone": "+1-408-417-5362"
+      }
     },
     {
       "name": "Sandra White",
       "tier": "basic",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "1764 Spring",
+        "city": "Portland",
+        "state": "Georgia",
+        "zip": "37646",
+        "country": "Poland"
+      },
+      "shipping_address": {
+        "street": "1764 Spring",
+        "city": "Portland",
+        "state": "Georgia",
+        "zip": "37646",
+        "country": "Poland"
+      },
+      "contact": {
+        "email": "pamela.garcia@example.com",
+        "phone": "+1-215-978-5161"
+      }
     },
     {
       "name": "Jerry Johnson",
       "tier": "premium",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "2822 Spring",
+        "city": "Colorado Springs",
+        "state": "Maryland",
+        "zip": "87086",
+        "country": "Switzerland"
+      },
+      "shipping_address": {
+        "street": "2822 Spring",
+        "city": "Colorado Springs",
+        "state": "Maryland",
+        "zip": "87086",
+        "country": "Switzerland"
+      },
+      "contact": {
+        "email": "dennis.ramirez@company.com",
+        "phone": "+1-858-300-2645"
+      }
     },
     {
       "name": "Ashley Wang",
       "tier": "basic",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "3787 Walnut",
+        "city": "Sacramento",
+        "state": "New Hampshire",
+        "zip": "41746",
+        "country": "Argentina"
+      },
+      "shipping_address": {
+        "street": "3787 Walnut",
+        "city": "Sacramento",
+        "state": "New Hampshire",
+        "zip": "41746",
+        "country": "Argentina"
+      },
+      "contact": {
+        "email": "nicole.taylor@example.net",
+        "phone": "+1-818-679-3284"
+      }
     },
     {
       "name": "Karen Patel",
       "tier": "premium",
-      "billing_address": "Address",
-      "shipping_address": "Address",
-      "contact": "ContactInfo"
+      "billing_address": {
+        "street": "5214 Madison",
+        "city": "Orlando",
+        "state": "Maryland",
+        "zip": "58193",
+        "country": "Canada"
+      },
+      "shipping_address": {
+        "street": "5214 Madison",
+        "city": "Orlando",
+        "state": "Maryland",
+        "zip": "58193",
+        "country": "Canada"
+      },
+      "contact": {
+        "email": "edward.kim@yahoo.com",
+        "phone": "+1-713-868-9986"
+      }
     }
   ],
   "Vendor": [
     {
       "company": "Zenith Dynamics Inc.",
-      "hq_address": "Address",
-      "support": "ContactInfo"
+      "hq_address": {
+        "street": "3529 Garden",
+        "city": "Charlotte",
+        "state": "Texas",
+        "zip": "21058",
+        "country": "New Zealand"
+      },
+      "support": {
+        "email": "edward.miller@gmail.com",
+        "phone": "+1-617-848-7733"
+      }
     },
     {
       "company": "Matrix Systems LLC",
-      "hq_address": "Address",
-      "support": "ContactInfo"
+      "hq_address": {
+        "street": "730 Park",
+        "city": "Chicago",
+        "state": "Alaska",
+        "zip": "97255",
+        "country": "Argentina"
+      },
+      "support": {
+        "email": "ronald.jackson@company.com",
+        "phone": "+1-832-945-6172"
+      }
     },
     {
       "company": "Fusion Intelligence Corp.",
-      "hq_address": "Address",
-      "support": "ContactInfo"
+      "hq_address": {
+        "street": "9470 Hill",
+        "city": "San Jose",
+        "state": "North Carolina",
+        "zip": "11554",
+        "country": "Turkey"
+      },
+      "support": {
+        "email": "mary.yang@example.com",
+        "phone": "+1-904-659-1654"
+      }
     },
     {
       "company": "Stellar Networks Ltd.",
-      "hq_address": "Address",
-      "support": "ContactInfo"
+      "hq_address": {
+        "street": "5337 Franklin",
+        "city": "Tampa",
+        "state": "Minnesota",
+        "zip": "23165",
+        "country": "New Zealand"
+      },
+      "support": {
+        "email": "ronald.rivera@test.org",
+        "phone": "+1-818-192-1699"
+      }
     },
     {
       "company": "Pulse Digital Labs",
-      "hq_address": "Address",
-      "support": "ContactInfo"
+      "hq_address": {
+        "street": "5126 Franklin",
+        "city": "San Diego",
+        "state": "South Carolina",
+        "zip": "85872",
+        "country": "Italy"
+      },
+      "support": {
+        "email": "janet.harris@test.org",
+        "phone": "+1-617-252-7352"
+      }
     }
   ]
 }

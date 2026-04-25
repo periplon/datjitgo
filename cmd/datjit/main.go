@@ -30,7 +30,7 @@ func usageErrorf(format string, a ...any) error {
 
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, "error:", err)
+		_, _ = fmt.Fprintln(os.Stderr, "error:", err)
 		os.Exit(exitCodeFor(err))
 	}
 }

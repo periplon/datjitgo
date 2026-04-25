@@ -221,6 +221,22 @@ func TestServiceInspectDefaultVolume(t *testing.T) {
 	}
 }
 
+func TestServiceCorpusKeys(t *testing.T) {
+	svc := datjit.NewDefault()
+	keys := svc.CorpusKeys()
+	if len(keys) == 0 {
+		t.Fatal("expected embedded corpus keys")
+	}
+	if !containsString(keys, "person.first_names") {
+		t.Fatalf("expected person.first_names in corpus keys, got %v", keys)
+	}
+	for i := 1; i < len(keys); i++ {
+		if keys[i-1] > keys[i] {
+			t.Fatalf("corpus keys not sorted: %q before %q", keys[i-1], keys[i])
+		}
+	}
+}
+
 func TestOptionWithSeed(t *testing.T) {
 	// Two services with the same seed override must produce identical JSON.
 	s1, err := datjit.New(datjit.WithSeed(1234))
@@ -286,6 +302,15 @@ func TestWriteUnknownFormat(t *testing.T) {
 	if !stderrors.Is(err, errors.ErrValidation) {
 		t.Fatalf("want ErrValidation, got %v", err)
 	}
+}
+
+func containsString(items []string, want string) bool {
+	for _, item := range items {
+		if item == want {
+			return true
+		}
+	}
+	return false
 }
 
 // runPipeline parses schemaSrc, runs Generate, and writes pretty JSON

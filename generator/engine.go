@@ -5,6 +5,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
 	coreplan "github.com/jmcarbo/datjitgo/core/plan"
 	"github.com/jmcarbo/datjitgo/core/ports"
@@ -38,12 +39,6 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 	locale := resolveLocale(doc, opts)
 	e.locale = locale
 
-	// LLM preprocessing: expand @llm_values into @values using corpus-backed
-	// stub content, and push an entity-level _meta @llm down onto every
-	// string-shaped field that has no generator of its own. Phase 1 ships
-	// with a deterministic stub backend; live providers are phase 2.
-	preprocessLLM(doc)
-
 	order, err := coreplan.Entities(doc)
 	if err != nil {
 		return nil, err
@@ -62,11 +57,17 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 		enumByName[name] = d
 		return true
 	})
+	typeByName := map[string]*model.Entity{}
+	doc.Types.Each(func(name string, ent *model.Entity) bool {
+		typeByName[name] = ent
+		return true
+	})
 
 	root := NewRand(seed)
 	rowState := &generationState{
 		doc:       doc,
 		enumDefs:  enumByName,
+		typeDefs:  typeByName,
 		rng:       root,
 		seqs:      newSeqCounters(),
 		unique:    map[string]map[string]struct{}{},
@@ -87,9 +88,25 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 
 		for i := 0; i < vol; i++ {
 			rowRNG := entSub.Substream(fmt.Sprintf("row:%d", i))
-			row, err := e.generateRow(entity, rowState, rowRNG)
-			if err != nil {
-				return nil, err
+			var row *value.Object
+			for attempt := 0; attempt <= 10; attempt++ {
+				uniqueBefore := cloneUnique(rowState.unique)
+				attemptRNG := rowRNG
+				if attempt > 0 {
+					attemptRNG = rowRNG.Substream(fmt.Sprintf("attempt:%d", attempt))
+				}
+				row, err = e.generateRow(entity, rowState, attemptRNG)
+				if err != nil {
+					return nil, err
+				}
+				if ruleErr := e.enforceRowRules(doc, name, row, rowState, rowRNG); ruleErr != nil {
+					rowState.unique = uniqueBefore
+					if attempt == 10 {
+						return nil, ruleErr
+					}
+					continue
+				}
+				break
 			}
 			rows = append(rows, row)
 			rowState.generated[name] = append(rowState.generated[name], row)
@@ -120,6 +137,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 type generationState struct {
 	doc       *model.Document
 	enumDefs  map[string]model.EnumDef
+	typeDefs  map[string]*model.Entity
 	rng       ports.Randomizer
 	entityRNG ports.Randomizer
 	seqs      *seqCounters
@@ -140,6 +158,18 @@ func (s *generationState) uniqueKey(entity, field string) map[string]struct{} {
 		s.unique[k] = m
 	}
 	return m
+}
+
+func cloneUnique(in map[string]map[string]struct{}) map[string]map[string]struct{} {
+	out := make(map[string]map[string]struct{}, len(in))
+	for k, values := range in {
+		cp := make(map[string]struct{}, len(values))
+		for v := range values {
+			cp[v] = struct{}{}
+		}
+		out[k] = cp
+	}
+	return out
 }
 
 // resolveSeed honours the GenerateOptions override, then document.Generation,
@@ -210,4 +240,49 @@ func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []
 			}
 		}
 	}
+}
+
+func (e *Engine) enforceRowRules(doc *model.Document, entity string, row *value.Object, st *generationState, rng ports.Randomizer) error {
+	for _, r := range doc.Rules {
+		if r.Kind != model.RuleKindExpr || r.Severity == model.RuleWarn {
+			continue
+		}
+		if !ruleTargetsEntity(r.Expr, entity) {
+			continue
+		}
+		if r.Severity == model.RuleProbabilistic {
+			p := r.Probability
+			if p <= 0 {
+				continue
+			}
+			if p > 1 {
+				p = 1
+			}
+			if rng.Float() >= p {
+				continue
+			}
+		}
+		v, err := evalRule(r.Expr, entity, row, st.generated)
+		if err != nil {
+			return &errors.Error{Kind: errors.KindRuleViolated, Entity: entity, Message: fmt.Sprintf("rule %q: %v", r.Expr, err), Cause: err}
+		}
+		if !truthy(v) {
+			msg := r.ErrorMessage
+			if msg == "" {
+				msg = fmt.Sprintf("rule %q violated", r.Expr)
+			}
+			return &errors.Error{Kind: errors.KindRuleViolated, Entity: entity, Message: msg}
+		}
+	}
+	return nil
+}
+
+func ruleTargetsEntity(expr, entity string) bool {
+	if strings.Contains(expr, entity+".") {
+		return true
+	}
+	if !strings.Contains(expr, ".") {
+		return true
+	}
+	return strings.HasPrefix(expr, entity+" ")
 }

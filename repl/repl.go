@@ -73,9 +73,6 @@ func (s *Session) runInteractive(ctx context.Context, in io.Reader, out, errw io
 	if !ok {
 		stdin = io.NopCloser(in)
 	}
-	stdout, _ := out.(io.Writer)
-	stderr, _ := errw.(io.Writer)
-
 	cfg := &readline.Config{
 		Prompt:          s.prompt(),
 		HistoryFile:     historyPath(),
@@ -83,17 +80,17 @@ func (s *Session) runInteractive(ctx context.Context, in io.Reader, out, errw io
 		InterruptPrompt: "^C",
 		EOFPrompt:       "exit",
 		Stdin:           stdin,
-		Stdout:          stdout,
-		Stderr:          stderr,
+		Stdout:          out,
+		Stderr:          errw,
 	}
 	rl, err := readline.NewEx(cfg)
 	if err != nil {
 		// Fall back to scripted mode on readline init failure so we still
 		// give the caller *some* shell rather than refusing outright.
-		fmt.Fprintf(errw, "warning: readline unavailable (%v), using line mode\n", err)
+		_, _ = fmt.Fprintf(errw, "warning: readline unavailable (%v), using line mode\n", err)
 		return s.runScripted(ctx, in)
 	}
-	defer rl.Close()
+	defer func() { _ = rl.Close() }()
 	s.rl = rl
 	defer func() { s.rl = nil }()
 
@@ -159,14 +156,14 @@ func (s *Session) dispatch(line string) (stop bool, err error) {
 	args := fields[1:]
 	cmd, ok := Commands[name]
 	if !ok {
-		fmt.Fprintf(s.errw, "error: unknown command %q (try `help`)\n", name)
+		_, _ = fmt.Fprintf(s.errw, "error: unknown command %q (try `help`)\n", name)
 		return false, nil
 	}
 	if cerr := cmd.Fn(s, args); cerr != nil {
 		if errors.Is(cerr, errExit) {
 			return true, nil
 		}
-		fmt.Fprintf(s.errw, "error: %v\n", cerr)
+		_, _ = fmt.Fprintf(s.errw, "error: %v\n", cerr)
 	}
 	return false, nil
 }

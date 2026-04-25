@@ -110,3 +110,18 @@ func volumePlan(name string, doc *model.Document, override map[string]int) model
 	}
 	return model.VolumeSpec{Exact: defaultVolume}
 }
+
+// InferToolSurface produces the phase-1 auto-inferred tool list for an
+// entity based on its meta decorators:
+//   - @readonly  -> list, get
+//   - @immutable -> list, get, create
+//   - default    -> list, get, create, update, delete
+func InferToolSurface(ent *model.Entity) []string {
+	if model.HasDecorator(ent.Meta, "readonly") {
+		return []string{"list", "get"}
+	}
+	if model.HasDecorator(ent.Meta, "immutable") {
+		return []string{"list", "get", "create"}
+	}
+	return []string{"list", "get", "create", "update", "delete"}
+}

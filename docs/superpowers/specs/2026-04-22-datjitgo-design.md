@@ -10,7 +10,7 @@ Port the Rust `datjit` synthetic-data generator to Go as:
 1. A reusable library other Go projects can embed (hexagonal + SOLID).
 2. A CLI binary with a REPL for interactive use plus one-shot subcommands matching the Rust CLI (`generate`, `validate`, `inspect`, `corpus`, `repl`).
 
-Phase 1 scope: core + parser + generator + output + embedded corpus + REPL/CLI. Out of scope (deferred to phases 2–3): live corpus downloaders, LLM-backed generation (`@llm`, `@llm_values`). Parser still tolerates LLM decorators but generator emits `ErrFeatureDeferred` when a schema actually uses them, so fixtures parse cleanly.
+Phase 1 scope: core + parser + generator + output + embedded corpus + REPL/CLI. Out of scope (deferred to phases 2–3): live corpus downloaders and live LLM provider calls. Parser accepts LLM decorators, and generation uses a deterministic stub backend so fixtures remain reproducible without network access.
 
 ## 2. Architecture (hexagonal)
 
@@ -116,24 +116,24 @@ func New(opts ...Option) (*Service, error)
 // Options (in options.go) wire alternative implementations:
 func WithParser(p ports.Parser) Option
 func WithGenerator(g ports.Generator) Option
-func WithWriter(format string, w ports.Writer) Option
+func WithWriter(w ports.Writer) Option
 func WithCorpus(c ports.CorpusProvider) Option
 func WithSeed(seed int64) Option
 func WithLocale(loc string) Option
 func WithVolume(vols map[string]int) Option
 
 // Primary operations
-func (s *Service) Parse(r io.Reader) (*model.Document, error)
+func (s *Service) Parse(r io.Reader, name string) (*model.Document, error)
 func (s *Service) Validate(doc *model.Document) error
 func (s *Service) Inspect(doc *model.Document) (*model.Inspection, error)
-func (s *Service) Generate(doc *model.Document) (*model.Dataset, error)
-func (s *Service) Write(ds *model.Dataset, format string, w io.Writer) error
+func (s *Service) Generate(doc *model.Document) (*value.Dataset, error)
+func (s *Service) Write(ds *value.Dataset, doc *model.Document, format string, w io.Writer, opts WriteOpts) error
 
 // Convenience
-func (s *Service) GenerateFile(path, format string, w io.Writer) error
+func (s *Service) GenerateFile(path string) (*value.Dataset, *model.Document, error)
 ```
 
-Library consumers interact only with `datjit.Service` (plus `core/model`, `core/ports`, `core/errors` for types). Everything else is implementation detail.
+Library consumers interact only with `datjit.Service` (plus `core/model`, `core/value`, `core/ports`, `core/errors` for types). Everything else is implementation detail.
 
 ## 4. Core domain model
 
@@ -203,21 +203,21 @@ func Object(m *OrderedMap[string, Value]) Value
 
 ```go
 type Parser interface {
-    Parse(r io.Reader) (*model.Document, error)
+    Parse(r io.Reader, name string) (*model.Document, error)
 }
 
 type Generator interface {
-    Generate(doc *model.Document, opts GenerateOptions) (*model.Dataset, error)
+    Generate(doc *model.Document, opts GenerateOptions) (*value.Dataset, error)
 }
 
 type Writer interface {
     Format() string                             // e.g. "json", "csv"
-    Write(ds *model.Dataset, w io.Writer, opts WriteOptions) error
+    Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts WriteOptions) error
 }
 
 type CorpusProvider interface {
     Sample(ctx SampleContext, key string) (value.Value, error)  // weighted random
-    List(key string) ([]CorpusEntry, error)
+    List(locale, key string) ([]CorpusEntry, error)
     Has(key string) bool
     Locales() []string
 }
@@ -227,6 +227,8 @@ type Randomizer interface {
     Substream(scope string) Randomizer           // derive child RNG deterministically
     Float() float64
     IntN(n int64) int64
+    NormFloat() float64
+    ExpFloat() float64
     Shuffle(n int, swap func(i, j int))
 }
 ```
@@ -259,7 +261,7 @@ Rust uses `rand_chacha` with a seeded stream; Go can't reproduce its byte stream
 - `Substream(scope string)` returns a new PCG seeded from `fnv64(parent.State, scope)`. Stable across Go versions because PCG is spec-stable.
 - Entity/field/row/attempt each get their own substream. Result: changing one field's decorators doesn't shift unrelated fields' output — a property the Rust code also provides in practice via per-field RNG churn.
 
-Guarantee: given the same `(document, seed, corpus)`, output bytes are identical across runs on any Go 1.22+ platform.
+Guarantee: given the same `(document, seed, corpus)`, output bytes are identical across runs on supported Go platforms matching the module directive.
 
 ## 7. Parser
 
@@ -273,7 +275,7 @@ Errors carry file/line/column (from `yaml.v3` node metadata) plus the original f
 
 ## 8. Output writers
 
-Each writer implements `ports.Writer.Write(dataset, io.Writer, opts)`:
+Each writer implements `ports.Writer.Write(dataset, document, io.Writer, opts)`:
 - **json**: `encoding/json`; `--pretty` → `MarshalIndent`. Entity order from document.
 - **ndjson**: one entity per block, one JSON object per row, `\n`-separated.
 - **csv**: `encoding/csv` per entity; header row = field names in declaration order.
@@ -384,7 +386,7 @@ Three tiers:
 
 Target: every fixture from the Rust tree has a matching Go golden file; every public function on `datjit.Service` has at least one unit test; coverage ≥ 80% on `core`, `parser`, `generator`, `output`.
 
-CI (Phase 1 ships with a Makefile + `.github/workflows/ci.yml`): `go vet`, `staticcheck`, `golangci-lint`, `go test -race ./...`, `go test -run TestFixtures -update=false ./...`.
+CI (Phase 1 ships with a Makefile + `.github/workflows/ci.yml`): `gofmt -l` format check, `go vet`, `go test -race -count=1 ./...`, `go test -count=1 -run TestFixtures ./...`, and `go build ./...`. Optional third-party scanners such as `staticcheck` and `govulncheck` are intentionally not required by default CI until their install/cache behavior is pinned enough to avoid brittle GitHub Actions runs.
 
 ## 14. Dependencies
 
@@ -401,7 +403,7 @@ Minimal external deps:
 
 Standard library covers: JSON, CSV, regex, time, embed, `math/rand/v2` (PCG).
 
-No cgo. No build tags. Go 1.22+ (for `math/rand/v2`).
+No cgo. No build tags. Go 1.26.2, matching `go.mod`.
 
 ## 15. Phased rollout inside Phase 1
 
@@ -415,17 +417,19 @@ Implementation order (each step green before next):
 6. `@pattern`, `@derived`, `@compute`, `@default_chain` → `derived_fields.yaml`, `compound_types.yaml`.
 7. `rules`, named types, entity meta → `rules.yaml`, `named_types.yaml`, `entity_meta.yaml`.
 8. `output` writers (json/ndjson/csv/yaml/sql).
-9. `datjit.Service` facade + golden tests for every non-LLM fixture.
+9. `datjit.Service` facade + golden tests for every fixture, including deterministic LLM stubs.
 10. CLI (`cmd/datjit`) with `generate|validate|inspect`.
 11. REPL + `datjit repl`.
 12. CI, README, godoc polish, version tag `v0.1.0`.
 
 ## 16. Non-goals / deferred
 
-- `@llm`, `@llm_values`, `generation.llm` — parser accepts, generator returns `ErrFeatureDeferred`.
+- `@llm`, `@llm_values`, `generation.llm` — parser accepts and phase 1 generation uses a deterministic stub backend backed by the embedded corpus; live provider calls are deferred.
 - Live corpus updater downloads (`datjit corpus update`).
 - Tool-inference code generation (`--infer-tools` prints the inferred surface; no codegen).
 - Multi-locale corpus overlays beyond `en-US` embedded defaults.
+- Expansion of top-level reusable `types:` records during generation. They parse and validate, but generated output currently uses stable placeholders for those named record types. Named enums are generated normally.
+- Cross-row rule enforcement beyond parsing/model preservation. Cross-row rules are retained as raw YAML metadata for downstream work; expression rules are the phase 1 enforced path.
 
 Each deferred item becomes its own design doc under `docs/superpowers/specs/` before being implemented.
 
@@ -434,14 +438,14 @@ Each deferred item becomes its own design doc under `docs/superpowers/specs/` be
 - `go install github.com/jmcarbo/datjitgo/cmd/datjit@latest` works.
 - `datjit generate tests/fixtures/project_management.yaml --seed 42` produces non-empty JSON without errors.
 - `datjit repl` starts, accepts `load`/`generate`, prints output, exits cleanly.
-- Every non-LLM Rust fixture has a matching Go golden test that passes with seed 42.
+- Every Rust fixture has a matching Go golden test that passes with seed 42.
 - Library consumer can do:
   ```go
   svc := datjit.NewDefault()
-  doc, _ := svc.Parse(f)
+  doc, _ := svc.Parse(f, "schema.yaml")
   ds, _ := svc.Generate(doc)
-  _ = svc.Write(ds, "json", os.Stdout)
+  _ = svc.Write(ds, doc, "json", os.Stdout, datjit.WriteOpts{})
   ```
   without importing any non-root package.
-- `go vet`, `staticcheck`, `golangci-lint run` all clean.
+- `gofmt -l`, `go vet`, fixture drift tests, race tests, and package build all clean.
 - README with quickstart + API example; godoc covers every exported identifier.

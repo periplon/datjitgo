@@ -83,7 +83,7 @@ func TestYAML_BoolAndNullRendering(t *testing.T) {
 		t.Fatalf("bool false missing:\n%s", s)
 	}
 	// Null nickname must serialise as null or ~.
-	if !(strings.Contains(s, "nickname: null") || strings.Contains(s, "nickname: ~")) {
+	if !strings.Contains(s, "nickname: null") && !strings.Contains(s, "nickname: ~") {
 		t.Fatalf("null nickname missing:\n%s", s)
 	}
 }
