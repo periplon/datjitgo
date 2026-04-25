@@ -68,6 +68,19 @@ func validateDoc(doc *model.Document) error {
 	if firstErr != nil {
 		return firstErr
 	}
+	doc.Types.Each(func(tname string, ent *model.Entity) bool {
+		ent.Fields.Each(func(fname string, f *model.Field) bool {
+			if err := checkTypeExpr(f.Type, tname, fname, entitySet, typeSet, enumSet); err != nil {
+				firstErr = err
+				return false
+			}
+			return true
+		})
+		return firstErr == nil
+	})
+	if firstErr != nil {
+		return firstErr
+	}
 
 	// Rule expressions — cheap syntactic check via the generator's parser.
 	// Cross-row rules carry a YAML body instead of an expression; skip them.
@@ -130,6 +143,15 @@ func checkTypeExpr(t model.TypeExpr, entity, field string, entities, types map[s
 			Field:   field,
 			Message: "named type not found: " + v.Name,
 		}
+	case model.Semantic:
+		if !knownSemantic(v) {
+			return &errors.Error{
+				Kind:    errors.KindValidation,
+				Entity:  entity,
+				Field:   field,
+				Message: "unknown semantic type: " + semanticName(v),
+			}
+		}
 	case model.List:
 		return checkTypeExpr(v.Element, entity, field, entities, types, enums)
 	case model.Map:
@@ -178,4 +200,35 @@ func ruleIndex(i int) string {
 		buf[pos] = '-'
 	}
 	return "#" + string(buf[pos:])
+}
+
+func knownSemantic(v model.Semantic) bool {
+	_, ok := knownSemanticNames[semanticName(v)]
+	return ok
+}
+
+func semanticName(v model.Semantic) string {
+	if v.Tag == "" {
+		return v.Namespace
+	}
+	return v.Namespace + "." + v.Tag
+}
+
+var knownSemanticNames = map[string]struct{}{
+	"person.full": {}, "person.first": {}, "person.last": {}, "person.username": {}, "person.prefix": {}, "person.suffix": {}, "person.bio": {}, "person.avatar": {}, "person.gender": {}, "person.dob": {}, "person.age": {},
+	"email": {}, "phone": {}, "phone.mobile": {}, "phone.landline": {},
+	"url": {}, "url.image": {}, "url.avatar": {},
+	"ipv4": {}, "ipv6": {}, "mac": {},
+	"address.full": {}, "address.street": {}, "address.city": {}, "address.state": {}, "address.zip": {}, "address.country": {},
+	"geo.lat": {}, "geo.lng": {}, "timezone": {},
+	"currency.usd": {}, "currency.eur": {},
+	"credit_card": {}, "credit_card.type": {}, "iban": {}, "swift": {},
+	"text.word": {}, "text.sentence": {}, "text.paragraph": {}, "text.slug": {},
+	"product.title": {}, "product.description": {}, "product.sku": {}, "sku": {},
+	"company.name": {}, "company.industry": {}, "company.catch_phrase": {},
+	"job.title": {}, "job.department": {},
+	"color.hex": {}, "color.rgb": {}, "color.name": {},
+	"file.name": {}, "file.extension": {}, "file.mime": {},
+	"hash.md5": {}, "hash.sha256": {},
+	"slug": {}, "code": {},
 }

@@ -50,7 +50,7 @@ func TestPatternHex(t *testing.T) {
 		t.Fatalf("len=%d", len(got))
 	}
 	for _, r := range got {
-		if !((r >= '0' && r <= '9') || (r >= 'A' && r <= 'F')) {
+		if (r < '0' || r > '9') && (r < 'A' || r > 'F') {
 			t.Fatalf("not hex: %q", got)
 		}
 	}

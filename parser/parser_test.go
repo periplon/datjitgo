@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
 	derrs "github.com/jmcarbo/datjitgo/core/errors"
+	"github.com/jmcarbo/datjitgo/core/model"
 )
 
 func openFixture(t *testing.T, name string) *os.File {
@@ -363,7 +363,7 @@ func TestParseAllFixtures(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer f.Close()
+			defer func() { _ = f.Close() }()
 			doc, err := New().Parse(f, base)
 			if err != nil {
 				t.Fatalf("parse %s: %v", base, err)

@@ -22,7 +22,7 @@ func loadFixture(t *testing.T, path string) *model.Document {
 	if err != nil {
 		t.Fatalf("open %s: %v", path, err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	doc, err := parser.New().Parse(f, path)
 	if err != nil {
 		t.Fatalf("parse %s: %v", path, err)

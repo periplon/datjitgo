@@ -123,11 +123,9 @@ func (e *Engine) deriveFromSource(target, source string, rng ports.Randomizer) (
 		if err != nil {
 			domain = "example.com"
 		}
-		local := source
+		local := strings.ToLower(strings.ReplaceAll(source, " ", "."))
 		if len(parts) >= 2 {
 			local = strings.ToLower(parts[0]) + "." + strings.ToLower(parts[1])
-		} else {
-			local = strings.ToLower(strings.ReplaceAll(source, " ", "."))
 		}
 		return value.Str(local + "@" + domain), nil
 	case strings.Contains(lower, "username") || strings.Contains(lower, "handle"):

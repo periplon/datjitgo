@@ -40,16 +40,16 @@ type Value struct {
 	O    *Object
 }
 
-func Null() Value                { return Value{Kind: KindNull} }
-func Bool(b bool) Value          { return Value{Kind: KindBool, B: b} }
-func Int(i int64) Value          { return Value{Kind: KindInt, I: i} }
-func Float(f float64) Value      { return Value{Kind: KindFloat, F: f} }
-func Str(s string) Value         { return Value{Kind: KindString, S: s} }
-func UUID(u uuid.UUID) Value     { return Value{Kind: KindUUID, U: u} }
-func Time(t time.Time) Value     { return Value{Kind: KindTime, T: t} }
+func Null() Value                 { return Value{Kind: KindNull} }
+func Bool(b bool) Value           { return Value{Kind: KindBool, B: b} }
+func Int(i int64) Value           { return Value{Kind: KindInt, I: i} }
+func Float(f float64) Value       { return Value{Kind: KindFloat, F: f} }
+func Str(s string) Value          { return Value{Kind: KindString, S: s} }
+func UUID(u uuid.UUID) Value      { return Value{Kind: KindUUID, U: u} }
+func Time(t time.Time) Value      { return Value{Kind: KindTime, T: t} }
 func Dec(d decimal.Decimal) Value { return Value{Kind: KindDecimal, D: d} }
-func List(xs []Value) Value      { return Value{Kind: KindList, L: xs} }
-func Obj(o *Object) Value        { return Value{Kind: KindObject, O: o} }
+func List(xs []Value) Value       { return Value{Kind: KindList, L: xs} }
+func Obj(o *Object) Value         { return Value{Kind: KindObject, O: o} }
 
 func (v Value) IsNull() bool { return v.Kind == KindNull }
 

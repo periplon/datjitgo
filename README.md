@@ -14,7 +14,7 @@ architecture with port interfaces) or invoking from the CLI / REPL.
 go install github.com/jmcarbo/datjitgo/cmd/datjit@latest
 ```
 
-Requires Go 1.22+.
+Requires Go 1.26.2, matching the module's `go` directive.
 
 ## Quick start
 
@@ -169,12 +169,13 @@ This release covers everything **except**:
 ## Testing
 
 ```bash
-go test -race ./...            # 10 packages, all green
-go test -run TestFixtures .    # 18 fixture golden tests
+make ci                                      # gofmt check, vet, race tests, fixtures, build
+go test -race -count=1 ./...                 # race-enabled test suite
+go test -count=1 -run TestFixtures ./...     # fixture golden drift check
 ```
 
-Every non-LLM fixture from the Rust tree is mirrored under
-`testdata/fixtures/` with a matching golden JSON under `testdata/golden/`.
+Every fixture from the Rust tree is mirrored under `testdata/fixtures/` with a
+matching golden JSON under `testdata/golden/`.
 
 ## License
 

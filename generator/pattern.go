@@ -70,7 +70,7 @@ func expandPlaceholder(ph string, rng ports.Randomizer, counters *seqCounters, c
 		out.WriteString(u.String())
 		return
 	case "seq":
-		out.WriteString(fmt.Sprintf("%d", counters.next(counterKey)))
+		fmt.Fprintf(out, "%d", counters.next(counterKey))
 		return
 	case "word":
 		w := patternWords[rng.IntN(int64(len(patternWords)))]
@@ -97,10 +97,10 @@ func expandPlaceholder(ph string, rng ports.Randomizer, counters *seqCounters, c
 			out.WriteByte(byte('a' + rng.IntN(26)))
 		}
 	case allRune(ph, '0'):
-		out.WriteString(fmt.Sprintf("%0*d", len(ph), rng.IntN(pow10(int64(len(ph))))))
+		fmt.Fprintf(out, "%0*d", len(ph), rng.IntN(pow10(int64(len(ph)))))
 	case allRune(ph, '#'):
 		for i := 0; i < len(ph); i++ {
-			out.WriteString(fmt.Sprintf("%X", rng.IntN(16)))
+			fmt.Fprintf(out, "%X", rng.IntN(16))
 		}
 	default:
 		out.WriteByte('{')

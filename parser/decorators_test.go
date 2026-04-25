@@ -80,9 +80,9 @@ func TestSplitTypeAndDecorators_QuotedPattern(t *testing.T) {
 
 func TestSplitTypeAndDecorators_RangeExclusive(t *testing.T) {
 	cases := []struct {
-		src              string
-		from, to         string
-		loExcl, hiExcl   bool
+		src            string
+		from, to       string
+		loExcl, hiExcl bool
 	}{
 		{"int @range(1..10)", "1", "10", false, false},
 		{"int @range(1<..10)", "1", "10", true, false},

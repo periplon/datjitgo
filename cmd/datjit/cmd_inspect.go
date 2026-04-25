@@ -46,8 +46,24 @@ func cmdInspect() *cobra.Command {
 // rendering is intentionally stable so the CLI integration test can match
 // substrings without reacting to layout churn.
 func printInspection(w io.Writer, doc *model.Document, insp *model.Inspection, inferTools bool) error {
-	fmt.Fprintf(w, "domain: %s (v%s)\n", insp.Domain, insp.Version)
-	fmt.Fprintf(w, "entities (%d):\n", insp.EntityCount)
+	writeErr := error(nil)
+	writef := func(format string, args ...any) bool {
+		if writeErr != nil {
+			return false
+		}
+		_, writeErr = fmt.Fprintf(w, format, args...)
+		return writeErr == nil
+	}
+	writeln := func(args ...any) bool {
+		if writeErr != nil {
+			return false
+		}
+		_, writeErr = fmt.Fprintln(w, args...)
+		return writeErr == nil
+	}
+
+	writef("domain: %s (v%s)\n", insp.Domain, insp.Version)
+	writef("entities (%d):\n", insp.EntityCount)
 
 	// Compute a single column width for name alignment; keeps the output
 	// readable for long and short schemas alike.
@@ -63,8 +79,7 @@ func printInspection(w io.Writer, doc *model.Document, insp *model.Inspection, i
 			deps = "[" + strings.Join(e.Dependencies, ", ") + "]"
 		}
 		vol := renderVolume(e.VolumePlan)
-		fmt.Fprintf(w, "  %-*s  fields=%d  deps=%s volume=%s\n",
-			nameWidth, e.Name, e.FieldCount, deps, vol)
+		writef("  %-*s  fields=%d  deps=%s volume=%s\n", nameWidth, e.Name, e.FieldCount, deps, vol)
 	}
 
 	if len(insp.Enums) > 0 {
@@ -72,24 +87,23 @@ func printInspection(w io.Writer, doc *model.Document, insp *model.Inspection, i
 		for _, e := range insp.Enums {
 			parts = append(parts, fmt.Sprintf("%s(%d)", e.Name, len(e.Variants)))
 		}
-		fmt.Fprintf(w, "enums (%d): %s\n", len(insp.Enums), strings.Join(parts, " "))
+		writef("enums (%d): %s\n", len(insp.Enums), strings.Join(parts, " "))
 	}
 
 	if len(insp.Rules) > 0 {
-		fmt.Fprintf(w, "rules (%d):\n", len(insp.Rules))
+		writef("rules (%d):\n", len(insp.Rules))
 		for _, r := range insp.Rules {
-			fmt.Fprintf(w, "  - %s %s\n", r.Expr, severityTag(r.Severity))
+			writef("  - %s %s\n", r.Expr, severityTag(r.Severity))
 		}
 	}
 
 	if inferTools {
-		fmt.Fprintln(w, "tools:")
+		writeln("tools:")
 		doc.Entities.Each(func(name string, ent *model.Entity) bool {
-			fmt.Fprintf(w, "  %s: %s\n", name, strings.Join(inferToolSurface(ent), ", "))
-			return true
+			return writef("  %s: %s\n", name, strings.Join(datjit.InferToolSurface(ent), ", "))
 		})
 	}
-	return nil
+	return writeErr
 }
 
 // renderVolume formats a VolumeSpec for the inspect output. Range volumes
@@ -112,19 +126,4 @@ func severityTag(s model.RuleSeverity) string {
 		return "@warn"
 	}
 	return "@strict"
-}
-
-// inferToolSurface produces the phase-1 auto-inferred tool list for an
-// entity based on its meta decorators:
-//   - @readonly  → list, get
-//   - @immutable → list, get, create
-//   - default    → list, get, create, update, delete
-func inferToolSurface(ent *model.Entity) []string {
-	if model.HasDecorator(ent.Meta, "readonly") {
-		return []string{"list", "get"}
-	}
-	if model.HasDecorator(ent.Meta, "immutable") {
-		return []string{"list", "get", "create"}
-	}
-	return []string{"list", "get", "create", "update", "delete"}
 }

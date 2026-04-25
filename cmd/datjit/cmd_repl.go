@@ -56,16 +56,16 @@ appears. Type 'help' for the command list, 'exit' or Ctrl-D to leave.`,
 func preload(sess *repl.Session, path string) {
 	f, err := os.Open(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "warning: preload %s: %v\n", path, err)
+		_, _ = fmt.Fprintf(os.Stderr, "warning: preload %s: %v\n", path, err)
 		return
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	doc, err := sess.Service().Parse(f, path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "warning: parse %s: %v\n", path, err)
+		_, _ = fmt.Fprintf(os.Stderr, "warning: parse %s: %v\n", path, err)
 		return
 	}
 	sess.State().Doc = doc
 	sess.State().Path = path
-	fmt.Fprintf(os.Stderr, "loaded %s (domain=%s, entities=%d)\n", path, doc.Domain, doc.Entities.Len())
+	_, _ = fmt.Fprintf(os.Stderr, "loaded %s (domain=%s, entities=%d)\n", path, doc.Domain, doc.Entities.Len())
 }

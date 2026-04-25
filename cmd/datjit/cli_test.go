@@ -239,6 +239,20 @@ func TestUnknownFormat(t *testing.T) {
 	}
 }
 
+func TestGenerateUnknownEntityIsUsageError(t *testing.T) {
+	path := fixturePath(t, "minimal.yaml")
+	stdout, stderr, code := runCmd(t, "generate", path, "--entity", "Ghost")
+	if code != 2 {
+		t.Fatalf("expected exit 2 for unknown entity, got %d stdout=%q stderr=%q", code, stdout, stderr)
+	}
+	if !strings.Contains(stderr, `unknown entity "Ghost"`) {
+		t.Fatalf("expected unknown entity message, got stderr=%q", stderr)
+	}
+	if stdout != "" {
+		t.Fatalf("expected no stdout for unknown entity, got %q", stdout)
+	}
+}
+
 func TestCorpusUpdateIsDeferred(t *testing.T) {
 	stdout, stderr, code := runCmd(t, "corpus", "update")
 	if code != 0 {

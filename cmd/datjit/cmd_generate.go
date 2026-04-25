@@ -75,6 +75,9 @@ func cmdGenerate() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			if entity != "" && !doc.Entities.Has(entity) {
+				return &usageErr{err: fmt.Errorf("unknown entity %q (available: %s)", entity, strings.Join(doc.Entities.Keys(), ", "))}
+			}
 			if err := svc.Validate(doc); err != nil {
 				return err
 			}
@@ -154,7 +157,7 @@ func parseSchemaFile(svc *datjit.Service, path string) (*model.Document, error) 
 	if err != nil {
 		return nil, fmt.Errorf("open %s: %w", path, err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	return svc.Parse(f, path)
 }
 
@@ -211,9 +214,9 @@ func printGeneratePlan(w io.Writer, doc *model.Document, override map[string]int
 	for _, r := range sorted {
 		parts = append(parts, fmt.Sprintf("%s=%d", r.name, r.count))
 	}
-	fmt.Fprintf(w, "plan: %d entities, totals: %s (rows=%d)\n",
+	_, err := fmt.Fprintf(w, "plan: %d entities, totals: %s (rows=%d)\n",
 		totalEntities, strings.Join(parts, ", "), totalRows)
-	return nil
+	return err
 }
 
 // plannedVolume reproduces the façade's volume precedence without running

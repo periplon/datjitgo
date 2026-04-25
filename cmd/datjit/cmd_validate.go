@@ -29,8 +29,8 @@ func cmdValidate() *cobra.Command {
 			if err := svc.Validate(doc); err != nil {
 				return err
 			}
-			fmt.Fprintln(cmd.OutOrStdout(), "OK")
-			return nil
+			_, err = fmt.Fprintln(cmd.OutOrStdout(), "OK")
+			return err
 		},
 	}
 	return c

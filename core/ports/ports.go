@@ -70,9 +70,9 @@ type Randomizer interface {
 	// RNG's state and the given scope string. Used to give each entity,
 	// field, and row a stable substream.
 	Substream(scope string) Randomizer
-	Float() float64            // [0, 1)
-	IntN(n int64) int64        // [0, n)
-	NormFloat() float64        // standard normal, mean 0 variance 1
-	ExpFloat() float64         // standard exponential, rate 1
+	Float() float64     // [0, 1)
+	IntN(n int64) int64 // [0, n)
+	NormFloat() float64 // standard normal, mean 0 variance 1
+	ExpFloat() float64  // standard exponential, rate 1
 	Shuffle(n int, swap func(i, j int))
 }

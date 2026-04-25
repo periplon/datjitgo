@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/model"
 	datjit "github.com/jmcarbo/datjitgo"
+	"github.com/jmcarbo/datjitgo/core/model"
 )
 
 // commandFn implements a single REPL verb. args is the whitespace-split tail
@@ -24,6 +24,18 @@ type commandFn func(s *Session, args []string) error
 type command struct {
 	Fn   commandFn
 	Help string
+}
+
+func writef(w io.Writer, format string, args ...any) {
+	_, _ = fmt.Fprintf(w, format, args...)
+}
+
+func writeln(w io.Writer, args ...any) {
+	_, _ = fmt.Fprintln(w, args...)
+}
+
+func write(w io.Writer, args ...any) {
+	_, _ = fmt.Fprint(w, args...)
 }
 
 // errExit is returned by exit/quit to break Session.Run out of its read loop
@@ -68,7 +80,7 @@ func commandNames() []string {
 // ensureDoc guards commands that require a parsed document.
 func ensureDoc(s *Session) bool {
 	if s.state.Doc == nil {
-		fmt.Fprintln(s.errw, "error: no schema loaded (use `load <path>`)")
+		writeln(s.errw, "error: no schema loaded (use `load <path>`)")
 		return false
 	}
 	return true
@@ -77,7 +89,7 @@ func ensureDoc(s *Session) bool {
 // cmdLoad reads args[0] from disk, parses it, and stores it on the session.
 func cmdLoad(s *Session, args []string) error {
 	if len(args) != 1 {
-		fmt.Fprintln(s.errw, "usage: load <path>")
+		writeln(s.errw, "usage: load <path>")
 		return nil
 	}
 	return loadPath(s, args[0])
@@ -87,18 +99,18 @@ func cmdLoad(s *Session, args []string) error {
 func loadPath(s *Session, path string) error {
 	f, err := os.Open(path)
 	if err != nil {
-		fmt.Fprintf(s.errw, "error: open %s: %v\n", path, err)
+		writef(s.errw, "error: open %s: %v\n", path, err)
 		return nil
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	doc, err := s.svc.Parse(f, path)
 	if err != nil {
-		fmt.Fprintf(s.errw, "error: parse %s: %v\n", path, err)
+		writef(s.errw, "error: parse %s: %v\n", path, err)
 		return nil
 	}
 	s.state.Doc = doc
 	s.state.Path = path
-	fmt.Fprintf(s.out, "loaded %s (domain=%s, entities=%d)\n", path, doc.Domain, doc.Entities.Len())
+	writef(s.out, "loaded %s (domain=%s, entities=%d)\n", path, doc.Domain, doc.Entities.Len())
 	s.updatePrompt()
 	return nil
 }
@@ -106,7 +118,7 @@ func loadPath(s *Session, path string) error {
 // cmdReload re-parses the previously loaded file from disk.
 func cmdReload(s *Session, args []string) error {
 	if s.state.Path == "" {
-		fmt.Fprintln(s.errw, "error: nothing to reload (use `load <path>` first)")
+		writeln(s.errw, "error: nothing to reload (use `load <path>` first)")
 		return nil
 	}
 	return loadPath(s, s.state.Path)
@@ -115,7 +127,7 @@ func cmdReload(s *Session, args []string) error {
 // cmdShow dispatches to a sub-section printer.
 func cmdShow(s *Session, args []string) error {
 	if len(args) != 1 {
-		fmt.Fprintln(s.errw, "usage: show schema|entities|enums|rules|volume")
+		writeln(s.errw, "usage: show schema|entities|enums|rules|volume")
 		return nil
 	}
 	if !ensureDoc(s) {
@@ -124,16 +136,16 @@ func cmdShow(s *Session, args []string) error {
 	doc := s.state.Doc
 	switch args[0] {
 	case "schema":
-		fmt.Fprintf(s.out, "domain: %s\nversion: %s\nentities: %d\nenums: %d\nrules: %d\n",
+		writef(s.out, "domain: %s\nversion: %s\nentities: %d\nenums: %d\nrules: %d\n",
 			doc.Domain, doc.Version, doc.Entities.Len(), doc.Enums.Len(), len(doc.Rules))
 	case "entities":
 		doc.Entities.Each(func(name string, ent *model.Entity) bool {
-			fmt.Fprintf(s.out, "%s (%d fields)\n", name, ent.Fields.Len())
+			writef(s.out, "%s (%d fields)\n", name, ent.Fields.Len())
 			return true
 		})
 	case "enums":
 		if doc.Enums.Len() == 0 {
-			fmt.Fprintln(s.out, "(no enums)")
+			writeln(s.out, "(no enums)")
 			return nil
 		}
 		doc.Enums.Each(func(name string, def model.EnumDef) bool {
@@ -141,20 +153,20 @@ func cmdShow(s *Session, args []string) error {
 			for _, v := range def.Variants {
 				variants = append(variants, v.Value)
 			}
-			fmt.Fprintf(s.out, "%s: %s\n", name, strings.Join(variants, ", "))
+			writef(s.out, "%s: %s\n", name, strings.Join(variants, ", "))
 			return true
 		})
 	case "rules":
 		if len(doc.Rules) == 0 {
-			fmt.Fprintln(s.out, "(no rules)")
+			writeln(s.out, "(no rules)")
 			return nil
 		}
 		for i, r := range doc.Rules {
-			fmt.Fprintf(s.out, "#%d: %s\n", i+1, r.Expr)
+			writef(s.out, "#%d: %s\n", i+1, r.Expr)
 		}
 	case "volume":
 		if len(doc.Volume) == 0 && len(s.state.Volumes) == 0 {
-			fmt.Fprintln(s.out, "(no volume overrides)")
+			writeln(s.out, "(no volume overrides)")
 			return nil
 		}
 		// Document-declared volumes first, alphabetically.
@@ -165,21 +177,21 @@ func cmdShow(s *Session, args []string) error {
 		sort.Strings(names)
 		for _, k := range names {
 			v := doc.Volume[k]
-			fmt.Fprintf(s.out, "%s: %s\n", k, formatVolume(v))
+			writef(s.out, "%s: %s\n", k, formatVolume(v))
 		}
 		if len(s.state.Volumes) > 0 {
-			fmt.Fprintln(s.out, "-- session overrides --")
+			writeln(s.out, "-- session overrides --")
 			keys := make([]string, 0, len(s.state.Volumes))
 			for k := range s.state.Volumes {
 				keys = append(keys, k)
 			}
 			sort.Strings(keys)
 			for _, k := range keys {
-				fmt.Fprintf(s.out, "%s: %d\n", k, s.state.Volumes[k])
+				writef(s.out, "%s: %d\n", k, s.state.Volumes[k])
 			}
 		}
 	default:
-		fmt.Fprintf(s.errw, "error: unknown `show` target %q\n", args[0])
+		writef(s.errw, "error: unknown `show` target %q\n", args[0])
 	}
 	return nil
 }
@@ -198,7 +210,7 @@ func formatVolume(v model.VolumeSpec) string {
 // cmdSet handles all `set <key> ...` configuration subcommands.
 func cmdSet(s *Session, args []string) error {
 	if len(args) < 2 {
-		fmt.Fprintln(s.errw, "usage: set <option> <value>")
+		writeln(s.errw, "usage: set <option> <value>")
 		return nil
 	}
 	key, rest := args[0], args[1:]
@@ -206,39 +218,39 @@ func cmdSet(s *Session, args []string) error {
 	case "seed":
 		n, err := strconv.ParseInt(rest[0], 10, 64)
 		if err != nil {
-			fmt.Fprintf(s.errw, "error: invalid seed %q: %v\n", rest[0], err)
+			writef(s.errw, "error: invalid seed %q: %v\n", rest[0], err)
 			return nil
 		}
 		s.state.Seed = &n
-		fmt.Fprintf(s.out, "seed=%d\n", n)
+		writef(s.out, "seed=%d\n", n)
 	case "locale":
 		s.state.Locale = rest[0]
-		fmt.Fprintf(s.out, "locale=%s\n", rest[0])
+		writef(s.out, "locale=%s\n", rest[0])
 	case "format":
 		formats := s.svc.Formats()
 		if !contains(formats, rest[0]) {
-			fmt.Fprintf(s.errw, "error: unknown format %q (available: %s)\n", rest[0], strings.Join(formats, ", "))
+			writef(s.errw, "error: unknown format %q (available: %s)\n", rest[0], strings.Join(formats, ", "))
 			return nil
 		}
 		s.state.Format = rest[0]
-		fmt.Fprintf(s.out, "format=%s\n", rest[0])
+		writef(s.out, "format=%s\n", rest[0])
 	case "volume":
 		// Accept one or more Entity=N pairs.
 		for _, pair := range rest {
 			eq := strings.IndexByte(pair, '=')
 			if eq <= 0 {
-				fmt.Fprintf(s.errw, "error: bad volume override %q (want Entity=N)\n", pair)
+				writef(s.errw, "error: bad volume override %q (want Entity=N)\n", pair)
 				return nil
 			}
 			name := pair[:eq]
 			n, err := strconv.Atoi(pair[eq+1:])
 			if err != nil {
-				fmt.Fprintf(s.errw, "error: bad volume override %q: %v\n", pair, err)
+				writef(s.errw, "error: bad volume override %q: %v\n", pair, err)
 				return nil
 			}
 			s.state.Volumes[name] = n
 		}
-		fmt.Fprintf(s.out, "volume=%v\n", s.state.Volumes)
+		writef(s.out, "volume=%v\n", s.state.Volumes)
 	case "pretty":
 		switch strings.ToLower(rest[0]) {
 		case "on", "true", "yes", "1":
@@ -246,26 +258,26 @@ func cmdSet(s *Session, args []string) error {
 		case "off", "false", "no", "0":
 			s.state.Pretty = false
 		default:
-			fmt.Fprintf(s.errw, "error: pretty must be on|off, got %q\n", rest[0])
+			writef(s.errw, "error: pretty must be on|off, got %q\n", rest[0])
 			return nil
 		}
-		fmt.Fprintf(s.out, "pretty=%t\n", s.state.Pretty)
+		writef(s.out, "pretty=%t\n", s.state.Pretty)
 	case "output":
 		s.state.Output = rest[0]
-		fmt.Fprintf(s.out, "output=%s\n", rest[0])
+		writef(s.out, "output=%s\n", rest[0])
 	case "sql-dialect":
 		s.state.SQLDialect = rest[0]
-		fmt.Fprintf(s.out, "sql-dialect=%s\n", rest[0])
+		writef(s.out, "sql-dialect=%s\n", rest[0])
 	case "entity":
 		if rest[0] == "none" {
 			s.state.EntityFilter = ""
-			fmt.Fprintln(s.out, "entity=(none)")
+			writeln(s.out, "entity=(none)")
 		} else {
 			s.state.EntityFilter = rest[0]
-			fmt.Fprintf(s.out, "entity=%s\n", rest[0])
+			writef(s.out, "entity=%s\n", rest[0])
 		}
 	default:
-		fmt.Fprintf(s.errw, "error: unknown set option %q\n", key)
+		writef(s.errw, "error: unknown set option %q\n", key)
 	}
 	return nil
 }
@@ -291,23 +303,23 @@ func cmdGenerate(s *Session, args []string) error {
 	if len(opts) > 0 {
 		override, err := datjit.New(opts...)
 		if err != nil {
-			fmt.Fprintf(s.errw, "error: configure service: %v\n", err)
+			writef(s.errw, "error: configure service: %v\n", err)
 			return nil
 		}
 		svc = override
 	}
 	ds, err := svc.Generate(s.state.Doc)
 	if err != nil {
-		fmt.Fprintf(s.errw, "error: generate: %v\n", err)
+		writef(s.errw, "error: generate: %v\n", err)
 		return nil
 	}
 	writer, closer, err := s.openOutput()
 	if err != nil {
-		fmt.Fprintf(s.errw, "error: open output: %v\n", err)
+		writef(s.errw, "error: open output: %v\n", err)
 		return nil
 	}
 	if closer != nil {
-		defer closer.Close()
+		defer func() { _ = closer.Close() }()
 	}
 	wopts := datjit.WriteOpts{
 		Pretty:       s.state.Pretty,
@@ -315,7 +327,7 @@ func cmdGenerate(s *Session, args []string) error {
 		EntityFilter: s.state.EntityFilter,
 	}
 	if err := svc.Write(ds, s.state.Doc, s.state.Format, writer, wopts); err != nil {
-		fmt.Fprintf(s.errw, "error: write: %v\n", err)
+		writef(s.errw, "error: write: %v\n", err)
 	}
 	return nil
 }
@@ -345,78 +357,103 @@ func cmdValidate(s *Session, args []string) error {
 		return nil
 	}
 	if err := s.svc.Validate(s.state.Doc); err != nil {
-		fmt.Fprintf(s.errw, "validation error: %v\n", err)
+		writef(s.errw, "validation error: %v\n", err)
 		return nil
 	}
-	fmt.Fprintln(s.out, "ok")
+	writeln(s.out, "ok")
 	return nil
 }
 
-// cmdInspect renders the Inspection as JSON. --infer-tools is a no-op
-// placeholder: tool inference lives in a deferred phase, but the flag is
-// accepted so scripts can forward-ref it without errors.
+// cmdInspect renders the Inspection summary. --infer-tools mirrors the CLI
+// inspect flag and appends inferred tool surface per entity.
 func cmdInspect(s *Session, args []string) error {
 	if !ensureDoc(s) {
 		return nil
 	}
-	// Accept the documented flag but don't act on it yet (phase-2 work).
+	inferTools := false
 	for _, a := range args {
-		if a != "--infer-tools" {
-			fmt.Fprintf(s.errw, "warning: ignoring unknown inspect flag %q\n", a)
+		switch a {
+		case "--infer-tools":
+			inferTools = true
+		default:
+			writef(s.errw, "warning: ignoring unknown inspect flag %q\n", a)
 		}
 	}
 	insp, err := s.svc.Inspect(s.state.Doc)
 	if err != nil {
-		fmt.Fprintf(s.errw, "error: inspect: %v\n", err)
+		writef(s.errw, "error: inspect: %v\n", err)
 		return nil
 	}
 	// Render a human-friendly header then a JSON dump — the header is what
 	// TestReplInspect greps for.
-	fmt.Fprintf(s.out, "domain: %s\n", insp.Domain)
-	fmt.Fprintf(s.out, "version: %s\n", insp.Version)
-	fmt.Fprintf(s.out, "entities: %d\n", insp.EntityCount)
+	writef(s.out, "domain: %s\n", insp.Domain)
+	writef(s.out, "version: %s\n", insp.Version)
+	writef(s.out, "entities: %d\n", insp.EntityCount)
 	for _, e := range insp.Entities {
-		fmt.Fprintf(s.out, "- %s (fields=%d, deps=[%s], volume=%s)\n",
+		writef(s.out, "- %s (fields=%d, deps=[%s], volume=%s)\n",
 			e.Name, e.FieldCount, strings.Join(e.Dependencies, ","), formatVolume(e.VolumePlan))
+	}
+	if inferTools {
+		writeln(s.out, "tools:")
+		s.state.Doc.Entities.Each(func(name string, ent *model.Entity) bool {
+			writef(s.out, "%s: %s\n", name, strings.Join(datjit.InferToolSurface(ent), ", "))
+			return true
+		})
 	}
 	return nil
 }
 
-// cmdCorpus offers minimal corpus introspection. The embedded provider does
-// not expose a directory listing API, so `list` prints a curated set of
-// well-known keys and `info <key>` probes whether it resolves.
+// cmdCorpus offers corpus introspection backed by the Service corpus provider.
 func cmdCorpus(s *Session, args []string) error {
 	if len(args) == 0 {
-		fmt.Fprintln(s.errw, "usage: corpus list|info <key>")
+		writeln(s.errw, "usage: corpus list|info")
 		return nil
-	}
-	// TODO(datjit.Service): expose a CorpusKeys() accessor so the REPL can
-	// enumerate corpora without hard-coding this list.
-	knownKeys := []string{
-		"person.full", "person.first", "person.last",
-		"city", "country", "company",
 	}
 	switch args[0] {
 	case "list":
-		for _, k := range knownKeys {
-			fmt.Fprintln(s.out, k)
-		}
-	case "info":
-		if len(args) < 2 {
-			fmt.Fprintln(s.errw, "usage: corpus info <key>")
+		if len(args) != 1 {
+			writeln(s.errw, "usage: corpus list")
 			return nil
 		}
-		fmt.Fprintf(s.out, "%s: (inspect via generate; introspection API TBD)\n", args[1])
+		for _, k := range s.svc.CorpusKeys() {
+			writeln(s.out, k)
+		}
+	case "info":
+		if len(args) != 1 {
+			writeln(s.errw, "usage: corpus info")
+			return nil
+		}
+		if err := printCorpusInfo(s.out, s.svc); err != nil {
+			writef(s.errw, "error: corpus info: %v\n", err)
+		}
 	default:
-		fmt.Fprintf(s.errw, "error: unknown corpus subcommand %q\n", args[0])
+		writef(s.errw, "error: unknown corpus subcommand %q\n", args[0])
 	}
+	return nil
+}
+
+func printCorpusInfo(w io.Writer, svc *datjit.Service) error {
+	if svc == nil || svc.Corpus() == nil {
+		return fmt.Errorf("corpus: nil provider")
+	}
+	keys := svc.CorpusKeys()
+	total := 0
+	for _, k := range keys {
+		entries, err := svc.Corpus().List("en-US", k)
+		if err != nil {
+			return fmt.Errorf("corpus list %s: %w", k, err)
+		}
+		total += len(entries)
+	}
+	writef(w, "keys: %d\n", len(keys))
+	writef(w, "entries: %d\n", total)
 	return nil
 }
 
 // cmdFormats lists writer format IDs provided by the Service.
 func cmdFormats(s *Session, args []string) error {
 	for _, f := range s.svc.Formats() {
-		fmt.Fprintln(s.out, f)
+		writeln(s.out, f)
 	}
 	return nil
 }
@@ -425,30 +462,30 @@ func cmdFormats(s *Session, args []string) error {
 func cmdHelp(s *Session, args []string) error {
 	if len(args) == 0 {
 		for _, name := range commandNames() {
-			fmt.Fprintln(s.out, Commands[name].Help)
+			writeln(s.out, Commands[name].Help)
 		}
 		return nil
 	}
 	c, ok := Commands[args[0]]
 	if !ok {
-		fmt.Fprintf(s.errw, "error: no help for %q\n", args[0])
+		writef(s.errw, "error: no help for %q\n", args[0])
 		return nil
 	}
-	fmt.Fprintln(s.out, c.Help)
+	writeln(s.out, c.Help)
 	return nil
 }
 
 // cmdHistory dumps the in-memory history slice.
 func cmdHistory(s *Session, args []string) error {
 	for i, line := range s.history {
-		fmt.Fprintf(s.out, "%4d  %s\n", i+1, line)
+		writef(s.out, "%4d  %s\n", i+1, line)
 	}
 	return nil
 }
 
 // cmdClear emits the ANSI clear-screen escape.
 func cmdClear(s *Session, args []string) error {
-	fmt.Fprint(s.out, "\033[2J\033[H")
+	write(s.out, "\033[2J\033[H")
 	return nil
 }
 
@@ -466,4 +503,3 @@ func contains(ss []string, v string) bool {
 	}
 	return false
 }
-

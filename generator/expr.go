@@ -14,7 +14,7 @@ import (
 // few — keeping the AST small makes the evaluator easier to reason about.
 type exprNode struct {
 	kind     exprKind
-	str      string     // name / literal / field path segment
+	str      string // name / literal / field path segment
 	val      value.Value
 	children []exprNode
 	op       string // for binary/unary ops

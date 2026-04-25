@@ -58,7 +58,7 @@ func (e *Engine) applyDefaultChain(entity *model.Entity, row *value.Object, st *
 				return true
 			}
 		}
-		var picked value.Value = value.Null()
+		picked := value.Null()
 		for _, src := range spec.Sources {
 			v := resolvePath(src, env)
 			if v.Kind != value.KindNull {

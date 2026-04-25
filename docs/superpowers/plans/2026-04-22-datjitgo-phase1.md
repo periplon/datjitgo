@@ -6,7 +6,7 @@
 
 **Architecture:** `core/model` + `core/ports` define domain and interfaces. Adapters (`parser`, `generator`, `output`, `corpus`) implement ports. Root `datjit` package is a facade wiring adapters; `repl` and `cmd/datjit` are thin UIs over the facade.
 
-**Tech Stack:** Go 1.22+, `yaml.v3`, `cobra`, `chzyer/readline`, `google/uuid`, `shopspring/decimal`, `google/go-cmp`, stdlib `math/rand/v2` (PCG), `embed`.
+**Tech Stack:** Go 1.26.2, `yaml.v3`, `cobra`, `chzyer/readline`, `google/uuid`, `shopspring/decimal`, `google/go-cmp`, stdlib `math/rand/v2` (PCG), `embed`.
 
 Reference spec: `docs/superpowers/specs/2026-04-22-datjitgo-design.md`
 Reference source: `../datjit/crates/` (Rust crates — read for behavioral parity; do NOT literally port `unsafe`, macros, or Rust-specific idioms; rewrite idiomatically in Go).
@@ -56,29 +56,38 @@ go mod tidy
 - [ ] **Step 3: Makefile**
 
 ```makefile
-.PHONY: build test lint fmt ci clean install
+.PHONY: build check-build test test-fixtures lint fmt check-format ci clean install test-update
 
 GO       := go
+GOFMT    := gofmt
 PKG      := ./...
 BIN      := bin/datjit
 
 build:
 	$(GO) build -o $(BIN) ./cmd/datjit
 
+check-build:
+	$(GO) build $(PKG)
+
 test:
 	$(GO) test -race -count=1 $(PKG)
+
+test-fixtures:
+	$(GO) test -count=1 -run TestFixtures $(PKG)
 
 test-update:
 	$(GO) test -count=1 -run TestFixtures $(PKG) -update
 
 lint:
 	$(GO) vet $(PKG)
-	@which staticcheck > /dev/null 2>&1 && staticcheck $(PKG) || echo "staticcheck not installed (optional)"
 
 fmt:
 	$(GO) fmt $(PKG)
 
-ci: fmt lint test build
+check-format:
+	@test -z "$$($(GOFMT) -l .)" || (echo "gofmt needed:"; $(GOFMT) -l .; exit 1)
+
+ci: check-format lint test test-fixtures check-build
 
 clean:
 	rm -rf bin/ coverage.out
@@ -101,10 +110,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
-        with: { go-version: '1.22' }
-      - run: go vet ./...
-      - run: go test -race ./...
-      - run: go build ./...
+        with: { go-version-file: go.mod }
+      - run: make ci
 ```
 
 - [ ] **Step 5: README stub**
@@ -1452,7 +1459,7 @@ func TestFixtures(t *testing.T) {
 			doc.Seed = &seed
 			ds, err := svc.Generate(doc); if err != nil { t.Fatal(err) }
 			var buf bytes.Buffer
-			if err := svc.Write(ds, "json", &buf, datjit.WriteOpts{Pretty: true}); err != nil { t.Fatal(err) }
+			if err := svc.Write(ds, doc, "json", &buf, datjit.WriteOpts{Pretty: true}); err != nil { t.Fatal(err) }
 			goldenPath := filepath.Join("testdata/golden", name+".json")
 			if *update {
 				os.WriteFile(goldenPath, buf.Bytes(), 0644)
@@ -1683,7 +1690,7 @@ git tag v0.1.0
 - Coverage: every spec section §2–§12 has at least one task (§2 types → Task 5; §3 decorators → 5/7/8; §4 refs → 8; §5 entity-level → 5/8; §6 rules → 8; §7 named types → 5/8; §8 enums → 5/7; §9 tool inference → `inspect --infer-tools` in Task 11 (metadata-only, no codegen per §16); §10 REPL → 12; §11 CLI → 11). LLM sections §14 explicitly deferred per spec §16.
 - No placeholder steps — all code shown inline or referenced to exact Rust source line locations.
 - Type consistency: `Service.Write(ds, doc, format, w, WriteOpts)` matches across Task 9/10/11. `ports.Writer.Write(ds, doc, w, ports.WriteOptions)` consistent.
-- Deferred surface: LLM decorators parse OK but generator raises `ErrFeatureDeferred` if invoked; confirmed in Task 5 via LLM fixture skip in golden harness.
+- Deferred surface: LLM decorators parse OK and now generate through the deterministic stub backend; live providers remain deferred. Top-level reusable record types parse/validate but still generate stable placeholders, while named enums generate normally. Cross-row rules are parsed into raw metadata; expression rules are the enforced phase 1 path.
 
 ---
 

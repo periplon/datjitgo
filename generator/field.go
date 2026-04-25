@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
@@ -145,6 +146,9 @@ func (e *Engine) generateField(entity *model.Entity, f *model.Field, row *value.
 	if d := model.FindDecorator(f.Decorators, "llm"); d != nil {
 		return value.Str(e.stubLLMValue(*d, rng)), nil
 	}
+	if d := findLLM(entity.Meta); d != nil && shouldInheritEntityLLM(f) {
+		return value.Str(e.stubLLMValue(*d, rng)), nil
+	}
 
 	// 3b. @llm_values(N, "prompt") — materialise N candidate strings, then
 	// sample uniformly. Keeps behaviour aligned with @values so @null_rate
@@ -194,9 +198,11 @@ func (e *Engine) generateByType(entity *model.Entity, f *model.Field, t model.Ty
 			idx := sampleEnumIndex(rng, weights)
 			return value.Str(def.Variants[idx].Value), nil
 		}
-		// Named types that point at top-level reusable types are not yet
-		// expanded in phase 1 — synthesise a string placeholder so output
-		// remains stable.
+		if def, ok := st.typeDefs[tt.Name]; ok {
+			return e.generateNamedType(def, row, st, rng)
+		}
+		// Unknown named types should have been rejected by validation. Keep
+		// the old placeholder fallback for direct generator use.
 		return value.Str(tt.Name), nil
 	case model.Reference:
 		return e.generateReference(entity, f, tt, st, rng), nil
@@ -303,6 +309,24 @@ func (e *Engine) generateMap(entity *model.Entity, f *model.Field, t model.Map, 
 	return value.Obj(obj), nil
 }
 
+func (e *Engine) generateNamedType(def *model.Entity, row *value.Object, st *generationState, rng ports.Randomizer) (value.Value, error) {
+	obj := value.NewObject()
+	var firstErr error
+	def.Fields.Each(func(fname string, f *model.Field) bool {
+		val, err := e.generateField(def, f, row, st, rng.Substream("type:"+def.Name+"."+fname))
+		if err != nil {
+			firstErr = err
+			return false
+		}
+		obj.Set(fname, val)
+		return true
+	})
+	if firstErr != nil {
+		return value.Null(), firstErr
+	}
+	return value.Obj(obj), nil
+}
+
 // applyRange clamps numeric values to the @range declared on the field.
 func applyRange(val value.Value, decs []model.Decorator) value.Value {
 	d := model.FindDecorator(decs, "range")
@@ -316,6 +340,9 @@ func applyRange(val value.Value, decs []model.Decorator) value.Value {
 	lo, errLo := strconv.ParseFloat(a.From, 64)
 	hi, errHi := strconv.ParseFloat(a.To, 64)
 	if errLo != nil || errHi != nil {
+		if val.Kind == value.KindTime {
+			return applyTimeRange(val, a)
+		}
 		return val
 	}
 	// Exclusive bounds → shrink by ε.
@@ -347,8 +374,69 @@ func applyRange(val value.Value, decs []model.Decorator) value.Value {
 		if val.F > hi {
 			val.F = hi
 		}
+	case value.KindTime:
+		return applyTimeRange(val, a)
 	}
 	return val
+}
+
+func applyTimeRange(val value.Value, a model.DecoratorArg) value.Value {
+	lo, hi, ok := parseTimeRange(a.From, a.To, val.T)
+	if !ok {
+		return val
+	}
+	if a.LoExcl {
+		lo = lo.Add(time.Nanosecond)
+	}
+	if a.HiExcl {
+		hi = hi.Add(-time.Nanosecond)
+	}
+	if val.T.Before(lo) {
+		val.T = lo
+	}
+	if val.T.After(hi) {
+		val.T = hi
+	}
+	return val
+}
+
+func parseTimeRange(from, to string, sample time.Time) (time.Time, time.Time, bool) {
+	lo, _, okLo := parseRangeTimeBound(from, sample)
+	hi, hiDateOnly, okHi := parseRangeTimeBound(to, sample)
+	if !okLo || !okHi {
+		return time.Time{}, time.Time{}, false
+	}
+	if hiDateOnly {
+		hi = hi.Add(24*time.Hour - time.Nanosecond)
+	}
+	if hi.Before(lo) {
+		return time.Time{}, time.Time{}, false
+	}
+	return lo, hi, true
+}
+
+func parseRangeTimeBound(raw string, sample time.Time) (time.Time, bool, bool) {
+	raw = strings.TrimSpace(raw)
+	layouts := []struct {
+		layout   string
+		dateOnly bool
+	}{
+		{"2006-01-02", true},
+		{time.RFC3339Nano, false},
+		{"2006-01-02T15:04:05", false},
+		{"15:04:05", false},
+	}
+	for _, item := range layouts {
+		t, err := time.Parse(item.layout, raw)
+		if err != nil {
+			continue
+		}
+		if item.layout == "15:04:05" {
+			t = time.Date(sample.Year(), sample.Month(), sample.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), time.UTC)
+		}
+		return t, item.dateOnly, true
+	}
+	return time.Time{}, false, false
 }
 
 // extractRange returns the field's @range as floats with a presence flag.
@@ -504,9 +592,13 @@ func literalAsValue(a model.DecoratorArg) value.Value {
 	return value.Str(a.Raw)
 }
 
-func isDerived(f *model.Field) bool     { return model.HasDecorator(f.Decorators, "derived") }
-func isCompute(f *model.Field) bool     { return len(f.Compute) > 0 || model.HasDecorator(f.Decorators, "compute") }
-func isDefaultChain(f *model.Field) bool { return f.DefaultChain != nil || model.HasDecorator(f.Decorators, "default_chain") }
+func isDerived(f *model.Field) bool { return model.HasDecorator(f.Decorators, "derived") }
+func isCompute(f *model.Field) bool {
+	return len(f.Compute) > 0 || model.HasDecorator(f.Decorators, "compute")
+}
+func isDefaultChain(f *model.Field) bool {
+	return f.DefaultChain != nil || model.HasDecorator(f.Decorators, "default_chain")
+}
 
 func hasDecorator(decs []model.Decorator, name string) bool { return model.HasDecorator(decs, name) }
 

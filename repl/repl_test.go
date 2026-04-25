@@ -87,6 +87,52 @@ func TestReplInspect(t *testing.T) {
 	}
 }
 
+func TestReplInspectInferTools(t *testing.T) {
+	entityMeta := fixture(t, "entity_meta.yaml")
+	out, _ := runSession(t,
+		"load "+entityMeta,
+		"inspect --infer-tools",
+		"exit",
+	)
+	for _, want := range []string{
+		"tools:",
+		"User: list, get, create, update, delete",
+		"AuditLog: list, get",
+	} {
+		if !strings.Contains(out, want) {
+			t.Fatalf("expected inspect --infer-tools output to contain %q; got:\n%s", want, out)
+		}
+	}
+}
+
+func TestReplCorpusListUsesServiceKeys(t *testing.T) {
+	out, _ := runSession(t,
+		"corpus list",
+		"exit",
+	)
+	if !strings.Contains(out, "person.first_names") {
+		t.Fatalf("expected real corpus key in output; got:\n%s", out)
+	}
+	if strings.Contains(out, "person.full") {
+		t.Fatalf("expected fake corpus list to be removed; got:\n%s", out)
+	}
+}
+
+func TestReplCorpusInfoMatchesCLISummary(t *testing.T) {
+	out, _ := runSession(t,
+		"corpus info",
+		"exit",
+	)
+	for _, want := range []string{"keys:", "entries:"} {
+		if !strings.Contains(out, want) {
+			t.Fatalf("expected corpus info to contain %q; got:\n%s", want, out)
+		}
+	}
+	if strings.Contains(out, "TBD") {
+		t.Fatalf("expected corpus info TBD message to be removed; got:\n%s", out)
+	}
+}
+
 func TestReplValidateFailure(t *testing.T) {
 	// Write a schema whose field references a non-existent entity.
 	dir := t.TempDir()
