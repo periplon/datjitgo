@@ -108,7 +108,15 @@ func TestEntitiesTiesByInsertionOrder(t *testing.T) {
 func TestEntitiesThroughCompositeReferences(t *testing.T) {
 	a := model.NewEntity("A")
 	b := model.NewEntity("B")
-	b.Fields.Set("refs", &model.Field{Name: "refs", Type: model.List{Element: model.Reference{Target: "A"}}})
+	b.Fields.Set("refs", &model.Field{Name: "refs", Type: model.Union{Variants: []model.TypeExpr{
+		model.List{Element: model.Reference{Target: "A"}},
+		model.Nullable{Inner: model.Tuple{Elements: []model.TypeExpr{
+			model.Map{
+				Key:   model.Reference{Target: "Missing"},
+				Value: model.Reference{Target: "A"},
+			},
+		}}},
+	}}})
 	doc := mkDoc(b, a)
 
 	got, err := Entities(doc)
@@ -119,6 +127,24 @@ func TestEntitiesThroughCompositeReferences(t *testing.T) {
 	for i := range want {
 		if got[i] != want[i] {
 			t.Fatalf("got %v want %v", got, want)
+		}
+	}
+}
+
+func TestCollectRefsIncludesNestedCompositeTargets(t *testing.T) {
+	fields := model.NewOrderedMap[string, *model.Field]()
+	fields.Set("complex", &model.Field{Name: "complex", Type: model.Tuple{Elements: []model.TypeExpr{
+		model.Map{Key: model.Reference{Target: "Key"}, Value: model.Reference{Target: "Value"}},
+		model.Nullable{Inner: model.Union{Variants: []model.TypeExpr{
+			model.Reference{Target: "A"},
+			model.List{Element: model.Reference{Target: "B"}},
+		}}},
+	}}})
+	seen := map[string]struct{}{}
+	CollectRefs(fields, seen)
+	for _, want := range []string{"Key", "Value", "A", "B"} {
+		if _, ok := seen[want]; !ok {
+			t.Fatalf("missing ref %q in %v", want, seen)
 		}
 	}
 }

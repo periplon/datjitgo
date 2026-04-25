@@ -1,10 +1,13 @@
 package output
 
 import (
+	stderrors "errors"
 	"strings"
 	"testing"
 
+	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/jmcarbo/datjitgo/core/ports"
 	"github.com/jmcarbo/datjitgo/core/value"
 )
 
@@ -57,4 +60,119 @@ func TestScalarAndQuotingHelpers(t *testing.T) {
 	if !strings.Contains(scalar, "x") {
 		t.Fatalf("object scalar=%q", scalar)
 	}
+	if _, err := encodeValueJSON(value.Value{Kind: value.Kind(99)}); err == nil {
+		t.Fatal("expected unknown JSON value kind error")
+	}
+	if _, err := renderValueScalar(value.Value{Kind: value.Kind(99)}); err == nil {
+		t.Fatal("expected unknown scalar value kind error")
+	}
+	if err := wrapIO(nil, "noop"); err != nil {
+		t.Fatalf("nil wrapIO=%v", err)
+	}
+	err = writeAll(errorWriter{}, []byte("x"))
+	if err == nil {
+		t.Fatal("expected write error")
+	}
+	if !stderrors.Is(err, errors.ErrIO) {
+		t.Fatalf("expected IO error kind, got %v", err)
+	}
+}
+
+func TestOrderHelpersFallbacksAndFilters(t *testing.T) {
+	ds := value.NewDataset()
+	first := value.NewObject()
+	first.Set("b", value.Int(2))
+	first.Set("a", value.Int(1))
+	ds.Entities.Set("Second", []*value.Object{first})
+	ds.Entities.Set("First", []*value.Object{{}})
+
+	doc := model.NewDocument()
+	doc.Entities.Set("First", model.NewEntity("First"))
+	doc.Entities.Set("Second", model.NewEntity("Second"))
+	if got := strings.Join(entityOrder(ds, doc, ""), ","); got != "First,Second" {
+		t.Fatalf("document entity order=%q", got)
+	}
+	if got := entityOrder(ds, nil, "Missing"); got != nil {
+		t.Fatalf("missing filter should return nil, got %v", got)
+	}
+	if got := strings.Join(entityOrder(ds, nil, "Second"), ","); got != "Second" {
+		t.Fatalf("filtered order=%q", got)
+	}
+	if got := strings.Join(entityOrder(ds, nil, ""), ","); got != "Second,First" {
+		t.Fatalf("dataset entity order=%q", got)
+	}
+	if got := strings.Join(fieldOrder([]*value.Object{first}, nil, "Second"), ","); got != "b,a" {
+		t.Fatalf("row field order=%q", got)
+	}
+	if got := fieldOrder(nil, nil, "Second"); got != nil {
+		t.Fatalf("empty field order=%v", got)
+	}
+}
+
+func TestWritersHandleNilDatasetAndValidationBranches(t *testing.T) {
+	doc := model.NewDocument()
+	doc.Entities.Set("User", model.NewEntity("User"))
+
+	var buf strings.Builder
+	if err := NewJSON().Write(nil, doc, &buf, ports.WriteOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	if got := buf.String(); got != "{}\n" {
+		t.Fatalf("nil JSON=%q", got)
+	}
+	buf.Reset()
+	if err := NewYAML().Write(nil, doc, &buf, ports.WriteOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	if got := buf.String(); got != "{}\n" {
+		t.Fatalf("nil YAML=%q", got)
+	}
+	buf.Reset()
+	if err := NewNDJSON().Write(nil, doc, &buf, ports.WriteOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	if buf.Len() != 0 {
+		t.Fatalf("nil NDJSON=%q", buf.String())
+	}
+	if err := NewCSV().Write(nil, doc, &buf, ports.WriteOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	if err := NewSQL().Write(nil, doc, &buf, ports.WriteOptions{}); err != nil {
+		t.Fatal(err)
+	}
+
+	ds := value.NewDataset()
+	ds.Entities.Set("User", []*value.Object{})
+	if err := NewSQL().Write(ds, doc, &buf, ports.WriteOptions{SQLDialect: "oracle"}); err == nil {
+		t.Fatal("expected bad SQL dialect error")
+	}
+}
+
+func TestWritersSurfaceUnknownValueKindErrors(t *testing.T) {
+	doc := model.NewDocument()
+	user := model.NewEntity("User")
+	user.Fields.Set("bad", &model.Field{Name: "bad", Type: model.Primitive{Kind: model.PrimAny}})
+	doc.Entities.Set("User", user)
+	row := value.NewObject()
+	row.Set("bad", value.Value{Kind: value.Kind(99)})
+	ds := value.NewDataset()
+	ds.Entities.Set("User", []*value.Object{row})
+
+	for name, write := range map[string]func() error{
+		"json":   func() error { return NewJSON().Write(ds, doc, &strings.Builder{}, ports.WriteOptions{}) },
+		"ndjson": func() error { return NewNDJSON().Write(ds, doc, &strings.Builder{}, ports.WriteOptions{}) },
+		"csv":    func() error { return NewCSV().Write(ds, doc, &strings.Builder{}, ports.WriteOptions{}) },
+		"yaml":   func() error { return NewYAML().Write(ds, doc, &strings.Builder{}, ports.WriteOptions{}) },
+		"sql":    func() error { return NewSQL().Write(ds, doc, &strings.Builder{}, ports.WriteOptions{}) },
+	} {
+		if err := write(); err == nil {
+			t.Fatalf("%s: expected unknown kind error", name)
+		}
+	}
+}
+
+type errorWriter struct{}
+
+func (errorWriter) Write([]byte) (int, error) {
+	return 0, stderrors.New("boom")
 }

@@ -276,3 +276,88 @@ func TestDecoratorParserInvalidInputs(t *testing.T) {
 		}
 	}
 }
+
+func TestDecoratorParserQuotedAndRejoinedArguments(t *testing.T) {
+	typ, decs, err := splitTypeAndDecorators(`string @llm_values('first, second', model: "local", enabled=true) @note`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if typ != "string" || len(decs) != 2 {
+		t.Fatalf("typ=%q decs=%+v", typ, decs)
+	}
+	args := decs[0].Args
+	if len(args) != 3 {
+		t.Fatalf("args=%+v", args)
+	}
+	if args[0].Kind != model.ArgLiteral || args[0].Literal != "first, second" {
+		t.Fatalf("rejoined quoted first arg: %+v", args[0])
+	}
+	if args[1].Kind != model.ArgKV || args[1].Key != "model" || args[1].Value != "local" {
+		t.Fatalf("colon kv: %+v", args[1])
+	}
+	if args[2].Kind != model.ArgKV || args[2].Key != "enabled" || args[2].Value != "true" {
+		t.Fatalf("equals kv: %+v", args[2])
+	}
+}
+
+func TestDecoratorParserAtSignInsideTypeAndQuotes(t *testing.T) {
+	typ, decs, err := splitTypeAndDecorators(`string @pattern("user@example.com,admin@example.com") @default('@literal')`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if typ != "string" || len(decs) != 2 {
+		t.Fatalf("typ=%q decs=%+v", typ, decs)
+	}
+	if decs[0].Args[0].Literal != "user@example.com,admin@example.com" {
+		t.Fatalf("pattern literal: %+v", decs[0].Args[0])
+	}
+	if decs[1].Args[0].Literal != "@literal" {
+		t.Fatalf("default literal: %+v", decs[1].Args[0])
+	}
+}
+
+func TestDecoratorParserMoreInvalidInputs(t *testing.T) {
+	if _, _, err := splitTypeAndDecorators(""); err == nil {
+		t.Fatal("expected empty field specification error")
+	}
+	if _, _, err := splitTypeAndDecorators("string )"); err == nil {
+		t.Fatal("expected unbalanced close error")
+	}
+	if _, _, err := splitTypeAndDecorators("string @bad)"); err == nil {
+		t.Fatal("expected decorator parse error")
+	}
+	if _, err := parseDecorator("plain"); err == nil {
+		t.Fatal("expected missing @ error")
+	}
+	if _, err := parseDecorator("@bad("); err == nil {
+		t.Fatal("expected unclosed argument error")
+	}
+	if _, err := splitTopLevel(`"unterminated`, ','); err == nil {
+		t.Fatal("expected unterminated split error")
+	}
+	if _, err := splitTopLevel(`)`, ','); err == nil {
+		t.Fatal("expected unbalanced split error")
+	}
+}
+
+func TestDecoratorParserInternalHelpers(t *testing.T) {
+	parts := rejoinQuotedFirst([]string{`"closed"`, "next"})
+	if len(parts) != 2 || parts[0] != `"closed"` {
+		t.Fatalf("already closed quote should not rejoin: %+v", parts)
+	}
+	parts = rejoinQuotedFirst([]string{"ident", "next"})
+	if len(parts) != 2 || parts[0] != "ident" {
+		t.Fatalf("non-quoted first should not rejoin: %+v", parts)
+	}
+	for _, raw := range []string{"a==b", "a!=b", "a<=b", "a>=b", "=b", "not-key!=x"} {
+		if idx := findKVEquals(raw); idx != -1 {
+			t.Fatalf("%q should not be kv, idx=%d", raw, idx)
+		}
+	}
+	if idx := findKVEquals("alpha_1=value"); idx <= 0 {
+		t.Fatalf("expected kv index, got %d", idx)
+	}
+	if isIdent("") || isIdent("1abc") || isIdent("a-b") {
+		t.Fatal("invalid identifiers accepted")
+	}
+}

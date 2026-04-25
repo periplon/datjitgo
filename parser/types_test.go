@@ -302,3 +302,79 @@ func TestParseTypeExpr_EmptyError(t *testing.T) {
 		t.Fatal("expected error for blank type")
 	}
 }
+
+func TestParseTypeExpr_AdditionalBranches(t *testing.T) {
+	cases := []struct {
+		src  string
+		want any
+	}{
+		{"float(64)", model.PrimFloat},
+		{"null", model.PrimNull},
+		{"any", model.PrimAny},
+	}
+	for _, tc := range cases {
+		t.Run(tc.src, func(t *testing.T) {
+			te := mustParseType(t, tc.src)
+			p, ok := te.(model.Primitive)
+			if !ok {
+				t.Fatalf("not primitive: %T", te)
+			}
+			if p.Kind != tc.want.(model.PrimKind) {
+				t.Fatalf("kind=%v want %v", p.Kind, tc.want)
+			}
+		})
+	}
+
+	many := mustParseType(t, "->[ User ]").(model.Reference)
+	if many.Target != "User" || !many.Many {
+		t.Fatalf("spaced has-many reference: %+v", many)
+	}
+
+	complexMap := mustParseType(t, `{string: {string: [int]}}`).(model.Map)
+	if _, ok := complexMap.Value.(model.Map); !ok {
+		t.Fatalf("nested map value: %T", complexMap.Value)
+	}
+
+	union := mustParseType(t, `[int] | [string]`).(model.Union)
+	if len(union.Variants) != 2 {
+		t.Fatalf("union variants: %+v", union)
+	}
+}
+
+func TestParseTypeExpr_MoreInvalidInputs(t *testing.T) {
+	cases := []string{
+		"<->",
+		"->[]",
+		"decimal(10)",
+		"float(nope)",
+	}
+	for _, src := range cases {
+		if _, err := parseTypeExpr(src); err == nil {
+			t.Errorf("expected parse error for %q", src)
+		}
+	}
+}
+
+func TestTypeParserInternalHelpers(t *testing.T) {
+	if ns, tag := splitSemanticName("Not.lower"); ns != "" || tag != "" {
+		t.Fatal("uppercase dotted name should not be semantic")
+	}
+	if isLowerIdent("") || isLowerIdent("1abc") || isLowerIdent("abc-def") {
+		t.Fatal("invalid lower identifiers accepted")
+	}
+	if isLowerIdentDotted("") || isLowerIdentDotted("good.Bad") || isLowerIdentDotted("good.") {
+		t.Fatal("invalid dotted identifiers accepted")
+	}
+	if matchesEnclosure("[int] | [string]", '[', ']') {
+		t.Fatal("union should not match a single list enclosure")
+	}
+	if matchesEnclosure("[int", '[', ']') {
+		t.Fatal("missing closer should not match")
+	}
+	if _, err := firstTopLevel(")", ':'); err == nil {
+		t.Fatal("expected unbalanced bracket error")
+	}
+	if idx, err := firstTopLevel(`"a:b": int`, ':'); err != nil || idx != 5 {
+		t.Fatalf("quoted first top-level separator idx=%d err=%v", idx, err)
+	}
+}

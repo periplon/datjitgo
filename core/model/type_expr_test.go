@@ -22,9 +22,18 @@ func TestPrimKindString(t *testing.T) {
 	}{
 		{PrimString, "string"},
 		{PrimInt, "int"},
+		{PrimFloat, "float"},
 		{PrimBool, "bool"},
+		{PrimDatetime, "datetime"},
+		{PrimDate, "date"},
+		{PrimTime, "time"},
+		{PrimDuration, "duration"},
 		{PrimUUID, "uuid"},
+		{PrimBytes, "bytes"},
 		{PrimDecimal, "decimal"},
+		{PrimNull, "null"},
+		{PrimAny, "any"},
+		{PrimKind(99), "?"},
 	}
 	for _, c := range cases {
 		if got := c.k.String(); got != c.want {

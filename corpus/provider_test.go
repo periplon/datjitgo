@@ -303,6 +303,36 @@ func TestParseEntriesMixedFormats(t *testing.T) {
 	}
 }
 
+func TestParseEntriesSkipsEmptyNamesAndRejectsUnexpectedTokens(t *testing.T) {
+	got, err := parseEntries([]byte(`["", {"weight": 2}, true]`))
+	if err == nil {
+		t.Fatal("expected unexpected token error")
+	}
+	if len(got) != 0 {
+		t.Fatalf("expected no returned entries on error, got %+v", got)
+	}
+	if _, err := parseEntries([]byte(`not-json`)); err == nil {
+		t.Fatal("expected invalid JSON error")
+	}
+}
+
+func TestBytesTrimSpaceAndIsSpace(t *testing.T) {
+	if got := string(bytesTrimSpace([]byte(" \t\n\rvalue\r\n "))); got != "value" {
+		t.Fatalf("trimmed=%q", got)
+	}
+	if got := string(bytesTrimSpace([]byte("   "))); got != "" {
+		t.Fatalf("all-space trim=%q", got)
+	}
+	for _, c := range []byte{' ', '\t', '\n', '\r'} {
+		if !isSpace(c) {
+			t.Fatalf("%q should be space", c)
+		}
+	}
+	if isSpace('x') {
+		t.Fatal("x should not be space")
+	}
+}
+
 func TestEffectiveWeight(t *testing.T) {
 	cases := []struct {
 		in, want float64

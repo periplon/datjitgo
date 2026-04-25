@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -24,6 +25,19 @@ func TestInternalGenerateHelpers(t *testing.T) {
 	if _, err := parseVolumeFlags([]string{"bad"}); err == nil {
 		t.Fatal("expected malformed volume error")
 	}
+	if _, err := parseVolumeFlags([]string{"User="}); err == nil {
+		t.Fatal("expected empty volume count error")
+	}
+	if _, err := parseVolumeFlags([]string{"User=-1"}); err == nil {
+		t.Fatal("expected negative volume error")
+	}
+	emptyVols, err := parseVolumeFlags([]string{"  "})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if emptyVols == nil || len(emptyVols) != 0 {
+		t.Fatalf("blank volume item should produce empty map, got %v", emptyVols)
+	}
 
 	svc := datjit.NewDefault()
 	if !formatSupported(svc, "json") {
@@ -42,6 +56,16 @@ func TestInternalGenerateHelpers(t *testing.T) {
 	}
 	if !strings.Contains(buf.String(), "User=5") {
 		t.Fatalf("expected midpoint volume, got %q", buf.String())
+	}
+	buf.Reset()
+	if err := printGeneratePlan(&buf, doc, map[string]int{"User": 7}); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(buf.String(), "User=7") {
+		t.Fatalf("expected override volume, got %q", buf.String())
+	}
+	if got := plannedVolume("Missing", doc, nil); got != 10 {
+		t.Fatalf("default planned volume=%d", got)
 	}
 }
 
@@ -88,6 +112,12 @@ func TestInternalOpenOutputAndParseSchemaFile(t *testing.T) {
 	if doc.Domain != "cli" || doc.Entities.Len() != 1 {
 		t.Fatalf("unexpected doc: %+v", doc)
 	}
+	if _, err := parseSchemaFile(datjit.NewDefault(), filepath.Join(dir, "missing.yaml")); err == nil {
+		t.Fatal("expected open error for missing schema")
+	}
+	if _, _, err := openOutput(filepath.Join(dir, "missing", "out.txt")); err == nil {
+		t.Fatal("expected create error for missing parent directory")
+	}
 }
 
 func TestInternalCorpusHelpers(t *testing.T) {
@@ -123,6 +153,9 @@ func TestInternalInspectHelpers(t *testing.T) {
 	if renderVolume(model.VolumeSpec{Min: 1, Max: 3}) != "1..3" {
 		t.Fatal("range volume rendering mismatch")
 	}
+	if renderVolume(model.VolumeSpec{Exact: 4}) != "4" {
+		t.Fatal("exact volume rendering mismatch")
+	}
 
 	readonly := model.NewEntity("Readonly")
 	readonly.Meta = []model.Decorator{{Name: "readonly"}}
@@ -134,13 +167,20 @@ func TestInternalInspectHelpers(t *testing.T) {
 	if got := strings.Join(inferToolSurface(immutable), ","); got != "list,get,create" {
 		t.Fatalf("immutable tools: %s", got)
 	}
+	mutable := model.NewEntity("Mutable")
+	if got := strings.Join(inferToolSurface(mutable), ","); got != "list,get,create,update,delete" {
+		t.Fatalf("default tools: %s", got)
+	}
 
 	doc := model.NewDocument()
 	doc.Domain = "inspect"
+	doc.Version = "1"
+	doc.Enums.Set("Status", model.EnumDef{Variants: []model.EnumVariant{{Value: "active"}}})
 	user := model.NewEntity("User")
 	user.Meta = []model.Decorator{{Name: "readonly"}}
 	user.Fields.Set("id", &model.Field{Name: "id", Type: model.Primitive{Kind: model.PrimInt}})
 	doc.Entities.Set("User", user)
+	doc.Rules = append(doc.Rules, model.Rule{Expr: "User.id > 0", Severity: model.RuleWarn})
 	insp, err := datjit.NewDefault().Inspect(doc)
 	if err != nil {
 		t.Fatal(err)
@@ -151,6 +191,9 @@ func TestInternalInspectHelpers(t *testing.T) {
 	}
 	if !strings.Contains(buf.String(), "domain: inspect") || !strings.Contains(buf.String(), "tools:") {
 		t.Fatalf("unexpected inspection output: %q", buf.String())
+	}
+	if !strings.Contains(buf.String(), "enums (1):") || !strings.Contains(buf.String(), "rules (1):") {
+		t.Fatalf("expected enums and rules in inspection output: %q", buf.String())
 	}
 }
 
@@ -230,6 +273,45 @@ func TestInternalCobraCommandsExecuteRunEPaths(t *testing.T) {
 	}
 }
 
+func TestInternalCobraCommandErrorPaths(t *testing.T) {
+	dir := t.TempDir()
+	schemaPath := filepath.Join(dir, "schema.yaml")
+	if err := os.WriteFile(schemaPath, []byte("domain: cli\nentities:\n  User:\n    id: int\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+
+	runErr := func(args ...string) error {
+		t.Helper()
+		root := newRootCmd()
+		var out bytes.Buffer
+		root.SetOut(&out)
+		root.SetErr(&out)
+		root.SetArgs(args)
+		return root.Execute()
+	}
+
+	for _, tc := range [][]string{
+		{"generate"},
+		{"generate", schemaPath, "--format", "bogus"},
+		{"generate", schemaPath, "--volume", "User=nope"},
+		{"inspect"},
+		{"validate"},
+	} {
+		if err := runErr(tc...); err == nil {
+			t.Fatalf("%v: expected error", tc)
+		}
+	}
+	if err := runErr("generate", filepath.Join(dir, "missing.yaml")); err == nil {
+		t.Fatal("expected missing schema error")
+	}
+	if err := runErr("inspect", filepath.Join(dir, "missing.yaml")); err == nil {
+		t.Fatal("expected inspect missing schema error")
+	}
+	if err := runErr("validate", filepath.Join(dir, "missing.yaml")); err == nil {
+		t.Fatal("expected validate missing schema error")
+	}
+}
+
 func TestInternalReplPreload(t *testing.T) {
 	dir := t.TempDir()
 	schemaPath := filepath.Join(dir, "schema.yaml")
@@ -242,4 +324,56 @@ func TestInternalReplPreload(t *testing.T) {
 		t.Fatalf("preload failed: %+v", sess.State())
 	}
 	preload(sess, filepath.Join(dir, "missing.yaml"))
+}
+
+func TestInternalCmdReplRunsScriptedStdin(t *testing.T) {
+	inR, inW, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	outR, outW, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	errR, errW, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	oldIn, oldOut, oldErr := os.Stdin, os.Stdout, os.Stderr
+	os.Stdin, os.Stdout, os.Stderr = inR, outW, errW
+	t.Cleanup(func() {
+		os.Stdin, os.Stdout, os.Stderr = oldIn, oldOut, oldErr
+		_ = inR.Close()
+		_ = outR.Close()
+		_ = errR.Close()
+	})
+
+	if _, err := inW.WriteString("help\nexit\n"); err != nil {
+		t.Fatal(err)
+	}
+	if err := inW.Close(); err != nil {
+		t.Fatal(err)
+	}
+
+	cmd := cmdRepl()
+	if err := cmd.Execute(); err != nil {
+		t.Fatal(err)
+	}
+	_ = outW.Close()
+	_ = errW.Close()
+	outBytes, err := io.ReadAll(outR)
+	if err != nil {
+		t.Fatal(err)
+	}
+	errBytes, err := io.ReadAll(errR)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Contains(outBytes, []byte("load <path>")) {
+		t.Fatalf("expected help output, got stdout=%q stderr=%q", outBytes, errBytes)
+	}
+	if len(errBytes) != 0 {
+		t.Fatalf("unexpected stderr: %q", errBytes)
+	}
 }

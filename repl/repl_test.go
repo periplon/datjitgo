@@ -219,21 +219,64 @@ func TestReplShowSetCorpusFormatsHistoryAndClear(t *testing.T) {
 
 func TestReplCommandErrorsStayInSession(t *testing.T) {
 	out, errw := runSession(t,
+		"# ignored comment",
+		"   ",
+		"unknowncmd",
+		"load",
+		"load /definitely/missing.yaml",
+		"reload",
 		"show bad",
 		"set seed nope",
 		"set format bogus",
 		"set pretty maybe",
 		"set unknown value",
+		"set volume User=-1",
 		"corpus",
 		"corpus info",
 		"corpus nope",
 		"help nope",
 		"exit",
 	)
-	for _, want := range []string{"no schema loaded", "invalid seed", "unknown format", "pretty must", "unknown set option", "usage: corpus", "unknown corpus", "no help"} {
+	for _, want := range []string{"unknown command", "usage: load", "open /definitely/missing.yaml", "nothing to reload", "no schema loaded", "invalid seed", "unknown format", "pretty must", "unknown set option", "usage: corpus", "unknown corpus", "no help"} {
 		if !strings.Contains(errw, want) {
 			t.Fatalf("stderr missing %q:\n%s\nstdout:\n%s", want, errw, out)
 		}
+	}
+}
+
+func TestReplGenerateWritesConfiguredOutputFile(t *testing.T) {
+	minimal := fixture(t, "minimal.yaml")
+	outPath := filepath.Join(t.TempDir(), "nested", "users.ndjson")
+	out, errw := runSession(t,
+		"load "+minimal,
+		"set format ndjson",
+		"set output "+outPath,
+		"generate",
+		"exit",
+	)
+	if errw != "" {
+		t.Fatalf("unexpected stderr:\n%s\nstdout:\n%s", errw, out)
+	}
+	body, err := os.ReadFile(outPath)
+	if err != nil {
+		t.Fatalf("read generated output: %v", err)
+	}
+	if !bytes.Contains(body, []byte(`"id"`)) || !bytes.Contains(body, []byte(`"email"`)) {
+		t.Fatalf("generated file missing expected row fields:\n%s", body)
+	}
+}
+
+func TestReplRunScriptedHonorsCancelledContext(t *testing.T) {
+	sess := New(datjit.NewDefault())
+	var out, errw bytes.Buffer
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	err := sess.Run(ctx, strings.NewReader("help\n"), &out, &errw)
+	if err != nil {
+		t.Fatalf("Run: %v", err)
+	}
+	if out.Len() != 0 || errw.Len() != 0 {
+		t.Fatalf("cancelled run produced output=%q err=%q", out.String(), errw.String())
 	}
 }
 
@@ -290,6 +333,37 @@ rules:
 	}
 	if out.Len() == 0 || errw.Len() == 0 {
 		t.Fatalf("expected both stdout and stderr, out=%q err=%q", out.String(), errw.String())
+	}
+}
+
+func TestReplGenerateErrorBranches(t *testing.T) {
+	svc := datjit.NewDefault()
+	doc, err := svc.Parse(strings.NewReader(miniReplSchema), "mini.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var out, errw bytes.Buffer
+	s := New(svc)
+	s.out = &out
+	s.errw = &errw
+	s.state.Doc = doc
+
+	blocker := filepath.Join(t.TempDir(), "file")
+	if err := os.WriteFile(blocker, []byte("not a dir"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	s.state.Output = filepath.Join(blocker, "out.json")
+	_ = cmdGenerate(s, nil)
+	if !strings.Contains(errw.String(), "open output") {
+		t.Fatalf("expected open output error, got %q", errw.String())
+	}
+
+	errw.Reset()
+	s.state.Output = ""
+	s.state.Format = "bogus"
+	_ = cmdGenerate(s, nil)
+	if !strings.Contains(errw.String(), "write") {
+		t.Fatalf("expected write error, got %q", errw.String())
 	}
 }
 
