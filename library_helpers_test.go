@@ -128,6 +128,34 @@ func TestGenerateFileHelpers(t *testing.T) {
 	}
 }
 
+func TestWriteFileHelpersValidateAndWrite(t *testing.T) {
+	dir := t.TempDir()
+	schemaPath := filepath.Join(dir, "schema.yaml")
+	if err := os.WriteFile(schemaPath, []byte(helperSchema), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	jsonPath := filepath.Join(dir, "out.json")
+	if err := datjit.WriteJSONFile(jsonPath, schemaPath, datjit.WithSeed(11)); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(jsonPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(raw), `"User"`) {
+		t.Fatalf("json = %s", raw)
+	}
+
+	invalidPath := filepath.Join(dir, "invalid.yaml")
+	if err := os.WriteFile(invalidPath, []byte("domain: bad\nentities:\n  User:\n    field: missing.type\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := datjit.WriteFile(filepath.Join(dir, "bad.json"), invalidPath, "json"); !datjit.IsValidationError(err) {
+		t.Fatalf("expected validation error, got %v", err)
+	}
+}
+
 func TestRootErrorPredicates(t *testing.T) {
 	if !datjit.IsParseError(derrs.ErrParse) {
 		t.Fatal("parse predicate")

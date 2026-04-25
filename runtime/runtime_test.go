@@ -49,6 +49,26 @@ func TestDefaultGenerateEntityReturnsOnlyRequestedEntity(t *testing.T) {
 	}
 }
 
+func TestDefaultGenerateRowsUsesRowsRequest(t *testing.T) {
+	ctx := context.Background()
+	doc := testDocument()
+	rt := NewDefault()
+
+	rows, err := rt.GenerateRows(ctx, RowsRequest{
+		Document: doc,
+		Entity:   "users",
+		Seed:     int64Ptr(13),
+		Locale:   "en-US",
+		Volumes:  map[string]int{"users": 4},
+	})
+	if err != nil {
+		t.Fatalf("GenerateRows returned error: %v", err)
+	}
+	if got := len(rows); got != 4 {
+		t.Fatalf("generated rows = %d, want 4", got)
+	}
+}
+
 func TestDefaultGenerateDocumentCanFilterEntity(t *testing.T) {
 	ctx := context.Background()
 	doc := testDocument()

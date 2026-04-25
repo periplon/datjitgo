@@ -6,9 +6,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
-	"time"
 
 	"github.com/jmcarbo/datjitgo"
 	"github.com/jmcarbo/datjitgo/core/value"
@@ -19,20 +17,9 @@ import (
 func MustGenerate(t testing.TB, schema string, opts ...datjit.Option) *value.Dataset {
 	t.Helper()
 
-	svc, err := datjit.New(opts...)
+	ds, _, err := datjit.GenerateString(schema, opts...)
 	if err != nil {
-		t.Fatalf("datjittest: create service: %v", err)
-	}
-	doc, err := svc.Parse(strings.NewReader(schema), "datjittest schema")
-	if err != nil {
-		t.Fatalf("datjittest: parse schema: %v", err)
-	}
-	if err := svc.Validate(doc); err != nil {
-		t.Fatalf("datjittest: validate schema: %v", err)
-	}
-	ds, err := svc.Generate(doc)
-	if err != nil {
-		t.Fatalf("datjittest: generate dataset: %v", err)
+		t.Fatalf("datjittest: generate schema: %v", err)
 	}
 	return ds
 }
@@ -43,23 +30,11 @@ func MustGenerate(t testing.TB, schema string, opts ...datjit.Option) *value.Dat
 func MustRows(t testing.TB, schema string, entity string, opts ...datjit.Option) []map[string]any {
 	t.Helper()
 
-	ds := MustGenerate(t, schema, opts...)
-	rows, ok := ds.Entities.Get(entity)
-	if !ok {
-		t.Fatalf("datjittest: entity %q not found", entity)
+	rows, err := datjit.GenerateRowsString(schema, entity, opts...)
+	if err != nil {
+		t.Fatalf("datjittest: generate rows for %q: %v", entity, err)
 	}
-	out := make([]map[string]any, 0, len(rows))
-	for _, row := range rows {
-		m := make(map[string]any)
-		if row != nil {
-			row.Each(func(k string, v value.Value) bool {
-				m[k] = valueToAny(v)
-				return true
-			})
-		}
-		out = append(out, m)
-	}
-	return out
+	return rows
 }
 
 // AssertGoldenJSON compares the stable pretty JSON generated from schema with
@@ -94,64 +69,9 @@ func UpdateGoldenJSON(t testing.TB, goldenPath string, schema string, opts ...da
 func generateJSON(t testing.TB, schema string, opts ...datjit.Option) []byte {
 	t.Helper()
 
-	svc, err := datjit.New(opts...)
+	raw, err := datjit.GenerateJSONString(schema, opts...)
 	if err != nil {
-		t.Fatalf("datjittest: create service: %v", err)
+		t.Fatalf("datjittest: generate JSON: %v", err)
 	}
-	doc, err := svc.Parse(strings.NewReader(schema), "datjittest schema")
-	if err != nil {
-		t.Fatalf("datjittest: parse schema: %v", err)
-	}
-	if err := svc.Validate(doc); err != nil {
-		t.Fatalf("datjittest: validate schema: %v", err)
-	}
-	ds, err := svc.Generate(doc)
-	if err != nil {
-		t.Fatalf("datjittest: generate dataset: %v", err)
-	}
-
-	var buf bytes.Buffer
-	if err := svc.Write(ds, doc, "json", &buf, datjit.WriteOpts{Pretty: true}); err != nil {
-		t.Fatalf("datjittest: render JSON: %v", err)
-	}
-	return buf.Bytes()
-}
-
-func valueToAny(v value.Value) any {
-	switch v.Kind {
-	case value.KindNull:
-		return nil
-	case value.KindBool:
-		return v.B
-	case value.KindInt:
-		return v.I
-	case value.KindFloat:
-		return v.F
-	case value.KindString:
-		return v.S
-	case value.KindUUID:
-		return v.U.String()
-	case value.KindTime:
-		return v.T.UTC().Format(time.RFC3339Nano)
-	case value.KindDecimal:
-		return v.D.String()
-	case value.KindList:
-		out := make([]any, 0, len(v.L))
-		for _, item := range v.L {
-			out = append(out, valueToAny(item))
-		}
-		return out
-	case value.KindObject:
-		if v.O == nil {
-			return nil
-		}
-		out := make(map[string]any, v.O.Len())
-		v.O.Each(func(k string, child value.Value) bool {
-			out[k] = valueToAny(child)
-			return true
-		})
-		return out
-	default:
-		return nil
-	}
+	return raw
 }

@@ -116,7 +116,18 @@ func WriteFile(outputPath, schemaPath, format string, opts ...Option) error {
 	if err != nil {
 		return err
 	}
-	ds, doc, err := svc.GenerateFile(schemaPath)
+	docBytes, err := os.ReadFile(schemaPath)
+	if err != nil {
+		return &errors.Error{Kind: errors.KindIO, Message: "open " + schemaPath + ": " + err.Error(), Cause: err}
+	}
+	doc, err := svc.Parse(bytes.NewReader(docBytes), schemaPath)
+	if err != nil {
+		return err
+	}
+	if err := svc.Validate(doc); err != nil {
+		return err
+	}
+	ds, err := svc.Generate(doc)
 	if err != nil {
 		return err
 	}

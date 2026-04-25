@@ -16,7 +16,17 @@ import (
 type Runtime interface {
 	GenerateDocument(ctx context.Context, doc *model.Document, opts ...RunOption) (*value.Dataset, error)
 	GenerateEntity(ctx context.Context, doc *model.Document, entity string, opts ...RunOption) ([]*value.Object, error)
+	GenerateRows(ctx context.Context, req RowsRequest) ([]*value.Object, error)
 	GenerateValue(ctx context.Context, req ValueRequest) (value.Value, error)
+}
+
+// RowsRequest describes a row generation request for one entity.
+type RowsRequest struct {
+	Document *model.Document
+	Entity   string
+	Seed     *int64
+	Locale   string
+	Volumes  map[string]int
 }
 
 // ValueRequest describes a single value generation request.
@@ -164,6 +174,21 @@ func (r *Default) GenerateEntity(ctx context.Context, doc *model.Document, entit
 	}
 	rows, _ := ds.Entities.Get(entity)
 	return rows, nil
+}
+
+// GenerateRows validates and generates rows for the entity named in req.
+func (r *Default) GenerateRows(ctx context.Context, req RowsRequest) ([]*value.Object, error) {
+	opts := []RunOption{}
+	if req.Seed != nil {
+		opts = append(opts, WithSeed(*req.Seed))
+	}
+	if req.Locale != "" {
+		opts = append(opts, WithLocale(req.Locale))
+	}
+	if len(req.Volumes) > 0 {
+		opts = append(opts, WithVolumes(req.Volumes))
+	}
+	return r.GenerateEntity(ctx, req.Document, req.Entity, opts...)
 }
 
 // GenerateValue compiles a single-field temporary document and returns the
