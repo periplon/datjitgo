@@ -1,13 +1,153 @@
 package generator
 
 import (
+	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
+	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
 	"github.com/jmcarbo/datjitgo/core/ports"
 	"github.com/jmcarbo/datjitgo/core/value"
 )
+
+// generateLLMValue returns live provider output when an LLM provider has been
+// configured. Otherwise it preserves the deterministic offline stub behavior.
+func (e *Engine) generateLLMValue(d model.Decorator, st *generationState, rng ports.Randomizer) (string, error) {
+	if e.llm == nil {
+		return e.stubLLMValue(d, rng), nil
+	}
+	req, err := buildLLMRequest(st.llmConfig, d)
+	if err != nil {
+		return "", err
+	}
+	text, err := e.llm.Complete(context.Background(), req)
+	if err != nil {
+		return "", err
+	}
+	if strings.TrimSpace(text) == "" {
+		return "", &errors.Error{Kind: errors.KindGeneration, Message: "llm provider returned empty content"}
+	}
+	return text, nil
+}
+
+// generateLLMValues returns N live completions when configured, or N
+// deterministic stub values otherwise.
+func (e *Engine) generateLLMValues(d model.Decorator, st *generationState, rng ports.Randomizer) ([]string, error) {
+	n, prompt := llmValuesArgs(d)
+	if e.llm == nil {
+		return e.llmValuesExpand(*withLLMValuesArgs(d, n, prompt), rng), nil
+	}
+	out := make([]string, 0, n)
+	for i := 0; i < n; i++ {
+		item := d
+		item.Args = overrideLLMPrompt(item.Args, fmt.Sprintf("%s\nReturn option %d of %d.", prompt, i+1, n))
+		text, err := e.generateLLMValue(item, st, rng.Substream("llm_values:item:"+strconv.Itoa(i)))
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, text)
+	}
+	return out, nil
+}
+
+func buildLLMRequest(cfg *model.LLMConfig, d model.Decorator) (ports.LLMRequest, error) {
+	var req ports.LLMRequest
+	if cfg != nil {
+		req.Provider = cfg.Provider
+		req.Endpoint = cfg.Endpoint
+		req.Model = cfg.Model
+		req.APIKey = cfg.APIKey
+		req.Temperature = cfg.Temperature
+		req.MaxTokens = cfg.MaxTokens
+		req.TimeoutSecs = cfg.TimeoutSecs
+	}
+	if len(d.Args) > 0 {
+		req.Prompt = decoratorLiteralString(d.Args[0])
+	}
+	for _, arg := range d.Args[1:] {
+		if arg.Kind != model.ArgKV {
+			continue
+		}
+		val := strings.TrimSpace(arg.Value)
+		switch strings.ToLower(arg.Key) {
+		case "provider":
+			req.Provider = stripQuotes(val)
+		case "endpoint":
+			req.Endpoint = stripQuotes(val)
+		case "model":
+			req.Model = stripQuotes(val)
+		case "api_key":
+			req.APIKey = stripQuotes(val)
+		case "temperature":
+			f, err := strconv.ParseFloat(val, 64)
+			if err != nil {
+				return req, &errors.Error{Kind: errors.KindValidation, Message: "invalid llm temperature: " + val, Cause: err}
+			}
+			req.Temperature = &f
+		case "max_tokens":
+			n, err := strconv.Atoi(val)
+			if err != nil {
+				return req, &errors.Error{Kind: errors.KindValidation, Message: "invalid llm max_tokens: " + val, Cause: err}
+			}
+			req.MaxTokens = &n
+		case "timeout_secs":
+			n, err := strconv.Atoi(val)
+			if err != nil {
+				return req, &errors.Error{Kind: errors.KindValidation, Message: "invalid llm timeout_secs: " + val, Cause: err}
+			}
+			req.TimeoutSecs = &n
+		}
+	}
+	if strings.TrimSpace(req.Prompt) == "" {
+		return req, &errors.Error{Kind: errors.KindValidation, Message: "@llm prompt is required"}
+	}
+	return req, nil
+}
+
+func llmValuesArgs(d model.Decorator) (int, string) {
+	n := 5
+	prompt := ""
+	if len(d.Args) > 0 {
+		if v, err := strconv.Atoi(strings.TrimSpace(d.Args[0].Raw)); err == nil {
+			n = v
+		} else if f, err := strconv.ParseFloat(strings.TrimSpace(d.Args[0].Raw), 64); err == nil {
+			n = int(f)
+		}
+	}
+	if len(d.Args) > 1 {
+		prompt = decoratorLiteralString(d.Args[1])
+	}
+	if n <= 0 {
+		n = 1
+	}
+	return n, prompt
+}
+
+func overrideLLMPrompt(args []model.DecoratorArg, prompt string) []model.DecoratorArg {
+	out := make([]model.DecoratorArg, 0, len(args))
+	out = append(out, model.DecoratorArg{Kind: model.ArgLiteral, Raw: strconv.Quote(prompt), Literal: prompt})
+	if len(args) > 2 {
+		out = append(out, args[2:]...)
+	}
+	return out
+}
+
+func withLLMValuesArgs(d model.Decorator, n int, prompt string) *model.Decorator {
+	d.Args = []model.DecoratorArg{
+		{Kind: model.ArgLiteral, Raw: strconv.Itoa(n), Literal: int64(n)},
+		{Kind: model.ArgLiteral, Raw: strconv.Quote(prompt), Literal: prompt},
+	}
+	return &d
+}
+
+func stripQuotes(s string) string {
+	if len(s) >= 2 && (s[0] == '"' || s[0] == '\'') && s[len(s)-1] == s[0] {
+		return s[1 : len(s)-1]
+	}
+	return s
+}
 
 // preprocessLLM normalises entity-level @llm decorators in-place for legacy
 // callers that explicitly invoke it. Generate intentionally avoids this helper

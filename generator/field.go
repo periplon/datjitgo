@@ -140,21 +140,31 @@ func (e *Engine) generateField(entity *model.Entity, f *model.Field, row *value.
 		}
 	}
 
-	// 3a. @llm(...) — deterministic stub content (phase 1). Live providers
-	// land in phase 2; for now every @llm field draws a reproducible
-	// sentence from the corpus text pool using a prompt-scoped substream.
+	// 3a. @llm(...) — use a live provider when configured; otherwise keep
+	// deterministic corpus-backed stub content.
 	if d := model.FindDecorator(f.Decorators, "llm"); d != nil {
-		return value.Str(e.stubLLMValue(*d, rng)), nil
+		text, err := e.generateLLMValue(*d, st, rng)
+		if err != nil {
+			return value.Null(), err
+		}
+		return value.Str(text), nil
 	}
 	if d := findLLM(entity.Meta); d != nil && shouldInheritEntityLLM(f) {
-		return value.Str(e.stubLLMValue(*d, rng)), nil
+		text, err := e.generateLLMValue(*d, st, rng)
+		if err != nil {
+			return value.Null(), err
+		}
+		return value.Str(text), nil
 	}
 
 	// 3b. @llm_values(N, "prompt") — materialise N candidate strings, then
 	// sample uniformly. Keeps behaviour aligned with @values so @null_rate
 	// / @unique / @dist compose naturally.
 	if d := model.FindDecorator(f.Decorators, "llm_values"); d != nil {
-		pool := e.llmValuesExpand(*d, rng)
+		pool, err := e.generateLLMValues(*d, st, rng)
+		if err != nil {
+			return value.Null(), err
+		}
 		if len(pool) > 0 {
 			idx := int(rng.IntN(int64(len(pool))))
 			return value.Str(pool[idx]), nil

@@ -29,6 +29,9 @@ func WithGenerator(g ports.Generator) Option {
 			return &errors.Error{Kind: errors.KindValidation, Message: "WithGenerator: nil generator"}
 		}
 		s.gen = g
+		if eng, ok := s.gen.(*generator.Engine); ok && s.llm != nil {
+			eng.WithLLMProvider(s.llm)
+		}
 		return nil
 	}
 }
@@ -61,7 +64,22 @@ func WithCorpus(c ports.CorpusProvider) Option {
 		// Only rebind when the generator is the built-in engine: other
 		// implementations might hold their own corpus reference.
 		if _, ok := s.gen.(*generator.Engine); ok {
-			s.gen = generator.New(c)
+			s.gen = generator.New(c).WithLLMProvider(s.llm)
+		}
+		return nil
+	}
+}
+
+// WithLLMProvider enables live @llm and @llm_values generation. Passing nil is
+// invalid; omit this option to keep deterministic offline stub behavior.
+func WithLLMProvider(p ports.LLMProvider) Option {
+	return func(s *Service) error {
+		if p == nil {
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithLLMProvider: nil provider"}
+		}
+		s.llm = p
+		if eng, ok := s.gen.(*generator.Engine); ok {
+			eng.WithLLMProvider(p)
 		}
 		return nil
 	}

@@ -32,6 +32,7 @@ type Service struct {
 	gen     ports.Generator
 	writers map[string]ports.Writer
 	corpus  ports.CorpusProvider
+	llm     ports.LLMProvider
 
 	seed    *int64
 	locale  string

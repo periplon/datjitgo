@@ -1,6 +1,6 @@
 // Package corpus provides a CorpusProvider backed by JSON data files that are
 // embedded in the binary with //go:embed. It supports weighted sampling via a
-// ports.Randomizer and an optional on-disk overlay (phase 2).
+// ports.Randomizer and an optional on-disk overlay.
 package corpus
 
 import (
@@ -64,9 +64,7 @@ func NewEmbedded() *Provider {
 }
 
 // NewWithOverlay returns a Provider that reads from the embedded JSON files
-// and, optionally, an on-disk overlay directory. The overlay is not yet
-// consulted in phase 1 but is wired for forward-compatibility with the live
-// corpus updater planned for phase 2.
+// and, optionally, an on-disk overlay directory.
 func NewWithOverlay(baseDir string) *Provider {
 	return &Provider{
 		overlayDir: baseDir,

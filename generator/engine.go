@@ -16,6 +16,7 @@ import (
 // passing the corpus provider the engine should consult for semantic types.
 type Engine struct {
 	corpus ports.CorpusProvider
+	llm    ports.LLMProvider
 
 	// locale is resolved at Generate()-time and stashed here so helpers can
 	// read it without threading an extra parameter through every call.
@@ -27,6 +28,13 @@ type Engine struct {
 // synthesisers — but real use cases will always pass a valid corpus.
 func New(c ports.CorpusProvider) *Engine {
 	return &Engine{corpus: c, locale: "en-US"}
+}
+
+// WithLLMProvider installs an optional live LLM backend. Nil keeps the
+// deterministic offline stub behavior.
+func (e *Engine) WithLLMProvider(p ports.LLMProvider) *Engine {
+	e.llm = p
+	return e
 }
 
 var _ ports.Generator = (*Engine)(nil)
@@ -66,6 +74,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 	root := NewRand(seed)
 	rowState := &generationState{
 		doc:       doc,
+		llmConfig: doc.Generation.LLM,
 		enumDefs:  enumByName,
 		typeDefs:  typeByName,
 		rng:       root,
@@ -136,6 +145,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 // pushing a dozen args down the call chain.
 type generationState struct {
 	doc       *model.Document
+	llmConfig *model.LLMConfig
 	enumDefs  map[string]model.EnumDef
 	typeDefs  map[string]*model.Entity
 	rng       ports.Randomizer
