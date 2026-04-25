@@ -177,6 +177,13 @@ func formatFloat(f float64) string {
 // the optional EntityFilter, the document-declared order (if any), and
 // falling back to dataset insertion order.
 func entityOrder(ds *value.Dataset, doc *model.Document, filter string) []string {
+	if filter != "" {
+		if _, ok := ds.Entities.Get(filter); ok {
+			return []string{filter}
+		}
+		return nil
+	}
+
 	present := make(map[string]bool, ds.Entities.Len())
 	for _, k := range ds.Entities.Keys() {
 		present[k] = true
@@ -190,14 +197,6 @@ func entityOrder(ds *value.Dataset, doc *model.Document, filter string) []string
 		}
 	} else {
 		order = ds.Entities.Keys()
-	}
-	if filter != "" {
-		for _, k := range order {
-			if k == filter {
-				return []string{k}
-			}
-		}
-		return nil
 	}
 	return order
 }

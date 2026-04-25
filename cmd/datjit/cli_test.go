@@ -152,6 +152,29 @@ func TestGenerateDryRun(t *testing.T) {
 	}
 }
 
+func TestGenerateDryRunReportsResolvedRangeVolume(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "range-volume.yaml")
+	if err := os.WriteFile(path, []byte(`
+domain: cli_test
+volume:
+  User: 10..20
+entities:
+  User:
+    id: int
+`), 0o600); err != nil {
+		t.Fatalf("write fixture: %v", err)
+	}
+
+	stdout, stderr, code := runCmd(t, "generate", path, "--dry-run")
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if !strings.Contains(stdout, "User=15") {
+		t.Fatalf("expected midpoint volume in dry-run plan, got %q", stdout)
+	}
+}
+
 func TestValidateOK(t *testing.T) {
 	path := fixturePath(t, "minimal.yaml")
 	stdout, stderr, code := runCmd(t, "validate", path)

@@ -3,6 +3,8 @@ package datjit
 import (
 	"github.com/jmcarbo/datjitgo/core/errors"
 	"github.com/jmcarbo/datjitgo/core/model"
+	coreplan "github.com/jmcarbo/datjitgo/core/plan"
+	corerules "github.com/jmcarbo/datjitgo/core/rules"
 	"github.com/jmcarbo/datjitgo/generator"
 )
 
@@ -73,13 +75,7 @@ func validateDoc(doc *model.Document) error {
 		if r.Kind == model.RuleKindCrossRow {
 			continue
 		}
-		expr := r.Expr
-		// Rules routinely use "if COND then THEN" shorthand; the generator
-		// rewrites this before eval, so we do the same before parsing so
-		// validation matches runtime behaviour.
-		if normalized := rewriteIfThen(expr); normalized != "" {
-			expr = normalized
-		}
+		expr := corerules.NormalizeExpr(r.Expr)
 		if err := generator.ParseExpr(expr); err != nil {
 			return &errors.Error{
 				Kind:    errors.KindValidation,
@@ -90,7 +86,7 @@ func validateDoc(doc *model.Document) error {
 	}
 
 	// Topological check — reuses the generator's Kahn pass.
-	if _, err := generator.Plan(doc); err != nil {
+	if _, err := coreplan.Entities(doc); err != nil {
 		return err
 	}
 	return nil
@@ -157,54 +153,6 @@ func checkTypeExpr(t model.TypeExpr, entity, field string, entities, types map[s
 		}
 	}
 	return nil
-}
-
-// rewriteIfThen mirrors generator.rewriteIfThen so Validate can pre-process
-// rules the same way the engine will. Keeping this duplicated (5 lines)
-// avoids leaking the generator's internal helper into the stable API.
-func rewriteIfThen(src string) string {
-	const ifPrefix = "if "
-	const thenSep = " then "
-	s := src
-	// Trim leading whitespace by hand to avoid an extra import.
-	for len(s) > 0 && (s[0] == ' ' || s[0] == '\t' || s[0] == '\n' || s[0] == '\r') {
-		s = s[1:]
-	}
-	if len(s) < len(ifPrefix) || s[:len(ifPrefix)] != ifPrefix {
-		return ""
-	}
-	s = s[len(ifPrefix):]
-	idx := indexOf(s, thenSep)
-	if idx < 0 {
-		return ""
-	}
-	cond := trimSpace(s[:idx])
-	then := trimSpace(s[idx+len(thenSep):])
-	return "not (" + cond + ") or (" + then + ")"
-}
-
-func indexOf(haystack, needle string) int {
-	if len(needle) == 0 {
-		return 0
-	}
-	for i := 0; i+len(needle) <= len(haystack); i++ {
-		if haystack[i:i+len(needle)] == needle {
-			return i
-		}
-	}
-	return -1
-}
-
-func trimSpace(s string) string {
-	i := 0
-	for i < len(s) && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n' || s[i] == '\r') {
-		i++
-	}
-	j := len(s)
-	for j > i && (s[j-1] == ' ' || s[j-1] == '\t' || s[j-1] == '\n' || s[j-1] == '\r') {
-		j--
-	}
-	return s[i:j]
 }
 
 // ruleIndex formats i as a 1-based decimal without pulling in fmt.

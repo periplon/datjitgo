@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jmcarbo/datjitgo/core/model"
+	coreplan "github.com/jmcarbo/datjitgo/core/plan"
 	"github.com/jmcarbo/datjitgo/core/ports"
 	"github.com/jmcarbo/datjitgo/core/value"
 )
@@ -43,7 +44,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 	// with a deterministic stub backend; live providers are phase 2.
 	preprocessLLM(doc)
 
-	order, err := plan(doc)
+	order, err := coreplan.Entities(doc)
 	if err != nil {
 		return nil, err
 	}

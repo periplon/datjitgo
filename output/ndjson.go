@@ -1,7 +1,6 @@
 package output
 
 import (
-	"bytes"
 	"encoding/json"
 	"io"
 
@@ -29,6 +28,8 @@ func (n *NDJSON) Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts
 		return nil
 	}
 	order := entityOrder(ds, doc, opts.EntityFilter)
+	enc := json.NewEncoder(w)
+	enc.SetEscapeHTML(false)
 	for _, name := range order {
 		rows, _ := ds.Entities.Get(name)
 		fields := fieldOrder(rows, doc, name)
@@ -49,15 +50,8 @@ func (n *NDJSON) Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts
 				}
 				obj.Set(k, enc)
 			}
-			var buf bytes.Buffer
-			e := json.NewEncoder(&buf)
-			e.SetEscapeHTML(false)
-			if err := e.Encode(obj); err != nil {
+			if err := enc.Encode(obj); err != nil {
 				return wrapIO(err, "ndjson encode")
-			}
-			// json.Encoder already appends a '\n'.
-			if err := writeAll(w, buf.Bytes()); err != nil {
-				return err
 			}
 		}
 	}

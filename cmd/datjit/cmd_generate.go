@@ -227,10 +227,8 @@ func plannedVolume(name string, doc *model.Document, override map[string]int) in
 		if v.Exact > 0 {
 			return v.Exact
 		}
-		if v.Max > 0 {
-			// Use the upper bound as the displayed count; it's the
-			// worst-case row budget callers usually care about.
-			return v.Max
+		if v.Min != 0 || v.Max != 0 {
+			return (v.Min + v.Max) / 2
 		}
 	}
 	return 10
