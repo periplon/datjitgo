@@ -1,3 +1,5 @@
+> Status: prompt template, not a current design or plan. See `docs/superpowers/specs/` for active specs.
+
 # Go Refactor Prompt
 
 Use this prompt when asking an agent to refactor `datjitgo`. It is written to
