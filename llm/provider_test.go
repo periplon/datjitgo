@@ -89,7 +89,7 @@ func TestHTTPProviderOpenAICompatibleTextFallbackAndOptions(t *testing.T) {
 	temp := 0.25
 	maxTokens := 12
 
-	got, err := NewHTTP().Complete(nil, ports.LLMRequest{
+	got, err := NewHTTP().Complete(context.Background(), ports.LLMRequest{
 		Endpoint:    srv.URL,
 		Model:       "gpt-test",
 		Prompt:      "write",
