@@ -9,6 +9,25 @@ import (
 	"github.com/jmcarbo/datjitgo/core/value"
 )
 
+// preprocessLLM normalises entity-level @llm decorators in-place for legacy
+// callers that explicitly invoke it. Generate intentionally avoids this helper
+// so parsed documents remain immutable across generation runs.
+func preprocessLLM(doc *model.Document) {
+	if doc == nil || doc.Entities == nil {
+		return
+	}
+	doc.Entities.Each(func(_ string, ent *model.Entity) bool {
+		entityLevelLLM := findLLM(ent.Meta)
+		ent.Fields.Each(func(_ string, f *model.Field) bool {
+			if entityLevelLLM != nil && shouldInheritEntityLLM(f) {
+				f.Decorators = append(f.Decorators, *entityLevelLLM)
+			}
+			return true
+		})
+		return true
+	})
+}
+
 // findLLM returns the first @llm decorator in decs, or nil if absent.
 func findLLM(decs []model.Decorator) *model.Decorator {
 	for i := range decs {

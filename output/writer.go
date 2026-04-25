@@ -6,6 +6,7 @@ package output
 
 import (
 	"bytes"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -232,6 +233,11 @@ func quoteSQLIdent(name, dialect string) string {
 // quotes.
 func escapeSQLString(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", "''") + "'"
+}
+
+// hexEncode returns the lowercase hex encoding of b.
+func hexEncode(b []byte) string {
+	return hex.EncodeToString(b)
 }
 
 // wrapIO wraps a lower-level IO error from an encoder or writer into a typed

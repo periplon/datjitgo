@@ -419,8 +419,16 @@ func cmdCorpus(s *Session, args []string) error {
 			writeln(s.out, k)
 		}
 	case "info":
-		if len(args) != 1 {
-			writeln(s.errw, "usage: corpus info")
+		if len(args) > 2 {
+			writeln(s.errw, "usage: corpus info [key]")
+			return nil
+		}
+		if len(args) == 2 {
+			status := "missing"
+			if s.svc.Corpus() != nil && s.svc.Corpus().Has(args[1]) {
+				status = "available"
+			}
+			writef(s.out, "%s: %s\n", args[1], status)
 			return nil
 		}
 		if err := printCorpusInfo(s.out, s.svc); err != nil {

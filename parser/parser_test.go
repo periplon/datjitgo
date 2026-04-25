@@ -69,7 +69,7 @@ func TestParseEveryFixture(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer f.Close()
+			defer func() { _ = f.Close() }()
 			doc, err := New().Parse(f, path)
 			if err != nil {
 				t.Fatal(err)

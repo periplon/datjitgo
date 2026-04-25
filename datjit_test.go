@@ -227,7 +227,7 @@ func TestServiceCorpusKeys(t *testing.T) {
 	if len(keys) == 0 {
 		t.Fatal("expected embedded corpus keys")
 	}
-	if !containsString(keys, "person.first_names") {
+	if !hasString(keys, "person.first_names") {
 		t.Fatalf("expected person.first_names in corpus keys, got %v", keys)
 	}
 	for i := 1; i < len(keys); i++ {
@@ -304,7 +304,7 @@ func TestWriteUnknownFormat(t *testing.T) {
 	}
 }
 
-func containsString(items []string, want string) bool {
+func hasString(items []string, want string) bool {
 	for _, item := range items {
 		if item == want {
 			return true

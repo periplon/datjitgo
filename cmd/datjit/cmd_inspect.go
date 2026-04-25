@@ -127,3 +127,7 @@ func severityTag(s model.RuleSeverity) string {
 	}
 	return "@strict"
 }
+
+func inferToolSurface(ent *model.Entity) []string {
+	return datjit.InferToolSurface(ent)
+}

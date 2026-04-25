@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/jmcarbo/datjitgo"
+	"github.com/jmcarbo/datjitgo/core/ports"
 )
 
 // cmdCorpus wires the `datjit corpus <sub>` group.
@@ -65,15 +66,35 @@ func cmdCorpusUpdate() *cobra.Command {
 	}
 }
 
+// resolveCorpusKeys returns the sorted set of keys the given provider resolves.
+func resolveCorpusKeys(p ports.CorpusProvider) []string {
+	lister, ok := p.(interface{ Keys() []string })
+	if !ok {
+		return nil
+	}
+	return lister.Keys()
+}
+
 // printCorpusInfo tallies entries per key and prints a compact summary.
-func printCorpusInfo(w io.Writer, svc *datjit.Service) error {
-	if svc == nil || svc.Corpus() == nil {
+func printCorpusInfo(w io.Writer, target any) error {
+	var provider ports.CorpusProvider
+	var keys []string
+	switch v := target.(type) {
+	case *datjit.Service:
+		if v != nil {
+			provider = v.Corpus()
+			keys = v.CorpusKeys()
+		}
+	case ports.CorpusProvider:
+		provider = v
+		keys = resolveCorpusKeys(v)
+	}
+	if provider == nil {
 		return fmt.Errorf("corpus: nil provider")
 	}
-	keys := svc.CorpusKeys()
 	total := 0
 	for _, k := range keys {
-		entries, err := svc.Corpus().List("en-US", k)
+		entries, err := provider.List("en-US", k)
 		if err != nil {
 			return fmt.Errorf("corpus list %s: %w", k, err)
 		}
