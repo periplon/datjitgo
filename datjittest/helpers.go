@@ -1,5 +1,5 @@
-// Package datjittest provides testing helpers for generating deterministic
-// datjit fixtures and asserting golden JSON snapshots.
+// Package datjittest provides test helpers for deterministic datjit fixture
+// generation and golden JSON snapshot assertions and updates.
 package datjittest
 
 import (

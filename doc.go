@@ -1,8 +1,16 @@
-// Package datjit is the public entry point for the datjitgo synthetic data
-// library. datjitgo turns a declarative YAML schema describing entities,
-// fields, semantic types and inter-entity rules into rows of plausible — and,
-// when seeded, byte-for-byte reproducible — synthetic data, suitable for
-// tests, demos, ML fixtures and database seeding.
+// Package datjit is the public facade for deterministic synthetic data
+// generation from datjit schemas.
+//
+// Use the root Service type and Generate* helpers for application code. The
+// core packages expose stable model, value, error, and port contracts for
+// integrations. Adapter packages provide the default parser, generator, output,
+// and corpus implementations used by NewDefault; LLM providers are opt-in
+// through WithLLMProvider or CLI wiring.
+//
+// datjit turns a declarative YAML schema describing entities, fields, semantic
+// types and inter-entity rules into rows of plausible and, when seeded,
+// byte-for-byte reproducible synthetic data suitable for tests, demos, ML
+// fixtures, and database seeding.
 //
 // # Layered API
 //

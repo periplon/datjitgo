@@ -1,8 +1,10 @@
-// Package parser implements the ports.Parser adapter: it turns a DDL YAML
-// document into a fully populated *model.Document while preserving the
-// declaration order of entities, fields and enums. The parser is intentionally
-// permissive about unfamiliar decorators and tool shapes — validation lives
-// in core/validator in a later phase.
+// Package parser contains the default datjit schema parser adapter.
+//
+// It implements the ports.Parser adapter by turning YAML schema input into a
+// fully populated *model.Document while preserving declaration order for
+// entities, fields, and enums. The parser is intentionally permissive about
+// unfamiliar decorators and tool shapes so later validation can report domain
+// errors.
 package parser
 
 import (

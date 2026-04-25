@@ -1,12 +1,10 @@
-// Package generator implements the ports.Generator adapter: it turns a parsed
-// *model.Document into a *value.Dataset by running a deterministic pipeline
-// over each entity in topological order.
+// Package generator contains the default deterministic dataset generator.
 //
-// The generator is pure Go with stdlib dependencies only (plus google/uuid
-// and shopspring/decimal which are transitively used by core/value). All
-// randomness flows through a ports.Randomizer backed by math/rand/v2's PCG
-// generator, derived sub-streams ensure identical input produces identical
-// output.
+// It implements the ports.Generator adapter by turning a parsed *model.Document
+// into a *value.Dataset through a deterministic pipeline over each entity in
+// topological order. Randomness flows through a ports.Randomizer backed by
+// math/rand/v2 PCG streams, with derived substreams used to keep identical
+// inputs reproducible.
 package generator
 
 import (

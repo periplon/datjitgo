@@ -1,6 +1,7 @@
-// Package output provides the ports.Writer implementations that serialise
-// a value.Dataset to one of the supported formats (json, ndjson, csv, yaml,
-// sql). All writers are deterministic: given identical inputs they produce
+// Package output contains writers for JSON, CSV, NDJSON, YAML, and SQL output.
+//
+// It provides ports.Writer implementations that serialize value.Dataset values
+// to supported formats. Writers are deterministic: identical inputs produce
 // byte-for-byte identical output.
 package output
 
