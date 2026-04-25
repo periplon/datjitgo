@@ -1,5 +1,12 @@
 # datjitgo
 
+[![CI](https://github.com/jmcarbo/datjitgo/actions/workflows/ci.yml/badge.svg)](https://github.com/jmcarbo/datjitgo/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/jmcarbo/datjitgo.svg)](https://pkg.go.dev/github.com/jmcarbo/datjitgo)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jmcarbo/datjitgo)](https://goreportcard.com/report/github.com/jmcarbo/datjitgo)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**Project status:** active. Public API stable in the `datjit` and `core/*` packages.
+
 Synthetic data generation from declarative YAML schemas — Go port of
 [datjit](https://github.com/jmcarbo/datjit).
 
@@ -241,3 +248,11 @@ matching golden JSON under `testdata/golden/`.
 ## License
 
 MIT
+
+## See also
+
+- [CHANGELOG.md](CHANGELOG.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [SECURITY.md](SECURITY.md)
+- [Library ergonomics design](docs/superpowers/specs/2026-04-25-library-ergonomics-design.md)
+- [Go idiomatic tidy design](docs/superpowers/specs/2026-04-25-go-idiomatic-tidy-design.md)
