@@ -273,6 +273,8 @@ func (e *Engine) generatePrimitiveField(f *model.Field, p model.Primitive, rng p
 		case model.PrimDecimal:
 			sample := sampleFloat(rng, spec, lo, hi, have)
 			return value.Float(roundTo(sample, 2))
+		default:
+			// non-numeric kinds fall through to the default primitive generator
 		}
 	}
 	return generatePrimitive(p, rng)
@@ -398,6 +400,8 @@ func applyRange(val value.Value, decs []model.Decorator) value.Value {
 		}
 	case value.KindTime:
 		return applyTimeRange(val, a)
+	default:
+		// other kinds fall through to the trailing return
 	}
 	return val
 }
@@ -490,6 +494,8 @@ func applyMultipleOf(val value.Value, decs []model.Decorator) value.Value {
 		val.I = int64(f) * (val.I / int64(f))
 	case value.KindFloat:
 		val.F = f * float64(int64(val.F/f))
+	default:
+		// other kinds fall through to the trailing return
 	}
 	return val
 }
@@ -525,6 +531,8 @@ func applyLen(val value.Value, decs []model.Decorator, rng ports.Randomizer) val
 		if len(val.L) > target {
 			val.L = val.L[:target]
 		}
+	default:
+		// other kinds fall through to the trailing return
 	}
 	return val
 }
@@ -688,6 +696,8 @@ func valueDisplay(v value.Value) string {
 		return v.T.Format("2006-01-02T15:04:05")
 	case value.KindDecimal:
 		return v.D.String()
+	default:
+		// other kinds fall through to the trailing return
 	}
 	return valueKey(v)
 }

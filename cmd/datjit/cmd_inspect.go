@@ -124,6 +124,8 @@ func severityTag(s model.RuleSeverity) string {
 		return "@prob"
 	case model.RuleWarn:
 		return "@warn"
+	default:
+		// other severities fall through to the trailing return
 	}
 	return "@strict"
 }

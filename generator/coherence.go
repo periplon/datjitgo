@@ -107,6 +107,8 @@ func decoratorIdentSources(args []model.DecoratorArg) []string {
 			if s, ok := a.Literal.(string); ok {
 				out = append(out, s)
 			}
+		default:
+			// other arg kinds are ignored
 		}
 	}
 	return out
