@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 type recordingLLMProvider struct {

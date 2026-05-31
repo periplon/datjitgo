@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	datjit "github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/model"
+	datjit "github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // commandFn implements a single REPL verb. args is the whitespace-split tail

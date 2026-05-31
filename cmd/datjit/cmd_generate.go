@@ -10,10 +10,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/corpus"
-	"github.com/jmcarbo/datjitgo/llm"
+	"github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/corpus"
+	"github.com/periplon/datjitgo/llm"
 )
 
 // cmdGenerate wires the `datjit generate` subcommand.

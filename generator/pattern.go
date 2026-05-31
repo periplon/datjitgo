@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 // patternWords powers the {word}/{WORD} placeholders. Intentionally the same

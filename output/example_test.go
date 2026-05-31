@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
-	"github.com/jmcarbo/datjitgo/output"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
+	"github.com/periplon/datjitgo/output"
 )
 
 // tinyDataset returns a one-entity, one-row dataset with stable scalar

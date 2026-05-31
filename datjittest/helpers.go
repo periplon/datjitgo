@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // MustGenerate parses, validates, and generates a dataset from schema.

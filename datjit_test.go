@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // miniSchema is the smallest-possible YAML schema that exercises the full

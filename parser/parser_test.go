@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	derrs "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	derrs "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 func openFixture(t *testing.T, name string) *os.File {

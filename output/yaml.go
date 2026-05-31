@@ -8,9 +8,9 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // YAML is the YAML output writer. A single document is emitted containing a

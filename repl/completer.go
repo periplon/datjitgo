@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // completer implements readline.AutoCompleter. It is also directly testable

@@ -5,7 +5,7 @@ Date: 2026-04-25
 
 ## Purpose
 
-Bring `github.com/jmcarbo/datjitgo` to a Go-idiomatic, production-ready bar
+Bring `github.com/periplon/datjitgo` to a Go-idiomatic, production-ready bar
 without changing observable library or CLI behavior. The repository already
 has a clean hexagonal architecture, full test suite, and a published facade.
 The remaining gaps are project hygiene, tooling, runnable godoc examples,

@@ -12,9 +12,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // Provider implements ports.CorpusProvider using JSON files compiled into the

@@ -12,7 +12,7 @@ import (
 	"hash/fnv"
 	"math/rand/v2"
 
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 // pcgRand adapts math/rand/v2's PCG-backed *rand.Rand to the ports.Randomizer

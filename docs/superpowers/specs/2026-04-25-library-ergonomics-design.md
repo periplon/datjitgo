@@ -5,7 +5,7 @@ Date: 2026-04-25
 
 ## Purpose
 
-Make `github.com/jmcarbo/datjitgo` easy to embed from Go applications, tests,
+Make `github.com/periplon/datjitgo` easy to embed from Go applications, tests,
 custom extensions, and host DSLs without weakening the existing hexagonal
 architecture.
 

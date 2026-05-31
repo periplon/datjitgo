@@ -13,9 +13,9 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	derrs "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
+	derrs "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 // Parser is the adapter implementation. It is stateless; one instance can be

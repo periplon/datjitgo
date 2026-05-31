@@ -7,8 +7,8 @@ import (
 	"context"
 	"io"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // Parser turns YAML bytes into a parsed Document. Name is used for error

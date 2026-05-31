@@ -3,8 +3,8 @@ package generator
 import (
 	"strings"
 
-	corerules "github.com/jmcarbo/datjitgo/core/rules"
-	"github.com/jmcarbo/datjitgo/core/value"
+	corerules "github.com/periplon/datjitgo/core/rules"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // evalRule evaluates a single rule expression against the given row. The

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	coreerrors "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/ports"
+	coreerrors "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 func TestHTTPProviderOpenAICompatible(t *testing.T) {

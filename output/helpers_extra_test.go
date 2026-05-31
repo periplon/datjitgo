@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 func TestSQLTypeHelpersCoverDialects(t *testing.T) {

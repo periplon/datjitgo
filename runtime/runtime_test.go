@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	coreerrors "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
+	coreerrors "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 func TestDefaultGenerateDocumentUsesRunOptions(t *testing.T) {

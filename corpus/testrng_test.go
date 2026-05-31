@@ -5,7 +5,7 @@ import (
 	"math"
 	"math/rand/v2"
 
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 // testRNG is a deterministic ports.Randomizer backed by math/rand/v2.PCG,

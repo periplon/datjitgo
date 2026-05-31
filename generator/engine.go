@@ -5,11 +5,11 @@ import (
 	"log"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	coreplan "github.com/jmcarbo/datjitgo/core/plan"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	coreplan "github.com/periplon/datjitgo/core/plan"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // Engine is the default ports.Generator implementation. Construct with New()

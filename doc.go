@@ -26,10 +26,10 @@
 //     [GenerateMapFile] / [GenerateMapString], [GenerateRowsFile] /
 //     [GenerateRowsString], [GenerateJSONFile] / [GenerateJSONString], and
 //     [WriteFile] / [WriteJSONFile] helpers wire Service themselves.
-//   - Runtime package: [github.com/jmcarbo/datjitgo/runtime] exposes the
+//   - Runtime package: [github.com/periplon/datjitgo/runtime] exposes the
 //     same generation engine as embeddable operations — single-document,
 //     single-entity, single-value — for DSL hosts and rule engines.
-//   - Test helpers: [github.com/jmcarbo/datjitgo/datjittest] adds
+//   - Test helpers: [github.com/periplon/datjitgo/datjittest] adds
 //     testing.T-aware sugar (MustGenerate, MustRows, AssertGoldenJSON,
 //     UpdateGoldenJSON) for writing concise tests.
 //
@@ -47,7 +47,7 @@
 //     relevant [Option]s.
 //   - Embedding generation inside a DSL, rule engine, or other host
 //     runtime → use the runtime package, which accepts pre-built
-//     [github.com/jmcarbo/datjitgo/core/model].Document values and
+//     [github.com/periplon/datjitgo/core/model].Document values and
 //     per-call run options.
 //
 // # Determinism
@@ -57,7 +57,7 @@
 //
 // # See also
 //
-// The [github.com/jmcarbo/datjitgo/cmd/datjit] CLI is a thin wrapper around
+// The [github.com/periplon/datjitgo/cmd/datjit] CLI is a thin wrapper around
 // the Service facade and is the easiest way to try the library without
 // writing Go.
 package datjit

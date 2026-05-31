@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	datjit "github.com/jmcarbo/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 )
 
 // fixture returns an absolute path to a testdata fixture. Tests run from the

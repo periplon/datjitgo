@@ -1,7 +1,7 @@
 // Command datjit is the CLI entry point for the datjitgo library. It exposes
 // the façade subcommands (generate, validate, inspect, corpus, version, and
 // the REPL stub) via cobra. See the package-level docs of
-// github.com/jmcarbo/datjitgo for the library-level entry points.
+// github.com/periplon/datjitgo for the library-level entry points.
 package main
 
 import (

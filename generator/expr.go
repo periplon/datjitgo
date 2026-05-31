@@ -6,8 +6,8 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // exprNode is a node in the compiled expression AST. Shapes are intentionally

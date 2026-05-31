@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	ierrors "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/ports"
+	ierrors "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 func TestCSV_Format(t *testing.T) {

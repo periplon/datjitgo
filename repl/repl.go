@@ -14,7 +14,7 @@ import (
 	"strings"
 
 	"github.com/chzyer/readline"
-	datjit "github.com/jmcarbo/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 )
 
 // Session is one interactive shell instance. Construct with New, then drive

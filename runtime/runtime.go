@@ -6,10 +6,10 @@ import (
 	"context"
 	"strings"
 
-	datjit "github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
+	datjit "github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // Runtime is the embeddable generation API.

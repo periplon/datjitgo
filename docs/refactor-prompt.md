@@ -9,7 +9,7 @@ boundaries.
 
 ## Prompt
 
-You are refactoring `github.com/jmcarbo/datjitgo`, a Go synthetic-data
+You are refactoring `github.com/periplon/datjitgo`, a Go synthetic-data
 generation library and CLI.
 
 Your goal is to improve internal code quality without changing observable

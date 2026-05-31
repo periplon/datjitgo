@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 func TestYAML_Format(t *testing.T) {

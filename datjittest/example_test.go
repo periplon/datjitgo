@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	datjit "github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/datjittest"
+	datjit "github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/datjittest"
 )
 
 // ExampleMustRows shows the test-helper sugar for generating fixture rows

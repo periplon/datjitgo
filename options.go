@@ -1,9 +1,9 @@
 package datjit
 
 import (
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/generator"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/generator"
 )
 
 // Option mutates a Service during construction. Options are applied in the

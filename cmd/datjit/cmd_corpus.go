@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/corpus"
+	"github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/corpus"
 )
 
 // cmdCorpus wires the `datjit corpus <sub>` group.

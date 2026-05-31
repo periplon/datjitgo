@@ -37,7 +37,7 @@ Cobra commands under `cmd/datjit` (`cmd_*.go`):
 
 ## Architecture
 
-Module path is `github.com/jmcarbo/datjitgo`, but the root package is named **`datjit`** (import as `datjit`). The `runtime` package is also named `runtime` and shadows the stdlib — alias it on import (README uses `djruntime`). Requires Go 1.26.2 (matches the `go` directive).
+Module path is `github.com/periplon/datjitgo`, but the root package is named **`datjit`** (import as `datjit`). The `runtime` package is also named `runtime` and shadows the stdlib — alias it on import (README uses `djruntime`). Requires Go 1.26.2 (matches the `go` directive).
 
 Hexagonal. Imports point inward: adapters depend on `core/*`; `core/*` depends on nothing internal; `cmd/datjit` and `repl` depend on the root `datjit` facade only.
 

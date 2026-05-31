@@ -1,4 +1,4 @@
-module github.com/jmcarbo/datjitgo
+module github.com/periplon/datjitgo
 
 go 1.26.2
 

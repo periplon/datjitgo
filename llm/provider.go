@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 // HTTPProvider calls OpenAI-compatible endpoints (openai, lmstudio, vllm) and

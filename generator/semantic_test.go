@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
-	"github.com/jmcarbo/datjitgo/corpus"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
+	"github.com/periplon/datjitgo/corpus"
 )
 
 func newTestEngine() *Engine {

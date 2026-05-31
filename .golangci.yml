@@ -48,7 +48,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/jmcarbo/datjitgo
+        - github.com/periplon/datjitgo
   exclusions:
     paths:
       - testdata

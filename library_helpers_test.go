@@ -12,9 +12,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
-	"github.com/jmcarbo/datjitgo"
-	derrs "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo"
+	derrs "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 const helperSchema = `domain: helper

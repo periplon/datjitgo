@@ -1,8 +1,8 @@
 # datjitgo
 
-[![CI](https://github.com/jmcarbo/datjitgo/actions/workflows/ci.yml/badge.svg)](https://github.com/jmcarbo/datjitgo/actions/workflows/ci.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/jmcarbo/datjitgo.svg)](https://pkg.go.dev/github.com/jmcarbo/datjitgo)
-[![Go Report Card](https://goreportcard.com/badge/github.com/jmcarbo/datjitgo)](https://goreportcard.com/report/github.com/jmcarbo/datjitgo)
+[![CI](https://github.com/periplon/datjitgo/actions/workflows/ci.yml/badge.svg)](https://github.com/periplon/datjitgo/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/periplon/datjitgo.svg)](https://pkg.go.dev/github.com/periplon/datjitgo)
+[![Go Report Card](https://goreportcard.com/badge/github.com/periplon/datjitgo)](https://goreportcard.com/report/github.com/periplon/datjitgo)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **Project status:** active. Public API stable in the `datjit` and `core/*` packages.
@@ -18,7 +18,7 @@ architecture with port interfaces) or invoking from the CLI / REPL.
 ## Install
 
 ```bash
-go install github.com/jmcarbo/datjitgo/cmd/datjit@latest
+go install github.com/periplon/datjitgo/cmd/datjit@latest
 ```
 
 Requires Go 1.26.2, matching the module's `go` directive.
@@ -75,7 +75,7 @@ For more control, use the service pipeline directly:
 ```go
 import (
     "os"
-    "github.com/jmcarbo/datjitgo"
+    "github.com/periplon/datjitgo"
 )
 
 svc := datjit.NewDefault()

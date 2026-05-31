@@ -5,7 +5,7 @@ Date: 2026-04-25
 
 ## Purpose
 
-Reorder `github.com/jmcarbo/datjitgo` toward idiomatic Go repository
+Reorder `github.com/periplon/datjitgo` toward idiomatic Go repository
 conventions while preserving contributor readability and avoiding avoidable
 public import-path churn. This design complements the existing
 `2026-04-25-go-idiomatic-tidy-design.md`, but focuses specifically on file and

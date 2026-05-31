@@ -3,7 +3,7 @@ package generator
 import (
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 type countingRandomizer struct{ next int64 }

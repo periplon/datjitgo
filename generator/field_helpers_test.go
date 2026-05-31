@@ -8,8 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 func TestFieldDecoratorHelpers(t *testing.T) {

@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/repl"
+	"github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/repl"
 )
 
 func TestInternalGenerateHelpers(t *testing.T) {

@@ -1,8 +1,8 @@
 package datjit
 
 import (
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // defaultVolume is used when neither the document nor options specify a

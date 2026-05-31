@@ -7,8 +7,8 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	derrs "github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	derrs "github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // parseDocument walks a decoded yaml.Node tree and builds a *model.Document.

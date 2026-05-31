@@ -6,14 +6,14 @@ import (
 	"os"
 	"sort"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
-	"github.com/jmcarbo/datjitgo/corpus"
-	"github.com/jmcarbo/datjitgo/generator"
-	"github.com/jmcarbo/datjitgo/output"
-	"github.com/jmcarbo/datjitgo/parser"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
+	"github.com/periplon/datjitgo/corpus"
+	"github.com/periplon/datjitgo/generator"
+	"github.com/periplon/datjitgo/output"
+	"github.com/periplon/datjitgo/parser"
 )
 
 // Service is the public façade tying the datjitgo adapters together. Construct

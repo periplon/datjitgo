@@ -7,8 +7,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // cmdInspect wires the `datjit inspect` subcommand, which prints a

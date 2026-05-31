@@ -1,12 +1,12 @@
 package datjit
 
 import (
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
-	coreplan "github.com/jmcarbo/datjitgo/core/plan"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	corerules "github.com/jmcarbo/datjitgo/core/rules"
-	"github.com/jmcarbo/datjitgo/generator"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
+	coreplan "github.com/periplon/datjitgo/core/plan"
+	"github.com/periplon/datjitgo/core/ports"
+	corerules "github.com/periplon/datjitgo/core/rules"
+	"github.com/periplon/datjitgo/generator"
 )
 
 // Validate performs a cheap static analysis of the parsed document, catching

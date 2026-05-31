@@ -6,7 +6,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 func TestParseDocumentDefaultsUnknownKeysAndSeedPropagation(t *testing.T) {

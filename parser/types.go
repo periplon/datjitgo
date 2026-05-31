@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // parseTypeExpr parses a DDL type expression string into a model.TypeExpr.

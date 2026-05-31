@@ -2,8 +2,8 @@
 package plan
 
 import (
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // Entities returns the entity names of doc in topological order. Reference

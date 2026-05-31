@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	datjit "github.com/jmcarbo/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 )
 
 // ExampleGenerateMapString shows the simplest one-call API: turn a YAML

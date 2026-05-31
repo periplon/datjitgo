@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	datjit "github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/repl"
+	datjit "github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/repl"
 	"github.com/spf13/cobra"
 )
 

@@ -3,7 +3,7 @@ package datjit
 import (
 	"time"
 
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 // ValueAny converts a generated value into plain Go data suitable for callers

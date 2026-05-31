@@ -6,8 +6,8 @@ import (
 	"log"
 	"strings"
 
-	datjit "github.com/jmcarbo/datjitgo"
-	"github.com/jmcarbo/datjitgo/runtime"
+	datjit "github.com/periplon/datjitgo"
+	"github.com/periplon/datjitgo/runtime"
 )
 
 // ExampleDefault_GenerateDocument shows a host runtime parsing a YAML schema

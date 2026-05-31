@@ -4,8 +4,8 @@ import (
 	stderrors "errors"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 func mkDoc(entities ...*model.Entity) *model.Document {

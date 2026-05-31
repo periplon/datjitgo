@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 func TestDistNormalMeanAndStddev(t *testing.T) {

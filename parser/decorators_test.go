@@ -3,7 +3,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 func TestSplitTypeAndDecorators_Simple(t *testing.T) {

@@ -3,7 +3,7 @@ package datjit
 import (
 	stderrors "errors"
 
-	derrs "github.com/jmcarbo/datjitgo/core/errors"
+	derrs "github.com/periplon/datjitgo/core/errors"
 )
 
 // IsParseError reports whether err is a datjit parse error.

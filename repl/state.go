@@ -1,7 +1,7 @@
 package repl
 
 import (
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // SessionState holds the mutable interactive session configuration. It is

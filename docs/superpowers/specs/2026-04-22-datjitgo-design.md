@@ -2,7 +2,7 @@
 
 Status: design approved, autonomous build authorized
 Date: 2026-04-22
-Module path: `github.com/jmcarbo/datjitgo`
+Module path: `github.com/periplon/datjitgo`
 
 ## 1. Goal
 
@@ -41,7 +41,7 @@ Dependency rule: adapters import `core`; `core` imports nothing internal. `datji
 
 ```
 datjitgo/
-├── go.mod                              module github.com/jmcarbo/datjitgo
+├── go.mod                              module github.com/periplon/datjitgo
 ├── datjit.go                           Service facade + NewDefault()
 ├── options.go                          Option funcs (WithParser, WithCorpus, WithSeed, …)
 ├── core/
@@ -435,7 +435,7 @@ Each deferred item becomes its own design doc under `docs/superpowers/specs/` be
 
 ## 17. Success criteria
 
-- `go install github.com/jmcarbo/datjitgo/cmd/datjit@latest` works.
+- `go install github.com/periplon/datjitgo/cmd/datjit@latest` works.
 - `datjit generate tests/fixtures/project_management.yaml --seed 42` produces non-empty JSON without errors.
 - `datjit repl` starts, accepts `load`/`generate`, prints output, exits cleanly.
 - Every Rust fixture has a matching Go golden test that passes with seed 42.

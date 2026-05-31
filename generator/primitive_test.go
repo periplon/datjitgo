@@ -3,8 +3,8 @@ package generator
 import (
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 func TestPrimitiveKinds(t *testing.T) {

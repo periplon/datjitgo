@@ -38,7 +38,7 @@ Reference source: `../datjit/crates/` (Rust crates — read for behavioral parit
 
 ```bash
 cd /Users/joanmarc/dailywork/jmca/datjitgo
-go mod init github.com/jmcarbo/datjitgo
+go mod init github.com/periplon/datjitgo
 ```
 
 - [ ] **Step 2: add dependencies**
@@ -749,8 +749,8 @@ package ports
 
 import (
 	"io"
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 type Parser interface {
@@ -892,7 +892,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // splitTypeAndDecorators tokenises a field shorthand `type @d1 @d2(...)` into
@@ -1042,8 +1042,8 @@ import (
 	"io"
 
 	"gopkg.in/yaml.v3"
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 type Parser struct{}
@@ -1127,9 +1127,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
 )
 
 //go:embed data/*.json
@@ -1253,7 +1253,7 @@ import (
 	"hash/fnv"
 	"math/rand/v2"
 
-	"github.com/jmcarbo/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/ports"
 )
 
 type pcgRand struct{ r *rand.Rand }
@@ -1294,8 +1294,8 @@ Tests: determinism — same seed, same sequence; substream stable across calls.
 package generator
 
 import (
-	"github.com/jmcarbo/datjitgo/core/errors"
-	"github.com/jmcarbo/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/errors"
+	"github.com/periplon/datjitgo/core/model"
 )
 
 // Plan returns entities in topological order. Self-references are ignored.
@@ -1440,7 +1440,7 @@ import (
 	"bytes"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/jmcarbo/datjitgo"
+	"github.com/periplon/datjitgo"
 )
 
 var update = flag.Bool("update", false, "update golden files")
@@ -1498,13 +1498,13 @@ package datjit
 import (
 	"io"
 
-	"github.com/jmcarbo/datjitgo/core/model"
-	"github.com/jmcarbo/datjitgo/core/ports"
-	"github.com/jmcarbo/datjitgo/core/value"
-	"github.com/jmcarbo/datjitgo/corpus"
-	"github.com/jmcarbo/datjitgo/generator"
-	"github.com/jmcarbo/datjitgo/output"
-	"github.com/jmcarbo/datjitgo/parser"
+	"github.com/periplon/datjitgo/core/model"
+	"github.com/periplon/datjitgo/core/ports"
+	"github.com/periplon/datjitgo/core/value"
+	"github.com/periplon/datjitgo/corpus"
+	"github.com/periplon/datjitgo/generator"
+	"github.com/periplon/datjitgo/output"
+	"github.com/periplon/datjitgo/parser"
 )
 
 type Service struct {
@@ -1669,7 +1669,7 @@ git commit -m "feat(cli): cobra subcommands for generate, validate, inspect, cor
 REPL design per spec §10. Commands table dispatched by first token. Scripted test (lines piped via `bytes.Buffer`) asserting `> load testdata/fixtures/minimal.yaml\n> generate\n> exit\n` prints a JSON object containing known entity names.
 
 README should include:
-- Install (`go install github.com/jmcarbo/datjitgo/cmd/datjit@latest`).
+- Install (`go install github.com/periplon/datjitgo/cmd/datjit@latest`).
 - Library quickstart (facade example).
 - CLI reference table.
 - REPL quick tour.

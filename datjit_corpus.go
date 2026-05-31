@@ -1,6 +1,6 @@
 package datjit
 
-import "github.com/jmcarbo/datjitgo/core/ports"
+import "github.com/periplon/datjitgo/core/ports"
 
 type corpusKeyLister interface {
 	Keys() []string

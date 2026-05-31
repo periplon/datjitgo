@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jmcarbo/datjitgo/corpus"
+	"github.com/periplon/datjitgo/corpus"
 )
 
 func TestValidateChecksReusableTypeFields(t *testing.T) {
