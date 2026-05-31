@@ -18,7 +18,8 @@ import (
 
 // Service is the public façade tying the datjitgo adapters together. Construct
 // one with NewDefault() (sensible defaults) or New(opts...) (composable
-// overrides).
+// overrides). Corpus() and CorpusKeys() expose the configured corpus provider
+// for introspection.
 type Service struct {
 	parser  ports.Parser
 	gen     ports.Generator
