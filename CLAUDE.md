@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-`make ci` is the merge gate (gofmt check, `go vet`, race-mode tests, fixture goldens, build). Run it before staging commits.
+`make ci` is the merge gate (gofmt check, lint, race-mode tests, fixture goldens, build; `lint` is golangci-lint when installed, else `go vet`). Run it before staging commits.
 
 ```bash
 make ci                                      # full local gate
@@ -24,7 +24,20 @@ golangci-lint run ./...                      # lint with the committed config
 
 CLI smoke: `go run ./cmd/datjit version`.
 
+## CLI surface
+
+Cobra commands under `cmd/datjit` (`cmd_*.go`):
+
+- `generate <schema> [-o -f --seed --locale --volume --entity --sql-dialect --pretty --dry-run --corpus-dir --llm-live]` — formats `json | csv | ndjson | yaml | sql`.
+- `validate <schema>` — parse + validate, exit 1 on error.
+- `inspect <schema> [--infer-tools]` — entity/field/rule summary.
+- `corpus list | info | update` — inspect or refresh embedded/overlay corpus.
+- `repl [<schema>]` — interactive shell (`repl` package, chzyer/readline).
+- `version`.
+
 ## Architecture
+
+Module path is `github.com/jmcarbo/datjitgo`, but the root package is named **`datjit`** (import as `datjit`). The `runtime` package is also named `runtime` and shadows the stdlib — alias it on import (README uses `djruntime`). Requires Go 1.26.2 (matches the `go` directive).
 
 Hexagonal. Imports point inward: adapters depend on `core/*`; `core/*` depends on nothing internal; `cmd/datjit` and `repl` depend on the root `datjit` facade only.
 
@@ -63,6 +76,10 @@ Pipeline driven by `datjit.Service`: `Parse → Validate → Generate → Write`
 ## Specs and plans
 
 Designs live in `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`. Implementation plans live in `docs/superpowers/plans/YYYY-MM-DD-<topic>.md`. New behavior should reference or add a spec. The brainstorming → writing-plans → executing-plans flow (superpowers skills) is the expected path for non-trivial work.
+
+## Schema language (DDL)
+
+Schemas are YAML with a compact DDL for field types: primitives, semantic types (`person.full`, `email`, `address.city`), enums with weighted distributions, references (`->User`, `<->Tag`), compound types (`[T]`, `{K: V}`, `T?`, `T | U`), distributions (`@dist(normal, μ=35, σ=12)`, Zipf, lognormal), pattern templates (`@pattern("SKU-{AA}-{0000}")`), `@derived`/`@compute`/`@default_chain` expressions, cross-entity rules (`@strict`, `@probability(p)`, `@warn`), and coherence groups. Parsing lives in `parser`; full spec in `docs/superpowers/specs/2026-04-22-datjitgo-design.md`.
 
 ## Commit style
 
