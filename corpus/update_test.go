@@ -6,8 +6,35 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 )
+
+func TestUpdateMkdirFails(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("unix file mode bits not enforced on windows")
+	}
+	if os.Geteuid() == 0 {
+		t.Skip("root bypasses directory mode bits")
+	}
+	parent := t.TempDir()
+	readonly := filepath.Join(parent, "ro")
+	if err := os.Mkdir(readonly, 0o500); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chmod(readonly, 0o700) }) // let TempDir cleanup remove it
+
+	// overlayDir under a read-only ancestor: MkdirAll(overlayDir/data) cannot
+	// create the missing directory and Update must surface the error.
+	overlayDir := filepath.Join(readonly, "sub")
+	_, err := Update(context.Background(), overlayDir, []UpdateSource{{Key: "person.first_names", URL: "http://example.invalid"}})
+	if err == nil {
+		t.Fatal("expected MkdirAll permission error, got nil")
+	}
+	if !os.IsPermission(err) {
+		t.Fatalf("Update error = %v, want permission error", err)
+	}
+}
 
 func TestUpdateDownloadsAndWritesOverlay(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
