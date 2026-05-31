@@ -15,6 +15,9 @@ linters:
     - unconvert
     - unused
     - gocritic
+    - errorlint
+    - noctx
+    - contextcheck
   exclusions:
     paths:
       - testdata

@@ -3,6 +3,7 @@ package main_test
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -42,7 +43,7 @@ func buildOnce(t *testing.T) string {
 	bin := filepath.Join(dir, "datjit")
 	// Build from the module root. The test file lives at cmd/datjit so the
 	// repo root is two levels up.
-	cmd := exec.Command("go", "build", "-o", bin, "./cmd/datjit")
+	cmd := exec.CommandContext(t.Context(), "go", "build", "-o", bin, "./cmd/datjit")
 	cmd.Dir = repoRoot(t)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
@@ -77,13 +78,14 @@ func repoRoot(t *testing.T) string {
 func runCmd(t *testing.T, args ...string) (stdout, stderr string, code int) {
 	t.Helper()
 	bin := buildOnce(t)
-	cmd := exec.Command(bin, args...)
+	cmd := exec.CommandContext(t.Context(), bin, args...)
 	var so, se bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &so, &se
 	err := cmd.Run()
 	code = 0
 	if err != nil {
-		if ee, ok := err.(*exec.ExitError); ok {
+		var ee *exec.ExitError
+		if errors.As(err, &ee) {
 			code = ee.ExitCode()
 		} else {
 			t.Fatalf("cmd.Run: %v", err)
