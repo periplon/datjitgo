@@ -21,3 +21,6 @@ coverage.html
 
 # Worktrees
 .worktrees/
+
+# OMC tooling state
+.omc/
