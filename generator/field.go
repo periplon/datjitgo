@@ -520,7 +520,7 @@ func applyLen(val value.Value, decs []model.Decorator, rng ports.Randomizer) val
 		for i := range pad {
 			pad[i] = alphanum[rng.IntN(int64(len(alphanum)))]
 		}
-		val.S = val.S + string(pad)
+		val.S += string(pad)
 	case value.KindList:
 		if len(val.L) > target {
 			val.L = val.L[:target]
