@@ -18,6 +18,7 @@ linters:
     - errorlint
     - noctx
     - contextcheck
+    - thelper
   exclusions:
     paths:
       - testdata
