@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strings"
 	"testing"
+	"time"
 
 	coreerrors "github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
@@ -183,6 +184,61 @@ func TestDefaultValidationAndContextErrors(t *testing.T) {
 	}
 	if _, err := NewDefault().GenerateValue(canceled, ValueRequest{}); !errors.Is(err, context.Canceled) {
 		t.Fatalf("canceled GenerateValue error = %v, want context.Canceled", err)
+	}
+}
+
+func TestDefaultGenerateRowsContextCanceled(t *testing.T) {
+	canceled, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, err := NewDefault().GenerateRows(canceled, RowsRequest{Document: testDocument(), Entity: "users"})
+	if !errors.Is(err, context.Canceled) {
+		t.Fatalf("canceled GenerateRows error = %v, want context.Canceled", err)
+	}
+}
+
+func TestDefaultGenerateRowsContextDeadlineExceeded(t *testing.T) {
+	ctx, cancel := context.WithDeadline(context.Background(), time.Unix(0, 0))
+	defer cancel()
+	_, err := NewDefault().GenerateRows(ctx, RowsRequest{Document: testDocument(), Entity: "users"})
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("expired GenerateRows error = %v, want context.DeadlineExceeded", err)
+	}
+}
+
+func TestDefaultGenerateValueTypeAndSemanticFallbacks(t *testing.T) {
+	ctx := context.Background()
+	rt := NewDefault()
+
+	// Empty Type and empty Semantic fall back to the "any" primitive and must
+	// still produce a value without error.
+	got, err := rt.GenerateValue(ctx, ValueRequest{Seed: int64Ptr(1)})
+	if err != nil {
+		t.Fatalf("GenerateValue any-fallback returned error: %v", err)
+	}
+	if got.Kind == value.KindNull {
+		t.Fatalf("GenerateValue any-fallback produced null value: %#v", got)
+	}
+
+	// An explicit Type is honored when Semantic is empty.
+	typed, err := rt.GenerateValue(ctx, ValueRequest{Type: model.Primitive{Kind: model.PrimBool}, Seed: int64Ptr(1)})
+	if err != nil {
+		t.Fatalf("GenerateValue typed returned error: %v", err)
+	}
+	if typed.Kind != value.KindBool {
+		t.Fatalf("GenerateValue typed kind = %v, want bool", typed.Kind)
+	}
+
+	// Semantic overrides Type when both are set.
+	overridden, err := rt.GenerateValue(ctx, ValueRequest{
+		Type:     model.Primitive{Kind: model.PrimBool},
+		Semantic: "email",
+		Seed:     int64Ptr(1),
+	})
+	if err != nil {
+		t.Fatalf("GenerateValue semantic-override returned error: %v", err)
+	}
+	if overridden.Kind != value.KindString {
+		t.Fatalf("GenerateValue semantic-override kind = %v, want string (email)", overridden.Kind)
 	}
 }
 
