@@ -29,7 +29,7 @@ func (*SQL) Format() string { return "sql" }
 // Write serialises ds to w.
 func (s *SQL) Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts ports.WriteOptions) error {
 	if doc == nil {
-		return &errors.Error{Kind: errors.KindValidation, Message: "sql writer requires Document"}
+		return requireDocument("sql")
 	}
 	if ds == nil {
 		return nil
