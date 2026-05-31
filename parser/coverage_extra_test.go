@@ -224,16 +224,28 @@ badint: !!int nope
 	if err != nil {
 		t.Fatal(err)
 	}
-	m := got.(map[string]any)
-	base := m["base"].(map[string]any)
-	alias := m["alias"].(map[string]any)
+	m, ok := got.(map[string]any)
+	if !ok {
+		t.Fatalf("expected map[string]any, got %T", got)
+	}
+	base, ok := m["base"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected map[string]any, got %T", m["base"])
+	}
+	alias, ok := m["alias"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected map[string]any, got %T", m["alias"])
+	}
 	if base["i"] != int64(42) || base["f"] != 1.25 || base["b"] != true || base["n"] != nil || base["s"] != "text" {
 		t.Fatalf("base: %#v", base)
 	}
 	if alias["s"] != "text" {
 		t.Fatalf("alias: %#v", alias)
 	}
-	seq := m["seq"].([]any)
+	seq, ok := m["seq"].([]any)
+	if !ok {
+		t.Fatalf("expected []any, got %T", m["seq"])
+	}
 	if seq[0] != int64(1) || seq[1] != false || seq[2] != nil {
 		t.Fatalf("seq: %#v", seq)
 	}

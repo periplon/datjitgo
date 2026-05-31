@@ -10,10 +10,19 @@ import (
 	"github.com/periplon/datjitgo/core/value"
 )
 
-func mkRow(pairs ...any) *value.Object {
+func mkRow(t *testing.T, pairs ...any) *value.Object {
+	t.Helper()
 	obj := value.NewObject()
 	for i := 0; i+1 < len(pairs); i += 2 {
-		obj.Set(pairs[i].(string), pairs[i+1].(value.Value))
+		key, ok := pairs[i].(string)
+		if !ok {
+			t.Fatalf("expected string, got %T", pairs[i])
+		}
+		val, ok := pairs[i+1].(value.Value)
+		if !ok {
+			t.Fatalf("expected value.Value, got %T", pairs[i+1])
+		}
+		obj.Set(key, val)
 	}
 	return obj
 }
@@ -33,6 +42,7 @@ func mustEval(t *testing.T, src string, row *value.Object) value.Value {
 
 func TestExprCases(t *testing.T) {
 	row := mkRow(
+		t,
 		"a", value.Int(10),
 		"b", value.Int(3),
 		"name", value.Str("Alice"),
@@ -81,7 +91,7 @@ func TestExprCases(t *testing.T) {
 }
 
 func TestExprRoundFloat(t *testing.T) {
-	row := mkRow("x", value.Float(3.14159))
+	row := mkRow(t, "x", value.Float(3.14159))
 	got := mustEval(t, "round(x, 2)", row)
 	if math.Abs(got.F-3.14) > 1e-9 {
 		t.Fatalf("round result: %v", got)
@@ -89,7 +99,7 @@ func TestExprRoundFloat(t *testing.T) {
 }
 
 func TestExprUnresolvedPath(t *testing.T) {
-	got := mustEval(t, "nope", mkRow())
+	got := mustEval(t, "nope", mkRow(t))
 	if got.Kind != value.KindNull {
 		t.Fatalf("want null, got %v", got)
 	}
@@ -106,7 +116,7 @@ func TestExprDivisionByZeroErrors(t *testing.T) {
 }
 
 func TestExprStringNumberPromotion(t *testing.T) {
-	row := mkRow("qty", value.Int(5))
+	row := mkRow(t, "qty", value.Int(5))
 	got := mustEval(t, `"count=" + qty`, row)
 	if got.Kind != value.KindString || got.S != "count=5" {
 		t.Fatalf("string+int failed: %+v", got)
@@ -114,7 +124,7 @@ func TestExprStringNumberPromotion(t *testing.T) {
 }
 
 func TestExprIfThenRewrite(t *testing.T) {
-	row := mkRow("status", value.Str("shipped"), "shipped_at", value.Str("2026-01-01"))
+	row := mkRow(t, "status", value.Str("shipped"), "shipped_at", value.Str("2026-01-01"))
 	got, err := evalRule(`if status == "shipped" then shipped_at != null`, "Order", row, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -127,9 +137,9 @@ func TestExprIfThenRewrite(t *testing.T) {
 func TestExprAggregateAndDateFunctions(t *testing.T) {
 	data := map[string][]*value.Object{
 		"Order": {
-			mkRow("amount", value.Int(10)),
-			mkRow("amount", value.Int(20)),
-			mkRow("amount", value.Int(30)),
+			mkRow(t, "amount", value.Int(10)),
+			mkRow(t, "amount", value.Int(20)),
+			mkRow(t, "amount", value.Int(30)),
 		},
 	}
 	cases := map[string]value.Value{
@@ -176,10 +186,11 @@ func TestExprDirectEvaluatorBranches(t *testing.T) {
 	obj := value.NewObject()
 	obj.Set("amount", value.Int(7))
 	row := mkRow(
+		t,
 		"items", value.List([]value.Value{value.Obj(obj)}),
 		"when", value.Time(time.Date(2026, 1, 2, 0, 0, 0, 0, time.UTC)),
 	)
-	data := map[string][]*value.Object{"Order": {mkRow("amount", value.Int(4)), mkRow("amount", value.Int(6))}}
+	data := map[string][]*value.Object{"Order": {mkRow(t, "amount", value.Int(4)), mkRow(t, "amount", value.Int(6))}}
 	if got := resolvePath("items.amount", evalEnv{row: row}); got.Kind != value.KindList || len(got.L) != 1 {
 		t.Fatalf("list path: %+v", got)
 	}

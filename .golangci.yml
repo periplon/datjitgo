@@ -19,6 +19,7 @@ linters:
     - noctx
     - contextcheck
     - thelper
+    - forcetypeassert
   exclusions:
     paths:
       - testdata

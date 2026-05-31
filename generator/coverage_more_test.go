@@ -35,8 +35,8 @@ func TestExprParserAdditionalErrorAndEscapeBranches(t *testing.T) {
 func TestExprFunctionDefaultsAndDateBranches(t *testing.T) {
 	data := map[string][]*value.Object{
 		"Thing": {
-			mkRow("first", value.Int(4), "second", value.Int(99)),
-			mkRow("first", value.Float(2.5)),
+			mkRow(t, "first", value.Int(4), "second", value.Int(99)),
+			mkRow(t, "first", value.Float(2.5)),
 		},
 	}
 	cases := map[string]value.Value{
@@ -84,7 +84,7 @@ func TestDerivedDefaultAndComputeEdgeBranches(t *testing.T) {
 	entity := model.NewEntity("User")
 	entity.Fields.Set("base", &model.Field{Name: "base", Type: model.Primitive{Kind: model.PrimString}})
 	entity.Fields.Set("derived_missing_arg", &model.Field{Name: "derived_missing_arg", Decorators: []model.Decorator{{Name: "derived"}}})
-	row := mkRow("base", value.Str("Ada"))
+	row := mkRow(t, "base", value.Str("Ada"))
 	if err := eng.applyDerived(entity, row, st); err != nil {
 		t.Fatalf("missing derived arg should be ignored: %v", err)
 	}
@@ -100,7 +100,7 @@ func TestDerivedDefaultAndComputeEdgeBranches(t *testing.T) {
 		When:     "enabled",
 		Fallback: `"fallback"`,
 	}})
-	row = mkRow("base", value.Str("source"), "enabled", value.Bool(true))
+	row = mkRow(t, "base", value.Str("source"), "enabled", value.Bool(true))
 	if err := eng.applyDefaultChain(entity, row, st); err != nil {
 		t.Fatalf("default chain source: %v", err)
 	}
@@ -108,7 +108,7 @@ func TestDerivedDefaultAndComputeEdgeBranches(t *testing.T) {
 		t.Fatalf("default source pick = %+v", got)
 	}
 
-	row = mkRow("enabled", value.Bool(false))
+	row = mkRow(t, "enabled", value.Bool(false))
 	if err := eng.applyDefaultChain(entity, row, st); err != nil {
 		t.Fatalf("false when should skip: %v", err)
 	}
@@ -117,7 +117,7 @@ func TestDerivedDefaultAndComputeEdgeBranches(t *testing.T) {
 	}
 
 	entity.Fields.Set("bad_when", &model.Field{Name: "bad_when", DefaultChain: &model.DefaultChainSpec{When: "1 +", Fallback: `"x"`}})
-	if err := eng.applyDefaultChain(entity, mkRow(), st); err == nil {
+	if err := eng.applyDefaultChain(entity, mkRow(t), st); err == nil {
 		t.Fatal("expected default_chain when parse error")
 	}
 
@@ -127,7 +127,7 @@ func TestDerivedDefaultAndComputeEdgeBranches(t *testing.T) {
 		{When: "score > 0", Value: `"low"`},
 		{Value: `"none"`},
 	}})
-	row = mkRow("score", value.Int(5))
+	row = mkRow(t, "score", value.Int(5))
 	if err := eng.applyCompute(entity, row, st); err != nil {
 		t.Fatalf("compute branch: %v", err)
 	}
@@ -136,7 +136,7 @@ func TestDerivedDefaultAndComputeEdgeBranches(t *testing.T) {
 	}
 
 	entity.Fields.Set("bad_value", &model.Field{Name: "bad_value", Compute: []model.ComputeBranch{{Value: "1 +"}}})
-	if err := eng.applyCompute(entity, mkRow(), st); err == nil {
+	if err := eng.applyCompute(entity, mkRow(t), st); err == nil {
 		t.Fatal("expected compute value parse error")
 	}
 }
@@ -147,7 +147,7 @@ func TestGenerateByTypeCompositeAndReferenceEdges(t *testing.T) {
 	st := &generationState{
 		enumDefs: map[string]model.EnumDef{},
 		generated: map[string][]*value.Object{
-			"Target": {mkRow("id", value.Int(1)), mkRow("id", value.Int(2)), value.NewObject()},
+			"Target": {mkRow(t, "id", value.Int(1)), mkRow(t, "id", value.Int(2)), value.NewObject()},
 		},
 		seqs: newSeqCounters(),
 	}
@@ -281,7 +281,7 @@ func TestCoherenceDeriveAndDecoratorSourceEdges(t *testing.T) {
 	entity := model.NewEntity("User")
 	entity.Fields.Set("name", &model.Field{Name: "name", Type: model.Primitive{Kind: model.PrimString}})
 	entity.Fields.Set("email", &model.Field{Name: "email", Decorators: []model.Decorator{{Name: "from"}}})
-	row := mkRow("name", value.Str("Ada"))
+	row := mkRow(t, "name", value.Str("Ada"))
 	if err := eng.applyFromDerivations(entity, row, rng, map[string]struct{}{"email": {}}); err != nil {
 		t.Fatal(err)
 	}
