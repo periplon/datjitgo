@@ -500,6 +500,19 @@ func resolvePath(path string, env evalEnv) value.Value {
 
 func evalBinary(op string, l, r value.Value) (value.Value, error) {
 	switch op {
+	case "+", "-", "*", "/", "%":
+		return evalArithmetic(op, l, r)
+	case "==", "!=", "<", ">", "<=", ">=":
+		return evalComparison(op, l, r)
+	case "and", "or":
+		return evalLogical(op, l, r)
+	}
+	return value.Null(), generationf("expr: unknown op %q", op)
+}
+
+// evalArithmetic handles +, -, *, / and % (with + doubling as string concat).
+func evalArithmetic(op string, l, r value.Value) (value.Value, error) {
+	switch op {
 	case "+":
 		// String concatenation if either side is a string.
 		if l.Kind == value.KindString || r.Kind == value.KindString {
@@ -523,6 +536,13 @@ func evalBinary(op string, l, r value.Value) (value.Value, error) {
 			n := int64(a / b)
 			return a - float64(n)*b
 		})
+	}
+	return value.Null(), generationf("expr: unknown op %q", op)
+}
+
+// evalComparison handles ==, !=, <, >, <= and >=.
+func evalComparison(op string, l, r value.Value) (value.Value, error) {
+	switch op {
 	case "==":
 		return value.Bool(valuesEqual(l, r)), nil
 	case "!=":
@@ -551,6 +571,13 @@ func evalBinary(op string, l, r value.Value) (value.Value, error) {
 			return value.Null(), err
 		}
 		return value.Bool(c >= 0), nil
+	}
+	return value.Null(), generationf("expr: unknown op %q", op)
+}
+
+// evalLogical handles the boolean and/or operators.
+func evalLogical(op string, l, r value.Value) (value.Value, error) {
+	switch op {
 	case "and":
 		return value.Bool(truthy(l) && truthy(r)), nil
 	case "or":
