@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"io"
 
-	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
 	"github.com/periplon/datjitgo/core/ports"
 	"github.com/periplon/datjitgo/core/value"
@@ -27,7 +26,7 @@ func (*CSV) Format() string { return "csv" }
 // cell. Returns a validation error when doc is nil (field types required).
 func (c *CSV) Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts ports.WriteOptions) error {
 	if doc == nil {
-		return &errors.Error{Kind: errors.KindValidation, Message: "csv writer requires Document"}
+		return requireDocument("csv")
 	}
 	if ds == nil {
 		return nil

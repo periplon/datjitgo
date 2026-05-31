@@ -22,21 +22,35 @@ type Runtime interface {
 
 // RowsRequest describes a row generation request for one entity.
 type RowsRequest struct {
+	// Document is the parsed schema to generate from. Required.
 	Document *model.Document
-	Entity   string
-	Seed     *int64
-	Locale   string
-	Volumes  map[string]int
+	// Entity is the name of the entity whose rows to generate. Required.
+	Entity string
+	// Seed, when non-nil, pins the generation seed for this call.
+	Seed *int64
+	// Locale, when non-empty, overrides the locale for this call.
+	Locale string
+	// Volumes overrides generated row counts per entity name; empty entries
+	// are ignored and the document-declared volumes are used instead.
+	Volumes map[string]int
 }
 
 // ValueRequest describes a single value generation request.
 type ValueRequest struct {
-	Type       model.TypeExpr
-	Semantic   string
+	// Type is the field type to generate. Ignored when Semantic is set.
+	Type model.TypeExpr
+	// Semantic names a semantic type (e.g. "person.first"); when non-empty it
+	// overrides Type. If both Type and Semantic are empty the value defaults to
+	// the "any" primitive.
+	Semantic string
+	// Decorators are applied to the synthesized field (e.g. @range, @pattern).
 	Decorators []model.Decorator
-	Seed       *int64
-	Locale     string
-	UniqueKey  string
+	// Seed, when non-nil, pins the generation seed for this call.
+	Seed *int64
+	// Locale, when non-empty, overrides the locale for this call.
+	Locale string
+	// UniqueKey names the synthesized field; it defaults to "value" when empty.
+	UniqueKey string
 }
 
 // DocumentCompiler compiles host-language input into a datjit document.
@@ -98,7 +112,9 @@ func WithLocale(locale string) RunOption {
 	}
 }
 
-// WithVolume overrides the generated row count for one entity.
+// WithVolume overrides the generated row count for a single entity. Repeated
+// calls accumulate; calling it for the same entity again overrides the prior
+// value for that entity. It does not clear overrides for other entities.
 func WithVolume(entity string, volume int) RunOption {
 	return func(c *runConfig) {
 		if c.volumes == nil {
@@ -108,7 +124,10 @@ func WithVolume(entity string, volume int) RunOption {
 	}
 }
 
-// WithVolumes overrides generated row counts for multiple entities.
+// WithVolumes overrides generated row counts for multiple entities at once. It
+// merges the given entries into any overrides already set by earlier WithVolume
+// or WithVolumes calls (later entries win for the same entity); an empty or nil
+// map is a no-op.
 func WithVolumes(volumes map[string]int) RunOption {
 	return func(c *runConfig) {
 		if len(volumes) == 0 {

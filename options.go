@@ -15,7 +15,7 @@ type Option func(*Service) error
 func WithParser(p ports.Parser) Option {
 	return func(s *Service) error {
 		if p == nil {
-			return &errors.Error{Kind: errors.KindValidation, Message: "WithParser: nil parser"}
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithParser: parser is required (cannot be nil); omit this option to use the default parser"}
 		}
 		s.parser = p
 		return nil
@@ -26,7 +26,7 @@ func WithParser(p ports.Parser) Option {
 func WithGenerator(g ports.Generator) Option {
 	return func(s *Service) error {
 		if g == nil {
-			return &errors.Error{Kind: errors.KindValidation, Message: "WithGenerator: nil generator"}
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithGenerator: generator is required (cannot be nil); omit this option to use the default engine"}
 		}
 		s.gen = g
 		if eng, ok := s.gen.(*generator.Engine); ok && s.llm != nil {
@@ -41,7 +41,7 @@ func WithGenerator(g ports.Generator) Option {
 func WithWriter(w ports.Writer) Option {
 	return func(s *Service) error {
 		if w == nil {
-			return &errors.Error{Kind: errors.KindValidation, Message: "WithWriter: nil writer"}
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithWriter: writer is required (cannot be nil)"}
 		}
 		if s.writers == nil {
 			s.writers = map[string]ports.Writer{}
@@ -58,7 +58,7 @@ func WithWriter(w ports.Writer) Option {
 func WithCorpus(c ports.CorpusProvider) Option {
 	return func(s *Service) error {
 		if c == nil {
-			return &errors.Error{Kind: errors.KindValidation, Message: "WithCorpus: nil corpus"}
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithCorpus: corpus is required (cannot be nil); omit this option to use the embedded corpus"}
 		}
 		s.corpus = c
 		// Only rebind when the generator is the built-in engine: other
@@ -75,7 +75,7 @@ func WithCorpus(c ports.CorpusProvider) Option {
 func WithLLMProvider(p ports.LLMProvider) Option {
 	return func(s *Service) error {
 		if p == nil {
-			return &errors.Error{Kind: errors.KindValidation, Message: "WithLLMProvider: nil provider"}
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithLLMProvider: provider is required (cannot be nil); omit this option to keep the deterministic offline stub"}
 		}
 		s.llm = p
 		if eng, ok := s.gen.(*generator.Engine); ok {

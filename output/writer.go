@@ -124,7 +124,7 @@ func encodeValueJSON(v value.Value) (any, error) {
 		}
 		return obj, nil
 	default:
-		return nil, fmt.Errorf("unknown value kind %d", v.Kind)
+		return nil, errors.Generationf("unknown value kind %d", v.Kind)
 	}
 }
 
@@ -162,7 +162,7 @@ func renderValueScalar(v value.Value) (string, error) {
 		}
 		return string(b), nil
 	default:
-		return "", fmt.Errorf("unknown value kind %d", v.Kind)
+		return "", errors.Generationf("unknown value kind %d", v.Kind)
 	}
 }
 
@@ -239,6 +239,13 @@ func escapeSQLString(s string) string {
 // hexEncode returns the lowercase hex encoding of b.
 func hexEncode(b []byte) string {
 	return hex.EncodeToString(b)
+}
+
+// requireDocument returns the validation error emitted by writers that need a
+// Document for unambiguous field declaration order (CSV, SQL). format names the
+// writer for the message.
+func requireDocument(format string) error {
+	return &errors.Error{Kind: errors.KindValidation, Message: fmt.Sprintf("%s writer requires Document", format)}
 }
 
 // wrapIO wraps a lower-level IO error from an encoder or writer into a typed
