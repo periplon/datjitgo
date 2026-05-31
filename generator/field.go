@@ -221,28 +221,40 @@ func (e *Engine) generateByType(entity *model.Entity, f *model.Field, t model.Ty
 	case model.Map:
 		return e.generateMap(entity, f, tt, row, st, rng)
 	case model.Tuple:
-		out := make([]value.Value, 0, len(tt.Elements))
-		for _, el := range tt.Elements {
-			v, err := e.generateByType(entity, f, el, row, st, rng)
-			if err != nil {
-				return value.Null(), err
-			}
-			out = append(out, v)
-		}
-		return value.List(out), nil
+		return e.generateTuple(entity, f, tt, row, st, rng)
 	case model.Nullable:
 		if rng.Float() < 0.2 {
 			return value.Null(), nil
 		}
 		return e.generateByType(entity, f, tt.Inner, row, st, rng)
 	case model.Union:
-		if len(tt.Variants) == 0 {
-			return value.Null(), nil
-		}
-		idx := int(rng.IntN(int64(len(tt.Variants))))
-		return e.generateByType(entity, f, tt.Variants[idx], row, st, rng)
+		return e.generateUnion(entity, f, tt, row, st, rng)
 	}
 	return value.Null(), &errors.Error{Kind: errors.KindGeneration, Message: fmt.Sprintf("unsupported type %T", t)}
+}
+
+// generateTuple generates each tuple element in declared order and returns them
+// as a list value.
+func (e *Engine) generateTuple(entity *model.Entity, f *model.Field, t model.Tuple, row *value.Object, st *generationState, rng ports.Randomizer) (value.Value, error) {
+	out := make([]value.Value, 0, len(t.Elements))
+	for _, el := range t.Elements {
+		v, err := e.generateByType(entity, f, el, row, st, rng)
+		if err != nil {
+			return value.Null(), err
+		}
+		out = append(out, v)
+	}
+	return value.List(out), nil
+}
+
+// generateUnion selects one variant uniformly at random and generates it. An
+// empty union yields null.
+func (e *Engine) generateUnion(entity *model.Entity, f *model.Field, t model.Union, row *value.Object, st *generationState, rng ports.Randomizer) (value.Value, error) {
+	if len(t.Variants) == 0 {
+		return value.Null(), nil
+	}
+	idx := int(rng.IntN(int64(len(t.Variants))))
+	return e.generateByType(entity, f, t.Variants[idx], row, st, rng)
 }
 
 // generatePrimitiveField layers @dist on top of the default primitive
