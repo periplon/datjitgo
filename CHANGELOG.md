@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-31
+
+### Changed
+- **Module path moved to `github.com/periplon/datjitgo`** (was
+  `github.com/jmcarbo/datjitgo`). Import paths and README badges updated.
+  Install with `go install github.com/periplon/datjitgo/cmd/datjit@latest`.
+- CI now runs lint, race-enabled tests, and coverage reporting.
+- README now carries badges and contributor links.
+
 ### Added
 - Godoc `Example_*` tests across the root `datjit` package, `runtime`,
   `datjittest`, and `output`.
@@ -14,10 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`.
 - `.golangci.yml` configuration for `golangci-lint`.
 - Release workflow for `cmd/datjit`.
-
-### Changed
-- CI now runs lint, race-enabled tests, and coverage reporting.
-- README now carries badges and contributor links.
 
 ### Fixed
 - SA1012 (passing a nil `context.Context`) flagged by `staticcheck` in

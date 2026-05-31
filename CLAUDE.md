@@ -85,6 +85,10 @@ Schemas are YAML with a compact DDL for field types: primitives, semantic types 
 
 `type: subject`, lowercase, present tense. Types in active use: `feat`, `fix`, `docs`, `test`, `chore`, `refactor`, `ci`, `merge`. One workstream per PR; reference the spec it implements. Do not add `Co-Authored-By` trailers (per the contributor's global preference).
 
+## Releases
+
+SemVer tags `vMAJOR.MINOR.PATCH`. Pushing a `v*` tag triggers `.github/workflows/release.yml`, which cross-builds `cmd/datjit` for linux/darwin × amd64/arm64 and uploads the binaries as workflow artifacts. Before tagging: move the `CHANGELOG.md` `[Unreleased]` entries under a new `## [x.y.z] - YYYY-MM-DD` heading, tag the commit whose `go.mod` already carries the current module path, then push the tag. The module path moved from `jmcarbo/datjitgo` to `periplon/datjitgo` at v0.2.0 — tags before that point at the old path and are not installable as `periplon`.
+
 ## Live integrations
 
 `@llm`, `@llm_values`, and `_meta @llm(...)` use a deterministic offline stub by default. Opt into network calls via `datjit.WithLLMProvider(...)` or CLI `--llm-live`. Built-in HTTP providers cover OpenAI-compatible endpoints (`openai`, `lmstudio`, `vllm`) and Ollama. Tests that hit the network must be skipped by default.
