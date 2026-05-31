@@ -2,6 +2,9 @@
 package plan
 
 import (
+	"cmp"
+	"slices"
+
 	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
 )
@@ -58,7 +61,7 @@ func Entities(doc *model.Document) ([]string, error) {
 				ready = append(ready, dep)
 			}
 		}
-		sortByInsertionOrder(ready, rank)
+		slices.SortFunc(ready, func(a, b string) int { return cmp.Compare(rank[a], rank[b]) })
 		queue = append(queue, ready...)
 	}
 
@@ -99,14 +102,6 @@ func WalkTypeRefs(t model.TypeExpr, seen map[string]struct{}) {
 	case model.Union:
 		for _, e := range v.Variants {
 			WalkTypeRefs(e, seen)
-		}
-	}
-}
-
-func sortByInsertionOrder(xs []string, rank map[string]int) {
-	for i := 1; i < len(xs); i++ {
-		for j := i; j > 0 && rank[xs[j-1]] > rank[xs[j]]; j-- {
-			xs[j-1], xs[j] = xs[j], xs[j-1]
 		}
 	}
 }
