@@ -68,11 +68,20 @@ switches with map/interface registries — a speculative restructure, not debt
 removal, and the experts flagged them for supervised golden review. Not worth the
 determinism exposure unattended.
 
-**Deferred — supervised only (genuine behavior/golden change or unbounded lint fallout):**
+**Done in later supervised PRs:**
+TD-27..TD-30 (linters enabled, PR #2) + legacy exclusion cleanup (PR #3).
+TD-20 (SWIFT/BIC now generated from the seeded RNG instead of the hardcoded
+`COBADEFFXXX`; goldens regenerated — only `bank_swift` fields changed).
+
+**Verified non-issue (closed without change):**
+TD-23 — undefined YAML anchors already fail at `yaml.Unmarshal` decode time
+(`unknown anchor referenced`), so `nodeToAny`'s nil-alias branch is unreachable;
+there was no silent-null masking to fix.
+
+**Still deferred — supervised only:**
 TD-06 (parser err typing, msg regression), TD-14/16/17/19 (speculative restructures),
-TD-20 (SWIFT, golden drift), TD-21 (EntityRows, speculative), TD-22 (cmd err wrap),
-TD-23 (YAML alias error, behavior change), TD-24 (Close errors), TD-25 (cmd sort),
-TD-26 (nil Object contract), TD-27..TD-30 (linter enablement, repo-wide fallout).
+TD-21 (EntityRows, speculative), TD-22 (cmd err wrap), TD-24 (Close errors),
+TD-25 (cmd sort), TD-26 (nil Object contract).
 
 ## Outcome
 
