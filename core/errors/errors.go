@@ -3,8 +3,11 @@ package errors
 
 import "fmt"
 
+// ErrorKind classifies an Error by the pipeline stage or failure mode it
+// represents. Callers match on it via the package sentinels and errors.Is.
 type ErrorKind int
 
+// The Kind constants enumerate every error class datjitgo reports.
 const (
 	KindUnknown ErrorKind = iota
 	KindParse
@@ -44,12 +47,16 @@ func (k ErrorKind) String() string {
 	return "error"
 }
 
+// Location identifies a position in a schema source for diagnostics.
 type Location struct {
 	File string
 	Line int
 	Col  int
 }
 
+// Error is the single error type used across datjitgo. Kind classifies it;
+// the optional Entity, Field, and Location enrich diagnostics, and Cause
+// chains an underlying error for errors.Unwrap/Is/As.
 type Error struct {
 	Kind     ErrorKind
 	Entity   string

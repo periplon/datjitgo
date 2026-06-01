@@ -7,6 +7,7 @@ type TypeExpr interface{ typeExpr() }
 // PrimKind enumerates the datjit primitive type families.
 type PrimKind int
 
+// The Prim constants enumerate the primitive type families.
 const (
 	PrimString PrimKind = iota
 	PrimInt
