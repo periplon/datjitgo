@@ -131,8 +131,8 @@ func TestGenerateMinimal(t *testing.T) {
 	if !strings.Contains(stdout, "\"User\"") {
 		t.Fatalf("expected stdout to contain \"User\", got %q", stdout[:min(200, len(stdout))])
 	}
-	var any map[string]any
-	if err := json.Unmarshal([]byte(stdout), &any); err != nil {
+	var decoded map[string]any
+	if err := json.Unmarshal([]byte(stdout), &decoded); err != nil {
 		t.Fatalf("stdout is not valid JSON: %v", err)
 	}
 }
@@ -271,11 +271,4 @@ func TestGenerateBadVolume(t *testing.T) {
 	if code != 2 {
 		t.Fatalf("expected exit 2 for bad volume, got %d (stderr=%q)", code, stderr)
 	}
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/cobra"
+
 	datjit "github.com/periplon/datjitgo"
 	"github.com/periplon/datjitgo/repl"
-	"github.com/spf13/cobra"
 )
 
 // cmdRepl builds the `datjit repl` subcommand. It is exported to the main
@@ -31,7 +32,7 @@ func cmdRepl() *cobra.Command {
 provided, it is parsed and loaded as the active document before the prompt
 appears. Type 'help' for the command list, 'exit' or Ctrl-D to leave.`,
 		Args: cobra.MaximumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			svc := datjit.NewDefault()
 			sess := repl.New(svc)
 

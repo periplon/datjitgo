@@ -25,14 +25,14 @@ func (e EnumDef) Values() []string {
 
 // WeightsOrNil returns variant weights if any variant carries one, else nil.
 func (e EnumDef) WeightsOrNil() []float64 {
-	any := false
+	anyWeighted := false
 	for _, v := range e.Variants {
 		if v.Weight != nil {
-			any = true
+			anyWeighted = true
 			break
 		}
 	}
-	if !any {
+	if !anyWeighted {
 		return nil
 	}
 	out := make([]float64, len(e.Variants))

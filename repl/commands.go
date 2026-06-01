@@ -116,7 +116,7 @@ func loadPath(s *Session, path string) error {
 }
 
 // cmdReload re-parses the previously loaded file from disk.
-func cmdReload(s *Session, args []string) error {
+func cmdReload(s *Session, _ []string) error {
 	if s.state.Path == "" {
 		writeln(s.errw, "error: nothing to reload (use `load <path>` first)")
 		return nil
@@ -283,7 +283,7 @@ func cmdSet(s *Session, args []string) error {
 }
 
 // cmdGenerate runs the generator + writer pipeline honouring session state.
-func cmdGenerate(s *Session, args []string) error {
+func cmdGenerate(s *Session, _ []string) error {
 	if !ensureDoc(s) {
 		return nil
 	}
@@ -352,7 +352,7 @@ func (s *Session) openOutput() (io.Writer, io.Closer, error) {
 }
 
 // cmdValidate runs datjit.Service.Validate against the loaded document.
-func cmdValidate(s *Session, args []string) error {
+func cmdValidate(s *Session, _ []string) error {
 	if !ensureDoc(s) {
 		return nil
 	}
@@ -459,7 +459,7 @@ func printCorpusInfo(w io.Writer, svc *datjit.Service) error {
 }
 
 // cmdFormats lists writer format IDs provided by the Service.
-func cmdFormats(s *Session, args []string) error {
+func cmdFormats(s *Session, _ []string) error {
 	for _, f := range s.svc.Formats() {
 		writeln(s.out, f)
 	}
@@ -484,7 +484,7 @@ func cmdHelp(s *Session, args []string) error {
 }
 
 // cmdHistory dumps the in-memory history slice.
-func cmdHistory(s *Session, args []string) error {
+func cmdHistory(s *Session, _ []string) error {
 	for i, line := range s.history {
 		writef(s.out, "%4d  %s\n", i+1, line)
 	}
@@ -492,13 +492,13 @@ func cmdHistory(s *Session, args []string) error {
 }
 
 // cmdClear emits the ANSI clear-screen escape.
-func cmdClear(s *Session, args []string) error {
+func cmdClear(s *Session, _ []string) error {
 	write(s.out, "\033[2J\033[H")
 	return nil
 }
 
 // cmdExit signals the run loop to terminate.
-func cmdExit(s *Session, args []string) error {
+func cmdExit(_ *Session, _ []string) error {
 	return errExit
 }
 

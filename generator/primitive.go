@@ -80,8 +80,8 @@ func generatePrimitive(p model.Primitive, rng ports.Randomizer) value.Value {
 		if scale > prec {
 			scale = prec
 		}
-		max := math.Pow(10, float64(prec-scale))
-		v := rng.Float() * max
+		maxVal := math.Pow(10, float64(prec-scale))
+		v := rng.Float() * maxVal
 		return value.Dec(decimal.NewFromFloat(v).Round(int32(scale)))
 	case model.PrimNull:
 		return value.Null()
@@ -105,7 +105,7 @@ func randomAlphanum(rng ports.Randomizer, lo, hi int) string {
 		hi = lo
 	}
 	span := int64(hi - lo + 1)
-	n := int(lo) + int(rng.IntN(span))
+	n := lo + int(rng.IntN(span))
 	buf := make([]byte, n)
 	for i := range buf {
 		buf[i] = alphanum[rng.IntN(int64(len(alphanum)))]
