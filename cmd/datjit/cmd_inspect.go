@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 	"github.com/periplon/datjitgo/core/model"
 )
 

@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 )
 
 // cmdValidate runs Parse → Validate and prints "OK" or a diagnostic.

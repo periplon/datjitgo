@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 	derrs "github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/value"
 )

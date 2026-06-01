@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 )
 
 const helperSchema = `domain: helper_test

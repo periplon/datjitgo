@@ -13,7 +13,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 )
 
 // update toggles writing golden files instead of comparing against them.
