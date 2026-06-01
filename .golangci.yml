@@ -30,28 +30,6 @@ linters:
     paths:
       - testdata
       - corpus
-    rules:
-      # Repository-wide style does not yet match revive's exported/comment
-      # rules. Files outside the tidy task's A-agent scope cannot be edited
-      # here, so the offending revive checks are excluded globally and tracked
-      # as follow-up work.
-      - linters:
-          - revive
-        text: "exported:"
-      - linters:
-          - revive
-        text: "package-comments:"
-      - linters:
-          - revive
-        text: "unused-parameter:"
-      - linters:
-          - revive
-        text: "redefines-builtin-id:"
-      # generator/primitive.go is outside this agent's scope; the unconvert
-      # finding (int(span)) needs a code change there.
-      - linters:
-          - unconvert
-        path: generator/primitive.go
 
 formatters:
   enable:
@@ -65,24 +43,6 @@ formatters:
     paths:
       - testdata
       - corpus
-      # The following files import the root module both as `datjit` and as a
-      # bare path; goimports v2 wants an explicit alias on every import. They
-      # are outside this agent's scope, so goimports is suppressed for them.
-      - cmd/datjit/cmd_generate.go
-      - cmd/datjit/cmd_inspect.go
-      - cmd/datjit/cmd_repl.go
-      - cmd/datjit/cmd_validate.go
-      - cmd/datjit/internal_test.go
-      - datjit_fixtures_test.go
-      - datjit_test.go
-      - datjittest/helpers.go
-      - datjittest/helpers_test.go
-      - datjittest/example_test.go
-      - example_test.go
-      - library_helpers_test.go
-      - options_extra_test.go
-      - repl/repl.go
-      - runtime/example_test.go
 
 issues:
   max-issues-per-linter: 0
