@@ -244,7 +244,10 @@ func TestSplitTypeAndDecorators_LlmWithComma(t *testing.T) {
 	if decs[0].Args[0].Kind != model.ArgLiteral {
 		t.Fatalf("first arg should be literal: %+v", decs[0].Args[0])
 	}
-	s := decs[0].Args[0].Literal.(string)
+	s, ok := decs[0].Args[0].Literal.(string)
+	if !ok {
+		t.Fatalf("expected string, got %T", decs[0].Args[0].Literal)
+	}
 	if s != "Write a short tagline, max 8 words" {
 		t.Fatalf("prompt=%q", s)
 	}

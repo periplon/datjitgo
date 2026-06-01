@@ -75,6 +75,8 @@ func parseDistDecorator(d *model.Decorator) distSpec {
 			if f, ok := argAsFloat(a.Literal); ok {
 				positional = append(positional, f)
 			}
+		default:
+			// other arg kinds are ignored
 		}
 	}
 

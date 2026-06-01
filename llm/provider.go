@@ -28,8 +28,11 @@ func NewHTTP() *HTTPProvider {
 }
 
 // Complete implements ports.LLMProvider.
+//
+//nolint:contextcheck // ctx==nil is defensively guarded with context.Background(); no parent context exists to inherit from.
 func (p *HTTPProvider) Complete(ctx context.Context, req ports.LLMRequest) (string, error) {
 	if ctx == nil {
+		// Defensive nil-guard: there is no parent context to inherit from.
 		ctx = context.Background()
 	}
 	if req.TimeoutSecs != nil && *req.TimeoutSecs > 0 {

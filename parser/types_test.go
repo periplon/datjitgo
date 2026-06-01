@@ -45,7 +45,10 @@ func TestParseTypeExpr_Primitives(t *testing.T) {
 
 func TestParseTypeExpr_ParameterizedInt(t *testing.T) {
 	te := mustParseType(t, "int(32)")
-	p := te.(model.Primitive)
+	p, ok := te.(model.Primitive)
+	if !ok {
+		t.Fatalf("expected model.Primitive, got %T", te)
+	}
 	if p.Kind != model.PrimInt || len(p.Params) != 1 || p.Params[0] != 32 {
 		t.Fatalf("%+v", p)
 	}
@@ -53,7 +56,10 @@ func TestParseTypeExpr_ParameterizedInt(t *testing.T) {
 
 func TestParseTypeExpr_ParameterizedString(t *testing.T) {
 	te := mustParseType(t, "string(80)")
-	p := te.(model.Primitive)
+	p, ok := te.(model.Primitive)
+	if !ok {
+		t.Fatalf("expected model.Primitive, got %T", te)
+	}
 	if p.Kind != model.PrimString || len(p.Params) != 1 || p.Params[0] != 80 {
 		t.Fatalf("%+v", p)
 	}
@@ -61,7 +67,10 @@ func TestParseTypeExpr_ParameterizedString(t *testing.T) {
 
 func TestParseTypeExpr_ParameterizedDecimal(t *testing.T) {
 	te := mustParseType(t, "decimal(10, 2)")
-	p := te.(model.Primitive)
+	p, ok := te.(model.Primitive)
+	if !ok {
+		t.Fatalf("expected model.Primitive, got %T", te)
+	}
 	if p.Kind != model.PrimDecimal || len(p.Params) != 2 || p.Params[0] != 10 || p.Params[1] != 2 {
 		t.Fatalf("%+v", p)
 	}
@@ -69,7 +78,10 @@ func TestParseTypeExpr_ParameterizedDecimal(t *testing.T) {
 
 func TestParseTypeExpr_ParameterizedBytes(t *testing.T) {
 	te := mustParseType(t, "bytes(64)")
-	p := te.(model.Primitive)
+	p, ok := te.(model.Primitive)
+	if !ok {
+		t.Fatalf("expected model.Primitive, got %T", te)
+	}
 	if p.Kind != model.PrimBytes || len(p.Params) != 1 || p.Params[0] != 64 {
 		t.Fatalf("%+v", p)
 	}
@@ -146,7 +158,10 @@ func TestParseTypeExpr_ReferenceRequired(t *testing.T) {
 
 func TestParseTypeExpr_ReferenceOptional(t *testing.T) {
 	te := mustParseType(t, "->User?")
-	r := te.(model.Reference)
+	r, ok := te.(model.Reference)
+	if !ok {
+		t.Fatalf("expected model.Reference, got %T", te)
+	}
 	if r.Target != "User" || !r.Optional {
 		t.Fatalf("%+v", r)
 	}
@@ -154,7 +169,10 @@ func TestParseTypeExpr_ReferenceOptional(t *testing.T) {
 
 func TestParseTypeExpr_ReferenceHasMany(t *testing.T) {
 	te := mustParseType(t, "->[Tag]")
-	r := te.(model.Reference)
+	r, ok := te.(model.Reference)
+	if !ok {
+		t.Fatalf("expected model.Reference, got %T", te)
+	}
 	if r.Target != "Tag" || !r.Many {
 		t.Fatalf("%+v", r)
 	}
@@ -162,7 +180,10 @@ func TestParseTypeExpr_ReferenceHasMany(t *testing.T) {
 
 func TestParseTypeExpr_ReferenceManyToMany(t *testing.T) {
 	te := mustParseType(t, "<->Tag")
-	r := te.(model.Reference)
+	r, ok := te.(model.Reference)
+	if !ok {
+		t.Fatalf("expected model.Reference, got %T", te)
+	}
 	if r.Target != "Tag" || !r.ManyToMany {
 		t.Fatalf("%+v", r)
 	}
@@ -170,12 +191,18 @@ func TestParseTypeExpr_ReferenceManyToMany(t *testing.T) {
 
 func TestParseTypeExpr_ReferenceSelf(t *testing.T) {
 	te := mustParseType(t, "->self")
-	r := te.(model.Reference)
+	r, ok := te.(model.Reference)
+	if !ok {
+		t.Fatalf("expected model.Reference, got %T", te)
+	}
 	if r.Target != "self" || r.Optional {
 		t.Fatalf("%+v", r)
 	}
 	te = mustParseType(t, "->self?")
-	r = te.(model.Reference)
+	r, ok = te.(model.Reference)
+	if !ok {
+		t.Fatalf("expected model.Reference, got %T", te)
+	}
 	if r.Target != "self" || !r.Optional {
 		t.Fatalf("%+v", r)
 	}
@@ -252,8 +279,14 @@ func TestParseTypeExpr_NamedType(t *testing.T) {
 
 func TestParseTypeExpr_NestedList(t *testing.T) {
 	te := mustParseType(t, "[string]")
-	l := te.(model.List)
-	p := l.Element.(model.Primitive)
+	l, ok := te.(model.List)
+	if !ok {
+		t.Fatalf("expected model.List, got %T", te)
+	}
+	p, ok := l.Element.(model.Primitive)
+	if !ok {
+		t.Fatalf("expected model.Primitive, got %T", l.Element)
+	}
 	if p.Kind != model.PrimString {
 		t.Fatalf("%+v", p)
 	}
@@ -319,23 +352,39 @@ func TestParseTypeExpr_AdditionalBranches(t *testing.T) {
 			if !ok {
 				t.Fatalf("not primitive: %T", te)
 			}
-			if p.Kind != tc.want.(model.PrimKind) {
-				t.Fatalf("kind=%v want %v", p.Kind, tc.want)
+			want, ok := tc.want.(model.PrimKind)
+			if !ok {
+				t.Fatalf("expected model.PrimKind, got %T", tc.want)
+			}
+			if p.Kind != want {
+				t.Fatalf("kind=%v want %v", p.Kind, want)
 			}
 		})
 	}
 
-	many := mustParseType(t, "->[ User ]").(model.Reference)
+	manyTE := mustParseType(t, "->[ User ]")
+	many, ok := manyTE.(model.Reference)
+	if !ok {
+		t.Fatalf("expected model.Reference, got %T", manyTE)
+	}
 	if many.Target != "User" || !many.Many {
 		t.Fatalf("spaced has-many reference: %+v", many)
 	}
 
-	complexMap := mustParseType(t, `{string: {string: [int]}}`).(model.Map)
+	complexMapTE := mustParseType(t, `{string: {string: [int]}}`)
+	complexMap, ok := complexMapTE.(model.Map)
+	if !ok {
+		t.Fatalf("expected model.Map, got %T", complexMapTE)
+	}
 	if _, ok := complexMap.Value.(model.Map); !ok {
 		t.Fatalf("nested map value: %T", complexMap.Value)
 	}
 
-	union := mustParseType(t, `[int] | [string]`).(model.Union)
+	unionTE := mustParseType(t, `[int] | [string]`)
+	union, ok := unionTE.(model.Union)
+	if !ok {
+		t.Fatalf("expected model.Union, got %T", unionTE)
+	}
 	if len(union.Variants) != 2 {
 		t.Fatalf("union variants: %+v", union)
 	}

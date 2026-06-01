@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -374,7 +375,7 @@ rules:
 	_ = cmdFormats(s, nil)
 	_ = cmdHistory(s, nil)
 	_ = cmdClear(s, nil)
-	if err := cmdExit(s, nil); err != errExit {
+	if err := cmdExit(s, nil); !errors.Is(err, errExit) {
 		t.Fatalf("exit err=%v", err)
 	}
 	if out.Len() == 0 || errw.Len() == 0 {

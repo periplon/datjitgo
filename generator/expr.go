@@ -404,6 +404,8 @@ func evalExpr(node exprNode, env evalEnv) (value.Value, error) {
 				return value.Int(-inner.I), nil
 			case value.KindFloat:
 				return value.Float(-inner.F), nil
+			default:
+				// non-numeric kinds: handled by the trailing return
 			}
 			return value.Null(), generationf("expr: cannot negate %v", inner.Kind)
 		case "not":
@@ -604,6 +606,8 @@ func isZero(v value.Value) bool {
 		return v.I == 0
 	case value.KindFloat:
 		return v.F == 0
+	default:
+		// non-numeric kinds: handled by the trailing return
 	}
 	return false
 }
@@ -617,6 +621,8 @@ func asFloat(v value.Value) (float64, bool) {
 	case value.KindDecimal:
 		f, _ := v.D.Float64()
 		return f, true
+	default:
+		// non-numeric kinds: handled by the trailing return
 	}
 	return 0, false
 }
@@ -634,6 +640,8 @@ func valuesEqual(a, b value.Value) bool {
 			return a.F == b.F
 		case value.KindString:
 			return a.S == b.S
+		default:
+			// other kinds fall through to the cross-kind handling below
 		}
 	}
 	// Numeric cross-kind equality.
@@ -689,6 +697,8 @@ func truthy(v value.Value) bool {
 		return v.F != 0
 	case value.KindString:
 		return v.S != ""
+	default:
+		// other kinds fall through to the trailing return
 	}
 	return true
 }

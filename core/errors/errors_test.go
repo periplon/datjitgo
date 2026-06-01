@@ -78,7 +78,7 @@ func TestParsefValidationf(t *testing.T) {
 func TestWrap(t *testing.T) {
 	base := goerrors.New("boom")
 	w := Wrap(KindGeneration, base, "while processing %s", "users")
-	if w.Cause != base || w.Kind != KindGeneration {
+	if !goerrors.Is(w.Cause, base) || w.Kind != KindGeneration {
 		t.Fatalf("Wrap: %+v", w)
 	}
 	if !goerrors.Is(w, base) {

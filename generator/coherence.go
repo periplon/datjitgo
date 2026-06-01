@@ -23,11 +23,12 @@ func (e *Engine) applyCoherence(entity *model.Entity, row *value.Object, rng por
 		return populated, nil
 	}
 	entity.Coherence.Each(func(group string, fields []string) bool {
-		if isLocationGroup(group, fields) {
+		switch {
+		case isLocationGroup(group, fields):
 			e.generateLocationGroup(fields, row, rng)
-		} else if isIdentityGroup(group, fields) {
+		case isIdentityGroup(group, fields):
 			e.generateIdentityGroup(fields, row, rng)
-		} else {
+		default:
 			// Default: generate each as a regular field without visibility
 			// into the row pipeline — phase-1 limitation.
 			for _, fn := range fields {
@@ -106,6 +107,8 @@ func decoratorIdentSources(args []model.DecoratorArg) []string {
 			if s, ok := a.Literal.(string); ok {
 				out = append(out, s)
 			}
+		default:
+			// other arg kinds are ignored
 		}
 	}
 	return out

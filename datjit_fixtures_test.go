@@ -179,8 +179,7 @@ func decodeOrdered(dec *json.Decoder) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	switch t := tok.(type) {
-	case json.Delim:
+	if t, ok := tok.(json.Delim); ok {
 		switch t {
 		case '{':
 			m := newOrderedMap()

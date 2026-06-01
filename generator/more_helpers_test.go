@@ -53,7 +53,7 @@ func TestDerivedDefaultComputeAndReferences(t *testing.T) {
 	entity.Fields.Set("total", &model.Field{Name: "total", Type: model.Primitive{Kind: model.PrimInt}, Decorators: []model.Decorator{{Name: "derived", Args: []model.DecoratorArg{{Kind: model.ArgLiteral, Literal: "subtotal + tax", Raw: "subtotal + tax"}}}}})
 	entity.Fields.Set("chosen", &model.Field{Name: "chosen", Type: model.Primitive{Kind: model.PrimInt}, DefaultChain: &model.DefaultChainSpec{Sources: []string{"missing", "subtotal"}, When: "tax > 0", Fallback: "99"}})
 	entity.Fields.Set("bucket", &model.Field{Name: "bucket", Type: model.Primitive{Kind: model.PrimString}, Compute: []model.ComputeBranch{{When: "total > 20", Value: `"big"`}, {Value: `"small"`}}})
-	row := mkRow("subtotal", value.Int(20), "tax", value.Int(3))
+	row := mkRow(t, "subtotal", value.Int(20), "tax", value.Int(3))
 	st := &generationState{generated: map[string][]*value.Object{}}
 	if err := eng.applyDerived(entity, row, st); err != nil {
 		t.Fatal(err)
@@ -71,8 +71,8 @@ func TestDerivedDefaultComputeAndReferences(t *testing.T) {
 		t.Fatalf("derived/default/compute: total=%+v chosen=%+v bucket=%+v", total, chosen, bucket)
 	}
 
-	userRow := mkRow("id", value.Int(1))
-	userRow2 := mkRow("id", value.Int(2))
+	userRow := mkRow(t, "id", value.Int(1))
+	userRow2 := mkRow(t, "id", value.Int(2))
 	refState := &generationState{generated: map[string][]*value.Object{"User": {userRow, userRow2}, "Order": {row}}}
 	refField := &model.Field{Name: "users", Decorators: []model.Decorator{{Name: "count", Args: []model.DecoratorArg{{Kind: model.ArgLiteral, Literal: int64(2)}}}}}
 	many := eng.generateReference(entity, refField, model.Reference{Target: "User", Many: true}, refState, NewRand(2))

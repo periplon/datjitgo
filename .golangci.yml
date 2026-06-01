@@ -14,6 +14,18 @@ linters:
     - staticcheck
     - unconvert
     - unused
+    - gocritic
+    - errorlint
+    - noctx
+    - contextcheck
+    - thelper
+    - forcetypeassert
+    - exhaustive
+  settings:
+    exhaustive:
+      # A switch with an explicit default is treated as exhaustive. Many
+      # switches here intentionally handle a subset and fall back to default.
+      default-signifies-exhaustive: true
   exclusions:
     paths:
       - testdata

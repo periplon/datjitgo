@@ -38,6 +38,8 @@ func (k ErrorKind) String() string {
 		return "corpus missing"
 	case KindCyclicDependency:
 		return "cyclic dependency"
+	default:
+		// unknown kinds fall through to the trailing return
 	}
 	return "error"
 }
