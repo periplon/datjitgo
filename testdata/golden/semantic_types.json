@@ -332,7 +332,7 @@
       "card_number": "4111-1352-1826-4104",
       "card_type": "visa",
       "iban_code": "DE42944855084884230941",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "OYITRPJSAQ5"
     },
     {
       "price_usd": 321.22,
@@ -340,7 +340,7 @@
       "card_number": "4111-5887-3636-4957",
       "card_type": "mastercard",
       "iban_code": "DE58246010981392908073",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "CONQZZKJRXO"
     },
     {
       "price_usd": 472.61,
@@ -348,7 +348,7 @@
       "card_number": "4111-9260-5070-6719",
       "card_type": "mastercard",
       "iban_code": "DE83737740983354335018",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "HMVSUMDKUH4"
     },
     {
       "price_usd": 434.6,
@@ -356,7 +356,7 @@
       "card_number": "4111-9922-7799-7330",
       "card_type": "visa",
       "iban_code": "DE32584814658056832011",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "BRHELF6L10E"
     },
     {
       "price_usd": 397.34,
@@ -364,7 +364,7 @@
       "card_number": "4111-3547-1700-3407",
       "card_type": "discover",
       "iban_code": "DE31930793776087448179",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "EERNYJUZR8V"
     },
     {
       "price_usd": 515.31,
@@ -372,7 +372,7 @@
       "card_number": "4111-5507-7001-7203",
       "card_type": "discover",
       "iban_code": "DE87720749358214136644",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "WZQFAM5ONDU"
     },
     {
       "price_usd": 117.63,
@@ -380,7 +380,7 @@
       "card_number": "4111-2162-9180-7086",
       "card_type": "amex",
       "iban_code": "DE37872958764119469726",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "BSTGQQ237S0"
     },
     {
       "price_usd": 997.23,
@@ -388,7 +388,7 @@
       "card_number": "4111-8251-9433-5330",
       "card_type": "amex",
       "iban_code": "DE38549043777133760339",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "JJTVYD7CI56"
     },
     {
       "price_usd": 19.9,
@@ -396,7 +396,7 @@
       "card_number": "4111-3971-5799-9357",
       "card_type": "discover",
       "iban_code": "DE76235366156665757094",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "RVJIXV2RQSO"
     },
     {
       "price_usd": 338.79,
@@ -404,7 +404,7 @@
       "card_number": "4111-9730-2856-6907",
       "card_type": "discover",
       "iban_code": "DE95899780847420795481",
-      "swift_code": "COBADEFFXXX"
+      "swift_code": "EYOLTYSNEMX"
     }
   ],
   "Content": [

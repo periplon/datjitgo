@@ -204,7 +204,7 @@ func (e *Engine) generateSemantic(st model.Semantic, rng ports.Randomizer) (valu
 			rng.IntN(90)+10, rng.IntN(9000)+1000, rng.IntN(9000)+1000,
 			rng.IntN(9000)+1000, rng.IntN(9000)+1000, rng.IntN(90)+10)), nil
 	case "swift":
-		return value.Str("COBADEFFXXX"), nil
+		return value.Str(randomBIC(rng)), nil
 
 	case "text.word":
 		s, err := e.sampleCorpusString(rng, "text.words")
@@ -366,6 +366,21 @@ func randomHex(rng ports.Randomizer, n int) string {
 		buf[i] = hex[rng.IntN(16)]
 	}
 	return string(buf)
+}
+
+// randomBIC builds an 11-character SWIFT/BIC code from rng: a 4-letter bank
+// code, a 2-letter country code, a 2-character location code, and a 3-character
+// branch code. Letters are A-Z; location and branch positions are alphanumeric.
+func randomBIC(rng ports.Randomizer) string {
+	const alnum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, 0, 11)
+	for i := 0; i < 6; i++ { // 4 bank + 2 country: letters only
+		b = append(b, byte('A'+rng.IntN(26)))
+	}
+	for i := 0; i < 5; i++ { // 2 location + 3 branch: alphanumeric
+		b = append(b, alnum[rng.IntN(int64(len(alnum)))])
+	}
+	return string(b)
 }
 
 func roundTo(f float64, places int) float64 {

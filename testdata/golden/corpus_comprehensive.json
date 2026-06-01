@@ -631,7 +631,7 @@
       "card": "4111-9911-2425-3426",
       "card_type": "visa",
       "bank_iban": "DE25791632771020540652",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "ZSIESD378MJ"
     },
     {
       "price_usd": 355.53,
@@ -639,7 +639,7 @@
       "card": "4111-1598-4389-9993",
       "card_type": "discover",
       "bank_iban": "DE90400912185118578827",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "RCRCJP3P18V"
     },
     {
       "price_usd": 761.1,
@@ -647,7 +647,7 @@
       "card": "4111-2043-6079-3919",
       "card_type": "visa",
       "bank_iban": "DE51570874621071495740",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "VQULHK608UI"
     },
     {
       "price_usd": 805.78,
@@ -655,7 +655,7 @@
       "card": "4111-6750-4975-9026",
       "card_type": "discover",
       "bank_iban": "DE83275447492942663625",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "JBLBGDOK562"
     },
     {
       "price_usd": 87.71,
@@ -663,7 +663,7 @@
       "card": "4111-5233-7664-1278",
       "card_type": "mastercard",
       "bank_iban": "DE41993089658359405511",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "SXYGLAE6KZY"
     },
     {
       "price_usd": 175.49,
@@ -671,7 +671,7 @@
       "card": "4111-1641-3557-5021",
       "card_type": "amex",
       "bank_iban": "DE23988159284786980799",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "FFEHJZ0F0L7"
     },
     {
       "price_usd": 441.88,
@@ -679,7 +679,7 @@
       "card": "4111-2805-2170-7925",
       "card_type": "amex",
       "bank_iban": "DE95512674322577141047",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "SDOUFD6SS3D"
     },
     {
       "price_usd": 222.29,
@@ -687,7 +687,7 @@
       "card": "4111-3957-8571-7909",
       "card_type": "visa",
       "bank_iban": "DE75924238184582741370",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "SIPBAGGFBG7"
     },
     {
       "price_usd": 129.07,
@@ -695,7 +695,7 @@
       "card": "4111-4866-4660-5144",
       "card_type": "discover",
       "bank_iban": "DE91613794562437787985",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "PAOVRKPGV0Y"
     },
     {
       "price_usd": 35.15,
@@ -703,7 +703,7 @@
       "card": "4111-7713-1932-1147",
       "card_type": "mastercard",
       "bank_iban": "DE84910386089450829595",
-      "bank_swift": "COBADEFFXXX"
+      "bank_swift": "UNMWDIAC70T"
     }
   ],
   "Product": [
