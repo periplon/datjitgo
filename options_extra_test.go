@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 	derrs "github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
 	"github.com/periplon/datjitgo/core/ports"

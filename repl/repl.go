@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/chzyer/readline"
+
 	datjit "github.com/periplon/datjitgo"
 )
 

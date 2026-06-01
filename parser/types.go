@@ -320,8 +320,8 @@ func isLowerIdentDotted(s string) bool {
 // matchesEnclosure checks that the first byte of src matches `open` and its
 // complementary closer at the end, with balanced depth in between. This lets
 // us avoid treating `[int] | [string]` as a list when it's actually a union.
-func matchesEnclosure(src string, open, close byte) bool {
-	if len(src) < 2 || src[0] != open || src[len(src)-1] != close {
+func matchesEnclosure(src string, open, closeByte byte) bool {
+	if len(src) < 2 || src[0] != open || src[len(src)-1] != closeByte {
 		return false
 	}
 	depth := 0

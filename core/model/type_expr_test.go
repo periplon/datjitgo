@@ -2,7 +2,7 @@ package model
 
 import "testing"
 
-func TestTypeExprSealed(t *testing.T) {
+func TestTypeExprSealed(_ *testing.T) {
 	var _ TypeExpr = Primitive{Kind: PrimString}
 	var _ TypeExpr = Semantic{Namespace: "person", Tag: "full"}
 	var _ TypeExpr = EnumInline{Values: []string{"a", "b"}}
@@ -15,7 +15,7 @@ func TestTypeExprSealed(t *testing.T) {
 	var _ TypeExpr = Union{Variants: []TypeExpr{Primitive{Kind: PrimString}, Primitive{Kind: PrimInt}}}
 }
 
-func TestTypeExprMarkerMethods(t *testing.T) {
+func TestTypeExprMarkerMethods(_ *testing.T) {
 	Primitive{Kind: PrimString}.typeExpr()
 	Semantic{Namespace: "person", Tag: "full"}.typeExpr()
 	EnumInline{Values: []string{"a", "b"}}.typeExpr()

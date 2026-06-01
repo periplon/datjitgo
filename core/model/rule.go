@@ -20,6 +20,7 @@ const (
 // mapping in CrossRow and leave Expr empty.
 type RuleKind int
 
+// The RuleKind constants enumerate the supported rule body shapes.
 const (
 	RuleKindExpr RuleKind = iota
 	RuleKindCrossRow

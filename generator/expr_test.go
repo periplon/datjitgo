@@ -206,7 +206,7 @@ func TestExprDirectEvaluatorBranches(t *testing.T) {
 	if _, err := evalBinary("?", value.Int(1), value.Int(2)); err == nil {
 		t.Fatal("expected unknown operator error")
 	}
-	if _, err := numericOp(value.Str("x"), value.Int(1), func(a, b int64) int64 { return a }, func(a, b float64) float64 { return a }); err == nil {
+	if _, err := numericOp(value.Str("x"), value.Int(1), func(a, _ int64) int64 { return a }, func(a, _ float64) float64 { return a }); err == nil {
 		t.Fatal("expected non-numeric error")
 	}
 	if f, ok := asFloat(value.Dec(decimal.NewFromFloat(1.25))); !ok || f != 1.25 {

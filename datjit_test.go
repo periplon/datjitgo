@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/periplon/datjitgo"
+	datjit "github.com/periplon/datjitgo"
 	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
 )

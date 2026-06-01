@@ -51,14 +51,14 @@ func expandPattern(template string, rng ports.Randomizer, counters *seqCounters,
 			continue
 		}
 		// Find matching '}'
-		close := strings.IndexByte(template[i+1:], '}')
-		if close < 0 {
+		closeIdx := strings.IndexByte(template[i+1:], '}')
+		if closeIdx < 0 {
 			b.WriteString(template[i:])
 			break
 		}
-		placeholder := template[i+1 : i+1+close]
+		placeholder := template[i+1 : i+1+closeIdx]
 		expandPlaceholder(placeholder, rng, counters, counterKey, &b)
-		i += close + 2
+		i += closeIdx + 2
 	}
 	return b.String()
 }
