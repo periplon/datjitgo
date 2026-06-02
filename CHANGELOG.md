@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Release automation: pushing a `v*` tag now publishes a GitHub Release with
+  cross-compiled `datjit` archives (linux/darwin × amd64/arm64) and a
+  `SHA256SUMS` file attached, with notes drawn from this changelog. Previously
+  the workflow only uploaded ephemeral build artifacts.
+
+### Changed
+- The `version` subcommand now reports `dev` for unstamped builds; the release
+  workflow injects the real semver at link time via `-ldflags -X main.version`.
+
 ## [0.2.1] - 2026-06-02
 
 ### Fixed

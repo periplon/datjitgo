@@ -87,7 +87,7 @@ Schemas are YAML with a compact DDL for field types: primitives, semantic types 
 
 ## Releases
 
-SemVer tags `vMAJOR.MINOR.PATCH`. Pushing a `v*` tag triggers `.github/workflows/release.yml`, which cross-builds `cmd/datjit` for linux/darwin × amd64/arm64 and uploads the binaries as workflow artifacts. Before tagging: move the `CHANGELOG.md` `[Unreleased]` entries under a new `## [x.y.z] - YYYY-MM-DD` heading, tag the commit whose `go.mod` already carries the current module path, then push the tag. The module path moved from `jmcarbo/datjitgo` to `periplon/datjitgo` at v0.2.0 — tags before that point at the old path and are not installable as `periplon`.
+SemVer tags `vMAJOR.MINOR.PATCH`. Pushing a `v*` tag triggers `.github/workflows/release.yml`, which cross-builds `cmd/datjit` for linux/darwin × amd64/arm64 (semver stamped in via `-ldflags -X main.version`), packages each target as a `datjit_<ver>_<os>_<arch>.tar.gz`, and publishes a GitHub Release for the tag with those archives plus a `SHA256SUMS` file attached. The release body is taken from the matching `CHANGELOG.md` `## [x.y.z]` section; tags with a `-` suffix (e.g. `v0.3.0-rc.1`) are marked pre-release. Before tagging: move the `CHANGELOG.md` `[Unreleased]` entries under a new `## [x.y.z] - YYYY-MM-DD` heading (the release notes read from it), tag the commit whose `go.mod` already carries the current module path, then push the tag. The module path moved from `jmcarbo/datjitgo` to `periplon/datjitgo` at v0.2.0 — tags before that point at the old path and are not installable as `periplon`.
 
 ## Live integrations
 

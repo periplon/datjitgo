@@ -12,9 +12,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// version is the semver string printed by the `version` subcommand. Keep in
-// lockstep with the module tag.
-const version = "0.1.0"
+// version is the semver string printed by the `version` subcommand. The
+// release workflow stamps the real tag in at link time via
+// `-ldflags "-X main.version=<semver>"`; plain `go build`/`go install` leaves
+// the "dev" default.
+var version = "dev"
 
 // usageErr wraps an error so main can exit with code 2 for flag/argument
 // problems vs. code 1 for runtime failures.
