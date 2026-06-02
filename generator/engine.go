@@ -3,7 +3,6 @@ package generator
 import (
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
@@ -82,6 +81,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 		unique:    map[string]map[string]struct{}{},
 		generated: map[string][]*value.Object{},
 		pk:        primaryKeyMap(doc),
+		ruleScope: computeRuleScope(doc),
 	}
 
 	ds := value.NewDataset()
@@ -124,7 +124,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 
 		// Entity-level rule validation post-pass: emit warnings or enforce
 		// strict rules across the produced set.
-		e.enforceDatasetRules(doc, name, rows, rowState.pk)
+		e.enforceDatasetRules(doc, name, rows, rowState.pk, rowState.ruleScope)
 
 		ds.Entities.Set(name, rows)
 	}
@@ -164,6 +164,12 @@ type generationState struct {
 	// Drives FK resolution so reference identity does not depend on field
 	// insertion order. Absent entries fall back to positional first-field.
 	pk map[string]string
+
+	// Per-rule target entity sets, aligned with doc.Rules by index. A rule is
+	// enforced against an entity only if the entity is in its set, so bare
+	// (unqualified) rules never apply to entities lacking the referenced
+	// fields.
+	ruleScope []map[string]struct{}
 }
 
 func (s *generationState) uniqueKey(entity, field string) map[string]struct{} {
@@ -236,13 +242,15 @@ func resolveVolume(name string, doc *model.Document, opts ports.GenerateOptions)
 // for the named entity. @strict rules are handled in-line during row
 // generation; phase-1 coarsely logs mismatches here when no retry could
 // recover.
-func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []*value.Object, pk map[string]string) {
-	for _, r := range doc.Rules {
+func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []*value.Object, pk map[string]string, scope []map[string]struct{}) {
+	for i := range doc.Rules {
+		r := doc.Rules[i]
 		if r.Severity != model.RuleWarn {
 			continue
 		}
-		// Only check rules that reference this entity — cheap fallback.
-		if !strings.Contains(r.Expr, entity+".") && !strings.HasPrefix(r.Expr, entity+" ") {
+		// Only check rules scoped to this entity (named explicitly, or bare
+		// rules whose fields this entity declares).
+		if _, ok := scope[i][entity]; !ok {
 			continue
 		}
 		for _, row := range rows {
@@ -259,11 +267,12 @@ func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []
 }
 
 func (e *Engine) enforceRowRules(doc *model.Document, entity string, row *value.Object, st *generationState, rng ports.Randomizer) error {
-	for _, r := range doc.Rules {
+	for i := range doc.Rules {
+		r := doc.Rules[i]
 		if r.Kind != model.RuleKindExpr || r.Severity == model.RuleWarn {
 			continue
 		}
-		if !ruleTargetsEntity(r.Expr, entity) {
+		if _, ok := st.ruleScope[i][entity]; !ok {
 			continue
 		}
 		if r.Severity == model.RuleProbabilistic {
@@ -291,14 +300,4 @@ func (e *Engine) enforceRowRules(doc *model.Document, entity string, row *value.
 		}
 	}
 	return nil
-}
-
-func ruleTargetsEntity(expr, entity string) bool {
-	if strings.Contains(expr, entity+".") {
-		return true
-	}
-	if !strings.Contains(expr, ".") {
-		return true
-	}
-	return strings.HasPrefix(expr, entity+" ")
 }

@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   entity instead of the positional first field. A coherence group on an
   FK-target entity previously shadowed its primary key, so references resolved
   to a coherence value (e.g. a city) rather than the key.
+- Cross-entity rules are now scoped by field membership. A bare (unqualified)
+  rule such as `score >= 0 @strict` is enforced only against entities that
+  declare the referenced field, instead of every entity — which previously
+  resolved the field to null on unrelated entities and exhausted the `@strict`
+  row-retry budget. Entity-qualified rules (`Entity.field`) are unchanged.
 
 ## [0.2.0] - 2026-05-31
 
