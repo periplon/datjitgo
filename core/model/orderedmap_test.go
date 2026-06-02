@@ -2,6 +2,59 @@ package model
 
 import "testing"
 
+func TestOrderedMapInsertAfter(t *testing.T) {
+	eq := func(t *testing.T, got, want []string) {
+		t.Helper()
+		if len(got) != len(want) {
+			t.Fatalf("keys=%v want %v", got, want)
+		}
+		for i := range want {
+			if got[i] != want[i] {
+				t.Fatalf("keys=%v want %v", got, want)
+			}
+		}
+	}
+
+	t.Run("middle", func(t *testing.T) {
+		m := NewOrderedMap[string, int]()
+		m.Set("a", 1)
+		m.Set("b", 2)
+		m.Set("c", 3)
+		m.InsertAfter("a", "x", 9)
+		eq(t, m.Keys(), []string{"a", "x", "b", "c"})
+		if v, _ := m.Get("x"); v != 9 {
+			t.Fatalf("x=%d want 9", v)
+		}
+	})
+
+	t.Run("last", func(t *testing.T) {
+		m := NewOrderedMap[string, int]()
+		m.Set("a", 1)
+		m.Set("b", 2)
+		m.InsertAfter("b", "x", 9)
+		eq(t, m.Keys(), []string{"a", "b", "x"})
+	})
+
+	t.Run("missing anchor appends", func(t *testing.T) {
+		m := NewOrderedMap[string, int]()
+		m.Set("a", 1)
+		m.InsertAfter("zzz", "x", 9)
+		eq(t, m.Keys(), []string{"a", "x"})
+	})
+
+	t.Run("existing key updates in place", func(t *testing.T) {
+		m := NewOrderedMap[string, int]()
+		m.Set("a", 1)
+		m.Set("b", 2)
+		m.Set("c", 3)
+		m.InsertAfter("a", "c", 99) // c already exists; position unchanged
+		eq(t, m.Keys(), []string{"a", "b", "c"})
+		if v, _ := m.Get("c"); v != 99 {
+			t.Fatalf("c=%d want 99", v)
+		}
+	})
+}
+
 func TestOrderedMapPreservesInsertion(t *testing.T) {
 	m := NewOrderedMap[string, int]()
 	m.Set("a", 1)

@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   cross-compiled `datjit` archives (linux/darwin × amd64/arm64) and a
   `SHA256SUMS` file attached, with notes drawn from this changelog. Previously
   the workflow only uploaded ephemeral build artifacts.
+- Polymorphic references now emit a discriminator. A field whose type is a
+  union of two or more entity references (e.g. `author: ->User | ->Org`) gains
+  a synthetic companion field `<field>_type` recording which target entity each
+  generated row's primary key belongs to, across all output formats. Previously
+  such a field yielded an untyped primary key with no way to tell which entity
+  it referenced.
 
 ### Changed
 - The `version` subcommand now reports `dev` for unstamped builds; the release
