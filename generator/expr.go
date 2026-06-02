@@ -384,6 +384,10 @@ func isIdentPart(c byte) bool {
 type evalEnv struct {
 	row  *value.Object
 	data map[string][]*value.Object
+	// pk maps entity name → primary-key field name, so bare-entity path
+	// resolution honours @primary instead of positional first-field. May be
+	// nil (callers then fall back to positional resolution).
+	pk map[string]string
 }
 
 func evalExpr(node exprNode, env evalEnv) (value.Value, error) {
@@ -840,8 +844,9 @@ func firstListOrEntity(args []value.Value, children []exprNode, env evalEnv) []v
 		if len(segments) == 1 {
 			if rows, ok := env.data[segments[0]]; ok {
 				out := make([]value.Value, 0, len(rows))
+				pk := env.pk[segments[0]]
 				for _, r := range rows {
-					out = append(out, firstField(r))
+					out = append(out, referenceValue(r, pk))
 				}
 				return out
 			}

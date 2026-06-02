@@ -8,7 +8,7 @@ import (
 // applyDerived evaluates every `@derived(expr)` decorator on the entity and
 // stores the resulting value in the row.
 func (e *Engine) applyDerived(entity *model.Entity, row *value.Object, st *generationState) error {
-	env := evalEnv{row: row, data: st.generated}
+	env := evalEnv{row: row, data: st.generated, pk: st.pk}
 	var firstErr error
 	entity.Fields.Each(func(name string, f *model.Field) bool {
 		d := model.FindDecorator(f.Decorators, "derived")
@@ -36,7 +36,7 @@ func (e *Engine) applyDerived(entity *model.Entity, row *value.Object, st *gener
 // the first non-null source. `When` gates the whole chain; `Fallback` is used
 // when every source resolves to null.
 func (e *Engine) applyDefaultChain(entity *model.Entity, row *value.Object, st *generationState) error {
-	env := evalEnv{row: row, data: st.generated}
+	env := evalEnv{row: row, data: st.generated, pk: st.pk}
 	var firstErr error
 	entity.Fields.Each(func(name string, f *model.Field) bool {
 		if f.DefaultChain == nil {
@@ -88,7 +88,7 @@ func (e *Engine) applyDefaultChain(entity *model.Entity, row *value.Object, st *
 // applyCompute evaluates compute branches — first matching `When` wins,
 // otherwise the branch without a `When` (else) applies.
 func (e *Engine) applyCompute(entity *model.Entity, row *value.Object, st *generationState) error {
-	env := evalEnv{row: row, data: st.generated}
+	env := evalEnv{row: row, data: st.generated, pk: st.pk}
 	var firstErr error
 	entity.Fields.Each(func(name string, f *model.Field) bool {
 		if len(f.Compute) == 0 {

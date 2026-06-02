@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Foreign-key resolution now honours the `@primary` decorator on the target
+  entity instead of the positional first field. A coherence group on an
+  FK-target entity previously shadowed its primary key, so references resolved
+  to a coherence value (e.g. a city) rather than the key.
+
 ## [0.2.0] - 2026-05-31
 
 ### Changed

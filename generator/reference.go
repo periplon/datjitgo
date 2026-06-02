@@ -25,6 +25,7 @@ func (e *Engine) generateReference(entity *model.Entity, f *model.Field, t model
 		target = entity.Name
 	}
 	rows := st.generated[target]
+	pkField := st.pk[target]
 
 	if t.Many || t.ManyToMany {
 		lo, hi := countRange(f.Decorators, 0, 4)
@@ -50,7 +51,7 @@ func (e *Engine) generateReference(entity *model.Entity, f *model.Field, t model
 		picks := make([]value.Value, 0, n)
 		for i := 0; i < n; i++ {
 			row := rows[idxs[i]]
-			picks = append(picks, firstField(row))
+			picks = append(picks, referenceValue(row, pkField))
 		}
 		return value.List(picks)
 	}
@@ -63,7 +64,7 @@ func (e *Engine) generateReference(entity *model.Entity, f *model.Field, t model
 		return value.Null()
 	}
 	idx := int(rng.IntN(int64(len(rows))))
-	return firstField(rows[idx])
+	return referenceValue(rows[idx], pkField)
 }
 
 // firstField returns the first field in an ordered object (assumed primary key).
