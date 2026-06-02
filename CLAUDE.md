@@ -79,7 +79,7 @@ Designs live in `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`. Implement
 
 ## Schema language (DDL)
 
-Schemas are YAML with a compact DDL for field types: primitives, semantic types (`person.full`, `email`, `address.city`), enums with weighted distributions, references (`->User`, `<->Tag`), compound types (`[T]`, `{K: V}`, `T?`, `T | U`), distributions (`@dist(normal, μ=35, σ=12)`, Zipf, lognormal), pattern templates (`@pattern("SKU-{AA}-{0000}")`), `@derived`/`@compute`/`@default_chain` expressions, cross-entity rules (`@strict`, `@probability(p)`, `@warn`), and coherence groups. Parsing lives in `parser`; full spec in `docs/superpowers/specs/2026-04-22-datjitgo-design.md`.
+Schemas are YAML with a compact DDL for field types: primitives, semantic types (`person.full`, `email`, `address.city`), enums with weighted distributions, references (`->User`, `<->Tag`), compound types (`[T]`, `{K: V}`, `T?`, `T | U`), distributions (`@dist(normal, μ=35, σ=12)`, Zipf, lognormal), pattern templates (`@pattern("SKU-{AA}-{0000}")`), `@derived`/`@compute`/`@default_chain` expressions, cross-entity rules (`@strict`, `@probability(p)`, `@warn`), and coherence groups. A union of two or more references (`->User | ->Org`) is a **polymorphic reference**: `Parse` normalization injects a synthetic `<field>_type` discriminator field recording which target entity each generated row points to (see `normalize.go`). Parsing lives in `parser`; full spec in `docs/superpowers/specs/2026-04-22-datjitgo-design.md`.
 
 ## Commit style
 

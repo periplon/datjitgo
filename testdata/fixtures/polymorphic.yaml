@@ -1,0 +1,25 @@
+domain: test_polymorphic
+version: 0.1.0
+seed: 42
+
+volume:
+  User: 5
+  Org: 5
+  Comment: 8
+
+entities:
+  User:
+    id: uuid @primary
+    name: person.full
+
+  Org:
+    id: uuid @primary
+    name: string
+
+  Comment:
+    id: uuid @primary
+    body: string
+    # Polymorphic reference: author is either a User or an Org. Normalization
+    # adds an `author_type` discriminator recording which entity each row's
+    # primary key belongs to.
+    author: "->User | ->Org"

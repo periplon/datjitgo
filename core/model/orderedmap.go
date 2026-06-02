@@ -21,6 +21,31 @@ func (o *OrderedMap[K, V]) Set(k K, v V) {
 	o.m[k] = v
 }
 
+// InsertAfter assigns v to k, placing k immediately after the key `after` in
+// the insertion order. If k already exists its value is updated and its
+// position is left unchanged. If `after` is not present, k is appended.
+func (o *OrderedMap[K, V]) InsertAfter(after, k K, v V) {
+	if _, ok := o.m[k]; ok {
+		o.m[k] = v
+		return
+	}
+	pos := -1
+	for i, kk := range o.keys {
+		if kk == after {
+			pos = i
+			break
+		}
+	}
+	if pos < 0 {
+		o.keys = append(o.keys, k)
+	} else {
+		o.keys = append(o.keys, k)           // grow
+		copy(o.keys[pos+2:], o.keys[pos+1:]) // shift tail right
+		o.keys[pos+1] = k                    // place after `after`
+	}
+	o.m[k] = v
+}
+
 // Get returns the value for k and a flag indicating whether the key exists.
 func (o *OrderedMap[K, V]) Get(k K) (V, bool) {
 	v, ok := o.m[k]

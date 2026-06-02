@@ -34,6 +34,16 @@ func (e *Engine) generateRow(entity *model.Entity, st *generationState, rowRNG p
 			// Coherence already produced a value; no further generation needed.
 			return true
 		}
+		if f.DiscriminatorFor != "" {
+			// Synthetic discriminator for a polymorphic reference: its value is
+			// set as a side effect of generating the source field (which is
+			// declared before it). If the source reference was null, fall back
+			// to a null discriminator so the column is always present.
+			if !row.Has(fname) {
+				row.Set(fname, value.Null())
+			}
+			return true
+		}
 		if isDerived(f) || isCompute(f) || isDefaultChain(f) {
 			row.Set(fname, value.Null()) // placeholder until phase 3.
 			return true
@@ -249,12 +259,27 @@ func (e *Engine) generateTuple(entity *model.Entity, f *model.Field, t model.Tup
 
 // generateUnion selects one variant uniformly at random and generates it. An
 // empty union yields null.
+//
+// When the field is a polymorphic reference (f.Discriminator set by
+// normalization) and the chosen variant is an entity reference, the target
+// entity name is recorded in the companion discriminator field so consumers can
+// tell which entity the emitted primary key belongs to.
 func (e *Engine) generateUnion(entity *model.Entity, f *model.Field, t model.Union, row *value.Object, st *generationState, rng ports.Randomizer) (value.Value, error) {
 	if len(t.Variants) == 0 {
 		return value.Null(), nil
 	}
 	idx := int(rng.IntN(int64(len(t.Variants))))
-	return e.generateByType(entity, f, t.Variants[idx], row, st, rng)
+	chosen := t.Variants[idx]
+	if f.Discriminator != "" {
+		if ref, ok := chosen.(model.Reference); ok {
+			target := ref.Target
+			if target == "self" {
+				target = entity.Name
+			}
+			row.Set(f.Discriminator, value.Str(target))
+		}
+	}
+	return e.generateByType(entity, f, chosen, row, st, rng)
 }
 
 // generatePrimitiveField layers @dist on top of the default primitive

@@ -112,7 +112,12 @@ func (s *Service) Parse(r io.Reader, name string) (*model.Document, error) {
 	if r == nil {
 		return nil, &errors.Error{Kind: errors.KindValidation, Message: "nil reader"}
 	}
-	return s.parser.Parse(r, name)
+	doc, err := s.parser.Parse(r, name)
+	if err != nil {
+		return nil, err
+	}
+	normalizePolymorphicReferences(doc)
+	return doc, nil
 }
 
 // Generate produces a Dataset from doc. Service-level overrides (seed,

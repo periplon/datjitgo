@@ -26,6 +26,17 @@ type Field struct {
 	Description  string
 	DefaultChain *DefaultChainSpec
 	Compute      []ComputeBranch
+
+	// Discriminator, on a polymorphic-reference field (a union of two or more
+	// entity references), names the synthetic companion field that records
+	// which target entity each generated row's reference points to. Empty for
+	// ordinary fields. Set by polymorphic-reference normalization.
+	Discriminator string
+	// DiscriminatorFor, on a synthetic discriminator field, names the source
+	// polymorphic-reference field it describes. Empty for ordinary fields.
+	// The generator skips independent generation of such fields; their value
+	// is produced as a side effect of generating the source field.
+	DiscriminatorFor string
 }
 
 // DefaultChainSpec captures the @default_chain / `default_chain:` expanded
