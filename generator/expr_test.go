@@ -125,7 +125,7 @@ func TestExprStringNumberPromotion(t *testing.T) {
 
 func TestExprIfThenRewrite(t *testing.T) {
 	row := mkRow(t, "status", value.Str("shipped"), "shipped_at", value.Str("2026-01-01"))
-	got, err := evalRule(`if status == "shipped" then shipped_at != null`, "Order", row, nil)
+	got, err := evalRule(`if status == "shipped" then shipped_at != null`, "Order", row, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

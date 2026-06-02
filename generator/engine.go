@@ -81,6 +81,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 		seqs:      newSeqCounters(),
 		unique:    map[string]map[string]struct{}{},
 		generated: map[string][]*value.Object{},
+		pk:        primaryKeyMap(doc),
 	}
 
 	ds := value.NewDataset()
@@ -123,7 +124,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 
 		// Entity-level rule validation post-pass: emit warnings or enforce
 		// strict rules across the produced set.
-		e.enforceDatasetRules(doc, name, rows)
+		e.enforceDatasetRules(doc, name, rows, rowState.pk)
 
 		ds.Entities.Set(name, rows)
 	}
@@ -158,6 +159,11 @@ type generationState struct {
 	// Already-generated rows keyed by entity name; used for reference
 	// resolution, cross-row rule evaluation and expression lookups.
 	generated map[string][]*value.Object
+
+	// Primary-key field name per entity (only entities that declare @primary).
+	// Drives FK resolution so reference identity does not depend on field
+	// insertion order. Absent entries fall back to positional first-field.
+	pk map[string]string
 }
 
 func (s *generationState) uniqueKey(entity, field string) map[string]struct{} {
@@ -230,7 +236,7 @@ func resolveVolume(name string, doc *model.Document, opts ports.GenerateOptions)
 // for the named entity. @strict rules are handled in-line during row
 // generation; phase-1 coarsely logs mismatches here when no retry could
 // recover.
-func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []*value.Object) {
+func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []*value.Object, pk map[string]string) {
 	for _, r := range doc.Rules {
 		if r.Severity != model.RuleWarn {
 			continue
@@ -240,7 +246,7 @@ func (e *Engine) enforceDatasetRules(doc *model.Document, entity string, rows []
 			continue
 		}
 		for _, row := range rows {
-			v, err := evalRule(r.Expr, entity, row, nil)
+			v, err := evalRule(r.Expr, entity, row, nil, pk)
 			if err != nil {
 				continue
 			}
@@ -272,7 +278,7 @@ func (e *Engine) enforceRowRules(doc *model.Document, entity string, row *value.
 				continue
 			}
 		}
-		v, err := evalRule(r.Expr, entity, row, st.generated)
+		v, err := evalRule(r.Expr, entity, row, st.generated, st.pk)
 		if err != nil {
 			return &errors.Error{Kind: errors.KindRuleViolated, Entity: entity, Message: fmt.Sprintf("rule %q: %v", r.Expr, err), Cause: err}
 		}
