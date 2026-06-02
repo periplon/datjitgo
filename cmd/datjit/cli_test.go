@@ -114,7 +114,9 @@ func TestVersion(t *testing.T) {
 		t.Fatalf("exit=%d stderr=%q", code, stderr)
 	}
 	got := strings.TrimRight(stdout, "\n")
-	if !regexp.MustCompile(`^datjit v0\.1\.0$`).MatchString(got) {
+	// version defaults to "dev" and is stamped with the real semver at release
+	// link time, so accept either form.
+	if !regexp.MustCompile(`^datjit v(dev|\d+\.\d+\.\d+(?:[-+].+)?)$`).MatchString(got) {
 		t.Fatalf("unexpected version output: %q", got)
 	}
 }

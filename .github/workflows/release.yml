@@ -4,6 +4,10 @@ on:
     tags:
       - 'v*'
 
+# Needed for the release job to create the GitHub Release and upload assets.
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,14 +29,77 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
-      - name: build
+      - name: build and package
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: "0"
-        run: go build -ldflags "-s -w" -o datjit-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/datjit
-      - name: upload binary
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          go build -trimpath \
+            -ldflags "-s -w -X main.version=${version}" \
+            -o datjit ./cmd/datjit
+          archive="datjit_${version}_${GOOS}_${GOARCH}.tar.gz"
+          tar -czf "${archive}" datjit
+          sha256sum "${archive}" > "${archive}.sha256"
+          echo "ARCHIVE=${archive}" >> "$GITHUB_ENV"
+      - name: upload archive
         uses: actions/upload-artifact@v4
         with:
-          name: datjit-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: datjit-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: ${{ env.ARCHIVE }}
+          path: |
+            ${{ env.ARCHIVE }}
+            ${{ env.ARCHIVE }}.sha256
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: assemble checksums and notes
+        env:
+          GH_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          cd dist
+          cat ./*.sha256 > SHA256SUMS
+          rm -f ./*.sha256
+          version="${GH_TAG#v}"
+          # Extract the CHANGELOG section for this version: everything between
+          # the "## [x.y.z]" header and the next "## [" header. Matched as a
+          # literal prefix (index, not regex) so version metacharacters such as
+          # the "+" in build metadata cannot corrupt the pattern.
+          notes_file="$RUNNER_TEMP/release-notes.md"
+          awk -v pfx="## [${version}]" '
+            index($0, pfx) == 1 { capture=1; next }
+            capture && index($0, "## [") == 1 { exit }
+            capture { print }
+          ' "$GITHUB_WORKSPACE/CHANGELOG.md" > "${notes_file}"
+          if [ ! -s "${notes_file}" ]; then
+            printf 'Release %s.\n\nSee CHANGELOG.md for details.\n' "${GH_TAG}" > "${notes_file}"
+          fi
+          echo "NOTES_FILE=${notes_file}" >> "$GITHUB_ENV"
+      - name: create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          prerelease=""
+          case "${GH_TAG}" in
+            *-*) prerelease="--prerelease" ;;
+          esac
+          # shellcheck disable=SC2086
+          gh release create "${GH_TAG}" \
+            --title "${GH_TAG}" \
+            --notes-file "${NOTES_FILE}" \
+            --verify-tag \
+            ${prerelease} \
+            dist/*
