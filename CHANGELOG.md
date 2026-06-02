@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-06-02
+
 ### Fixed
 - Foreign-key resolution now honours the `@primary` decorator on the target
   entity instead of the positional first field. A coherence group on an
