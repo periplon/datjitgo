@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-06-02
+
 ### Added
 - Release automation: pushing a `v*` tag now publishes a GitHub Release with
   cross-compiled `datjit` archives (linux/darwin × amd64/arm64) and a
