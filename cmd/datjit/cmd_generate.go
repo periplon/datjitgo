@@ -27,6 +27,7 @@ func cmdGenerate() *cobra.Command {
 		volume     []string
 		entity     string
 		sqlDialect string
+		sqlIndexes string
 		pretty     bool
 		dryRun     bool
 		corpusDir  string
@@ -111,6 +112,7 @@ func cmdGenerate() *cobra.Command {
 				Pretty:       pretty,
 				SQLDialect:   sqlDialect,
 				EntityFilter: entity,
+				SQLIndexes:   sqlIndexes,
 			}
 			return svc.Write(ds, doc, format, w, wo)
 		},
@@ -123,6 +125,7 @@ func cmdGenerate() *cobra.Command {
 	c.Flags().StringSliceVar(&volume, "volume", nil, "per-entity volume override, e.g. User=100,Org=5")
 	c.Flags().StringVar(&entity, "entity", "", "emit only rows for this entity")
 	c.Flags().StringVar(&sqlDialect, "sql-dialect", "postgres", "SQL dialect (postgres|mysql|sqlite) — used with -f sql")
+	c.Flags().StringVar(&sqlIndexes, "sql-indexes", "manual", "index emission for -f sql: manual (declared only) | auto (declared + inferred) | none")
 	c.Flags().BoolVar(&pretty, "pretty", false, "emit human-friendly output where the format supports it")
 	c.Flags().BoolVar(&dryRun, "dry-run", false, "parse and validate only; print the plan and exit 0")
 	c.Flags().StringVar(&corpusDir, "corpus-dir", "", "read corpus overlay files from this directory")

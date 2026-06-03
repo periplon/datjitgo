@@ -83,6 +83,20 @@ func validateDoc(doc *model.Document, corpus ports.CorpusProvider) error {
 		return firstErr
 	}
 
+	// Index checks — only manually declared indexes are validated; inferred
+	// indexes are correct by construction (their fields come from existing
+	// fields / the synthetic discriminator).
+	doc.Entities.Each(func(ename string, ent *model.Entity) bool {
+		if err := checkIndexes(ename, ent); err != nil {
+			firstErr = err
+			return false
+		}
+		return true
+	})
+	if firstErr != nil {
+		return firstErr
+	}
+
 	// Rule expressions — cheap syntactic check via the generator's parser.
 	// Cross-row rules carry a YAML body instead of an expression; skip them.
 	for i, r := range doc.Rules {
@@ -102,6 +116,46 @@ func validateDoc(doc *model.Document, corpus ports.CorpusProvider) error {
 	// Topological check — reuses the generator's Kahn pass.
 	if _, err := coreplan.Entities(doc); err != nil {
 		return err
+	}
+	return nil
+}
+
+// checkIndexes validates an entity's manually declared indexes: each needs at
+// least one field, every field must exist on the entity (synthetic
+// discriminator fields are present post-normalize and count as valid), and
+// index names must be unique among the entity's manual indexes. Inferred
+// indexes are skipped.
+func checkIndexes(ename string, ent *model.Entity) error {
+	seen := make(map[string]struct{}, len(ent.Indexes))
+	for _, idx := range ent.Indexes {
+		if idx.Source != "manual" {
+			continue
+		}
+		if _, dup := seen[idx.Name]; dup {
+			return &errors.Error{
+				Kind:    errors.KindValidation,
+				Entity:  ename,
+				Message: "duplicate index " + idx.Name,
+			}
+		}
+		seen[idx.Name] = struct{}{}
+		if len(idx.Fields) == 0 {
+			return &errors.Error{
+				Kind:    errors.KindValidation,
+				Entity:  ename,
+				Message: "index " + idx.Name + ": needs at least one field",
+			}
+		}
+		for _, f := range idx.Fields {
+			if !ent.Fields.Has(f) {
+				return &errors.Error{
+					Kind:    errors.KindValidation,
+					Entity:  ename,
+					Field:   f,
+					Message: "index " + idx.Name + ": unknown field " + f,
+				}
+			}
+		}
 	}
 	return nil
 }

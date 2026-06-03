@@ -1,0 +1,30 @@
+domain: test_indexes
+version: 0.1.0
+seed: 42
+
+volume:
+  Org: 2
+  User: 3
+
+entities:
+  Org:
+    id: uuid @primary
+    name: company.name
+
+  # User declares manual indexes via _indexes (expanded mapping form). The
+  # @unique email and the ->Org reference also drive inferred indexes when
+  # generation runs with --sql-indexes=auto; indexes are SQL-only metadata and
+  # do not affect the JSON golden below.
+  User:
+    id: uuid @primary
+    email: email @unique
+    org: ->Org
+    created_at: datetime
+    _indexes:
+      by_email:
+        fields: [email]
+        unique: true
+      by_org_recent:
+        fields: [org, created_at]
+        where: "deleted_at IS NULL"
+        method: btree

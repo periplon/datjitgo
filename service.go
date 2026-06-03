@@ -38,6 +38,9 @@ type WriteOpts struct {
 	Pretty       bool
 	SQLDialect   string
 	EntityFilter string
+	// SQLIndexes selects which indexes the SQL writer emits: "" / "manual"
+	// (declared only, the default), "auto" (declared + inferred), or "none".
+	SQLIndexes string
 }
 
 // NewDefault returns a Service wired with the default adapters:
@@ -117,6 +120,7 @@ func (s *Service) Parse(r io.Reader, name string) (*model.Document, error) {
 		return nil, err
 	}
 	normalizePolymorphicReferences(doc)
+	normalizeIndexes(doc)
 	return doc, nil
 }
 
@@ -161,6 +165,7 @@ func (s *Service) Write(ds *value.Dataset, doc *model.Document, format string, w
 		Pretty:       opts.Pretty,
 		SQLDialect:   opts.SQLDialect,
 		EntityFilter: opts.EntityFilter,
+		SQLIndexes:   opts.SQLIndexes,
 	})
 }
 

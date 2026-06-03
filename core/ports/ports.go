@@ -57,6 +57,10 @@ type WriteOptions struct {
 	Pretty       bool
 	SQLDialect   string // postgres|mysql|sqlite
 	EntityFilter string
+	// SQLIndexes selects which index definitions the SQL writer emits:
+	// "" or "manual" → declared indexes only; "auto" → declared plus inferred;
+	// "none" → suppress all. Ignored by non-SQL writers.
+	SQLIndexes string
 }
 
 // Writer serialises a Dataset to an io.Writer in a specific format.

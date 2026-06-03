@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Index definitions. Entities may declare indexes under a reserved `_indexes`
+  block (expanded mapping form — index name → `{fields, unique, where, method}`),
+  surfaced by the `sql` writer as `CREATE [UNIQUE] INDEX` statements after each
+  `CREATE TABLE`. An optional inference pass also derives indexes from schema
+  signals (`@unique` fields, references, polymorphic discriminators). Emission
+  is controlled by `--sql-indexes` / `WriteOpts.SQLIndexes`:
+  `manual` (default, declared only), `auto` (declared + inferred), or `none`.
+  Dialect-aware: partial `WHERE` (postgres/sqlite), `USING <method>`
+  (postgres/mysql), and over-long index names are deterministically truncated.
+
 ## [0.3.0] - 2026-06-02
 
 ### Added
