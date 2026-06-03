@@ -3,6 +3,11 @@
 GO  := go
 GOFMT := gofmt
 PKG := ./...
+# TestFixtures and its -update flag live only in the root package; scoping the
+# fixture targets to it avoids spinning up every package's test binary — and
+# avoids "flag provided but not defined: -update" from packages that lack the
+# flag (which broke `make test-update` under PKG=./...).
+FIXTURE_PKG := .
 BIN := bin/datjit
 
 build:
@@ -15,10 +20,10 @@ test:
 	$(GO) test -race -count=1 $(PKG)
 
 test-fixtures:
-	$(GO) test -count=1 -run TestFixtures $(PKG)
+	$(GO) test -count=1 -run TestFixtures $(FIXTURE_PKG)
 
 test-update:
-	$(GO) test -count=1 -run TestFixtures $(PKG) -update
+	$(GO) test -count=1 -run TestFixtures $(FIXTURE_PKG) -update
 
 lint:
 	@if command -v golangci-lint >/dev/null 2>&1; then \
