@@ -274,6 +274,7 @@ func parseEntities(name string, n *yaml.Node, out *model.OrderedMap[string, *mod
 		"_meta":      {},
 		"_coherence": {},
 		"_triggers":  {},
+		"_indexes":   {},
 	}
 	for i := 0; i+1 < len(n.Content); i += 2 {
 		k := n.Content[i]
@@ -317,6 +318,12 @@ func parseEntities(name string, n *yaml.Node, out *model.OrderedMap[string, *mod
 					}
 					entity.Coherence.Set(groupKey.Value, members)
 				}
+			case "_indexes":
+				idxs, err := parseIndexes(name, entityName, vv)
+				if err != nil {
+					return err
+				}
+				entity.Indexes = idxs
 			}
 		}
 
@@ -327,6 +334,52 @@ func parseEntities(name string, n *yaml.Node, out *model.OrderedMap[string, *mod
 		out.Set(entityName, entity)
 	}
 	return nil
+}
+
+// parseIndexes parses an entity's `_indexes` block: a mapping of index name to
+// a spec mapping {fields: [...], unique: bool, where: str, method: str}. The
+// map key becomes Index.Name and Source is "manual". Unknown spec keys are
+// rejected here (parse time) so typos surface with a YAML location.
+func parseIndexes(name, entityName string, n *yaml.Node) ([]model.Index, error) {
+	if n.Kind != yaml.MappingNode {
+		return nil, locErr(name, n, "entity %s _indexes: expected mapping", entityName)
+	}
+	idxs := make([]model.Index, 0, len(n.Content)/2)
+	for i := 0; i+1 < len(n.Content); i += 2 {
+		idxName := n.Content[i].Value
+		spec := n.Content[i+1]
+		if spec.Kind != yaml.MappingNode {
+			return nil, locErr(name, spec, "entity %s index %q: expected mapping", entityName, idxName)
+		}
+		idx := model.Index{Name: idxName, Source: "manual"}
+		for j := 0; j+1 < len(spec.Content); j += 2 {
+			key := spec.Content[j].Value
+			val := spec.Content[j+1]
+			switch key {
+			case "fields":
+				if val.Kind != yaml.SequenceNode {
+					return nil, locErr(name, val, "entity %s index %q: 'fields' must be a list", entityName, idxName)
+				}
+				for _, f := range val.Content {
+					idx.Fields = append(idx.Fields, f.Value)
+				}
+			case "unique":
+				b, err := strconv.ParseBool(scalarString(val))
+				if err != nil {
+					return nil, locErr(name, val, "entity %s index %q: 'unique' must be a boolean", entityName, idxName)
+				}
+				idx.Unique = b
+			case "where":
+				idx.Where = scalarString(val)
+			case "method":
+				idx.Method = scalarString(val)
+			default:
+				return nil, locErr(name, spec.Content[j], "entity %s index %q: unknown key %q (allowed: fields, unique, where, method)", entityName, idxName, key)
+			}
+		}
+		idxs = append(idxs, idx)
+	}
+	return idxs, nil
 }
 
 // parseFieldsInto walks a mapping node's key/value pairs, skipping any keys

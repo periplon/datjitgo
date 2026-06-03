@@ -2,6 +2,7 @@ package datjit
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/periplon/datjitgo/core/model"
 )
@@ -58,6 +59,105 @@ func normalizeEntityPolymorphic(e *model.Entity) {
 			DiscriminatorFor: f.Name,
 		})
 	}
+}
+
+// normalizeIndexes augments each entity in doc with inferred index definitions
+// derived from its fields, appended after any manually declared indexes. It is
+// invoked from Service.Parse immediately after normalizePolymorphicReferences,
+// so synthetic discriminator fields already exist and can be indexed alongside
+// their source reference.
+//
+// Inferred indexes (Source=="inferred") are always added to the model; the SQL
+// writer decides whether to emit them based on the SQLIndexes mode. An inferred
+// index is dropped when a manual index already covers the same ordered field
+// set — manual always wins. Inference is pure: it reads only field decorators,
+// types, and discriminator names, all already deterministic, and walks fields
+// in declaration order, so output is reproducible.
+func normalizeIndexes(doc *model.Document) {
+	if doc == nil {
+		return
+	}
+	doc.Entities.Each(func(_ string, e *model.Entity) bool {
+		normalizeEntityIndexes(e)
+		return true
+	})
+}
+
+func normalizeEntityIndexes(e *model.Entity) {
+	if e == nil || e.Fields == nil {
+		return
+	}
+	// Seed the dedup set with every manual index's ordered field set so an
+	// inferred index never duplicates one the author already declared.
+	seen := make(map[string]struct{})
+	for _, idx := range e.Indexes {
+		seen[indexFieldKey(idx.Fields)] = struct{}{}
+	}
+
+	for _, name := range e.Fields.Keys() {
+		f, ok := e.Fields.Get(name)
+		if !ok || f == nil {
+			continue
+		}
+		// A discriminator field is indexed as part of its source reference's
+		// composite, not on its own. Skip primary-key fields (assumed
+		// PK-covered) — the DDL marks these @primary or @id.
+		if f.DiscriminatorFor != "" ||
+			model.HasDecorator(f.Decorators, "primary") ||
+			model.HasDecorator(f.Decorators, "id") {
+			continue
+		}
+
+		var idx model.Index
+		switch {
+		case f.Discriminator != "":
+			// Polymorphic reference: index the (ref, ref_type) pair.
+			idx = model.Index{
+				Name:   strings.ToLower(fmt.Sprintf("idx_%s_%s", e.Name, f.Name)),
+				Fields: []string{f.Name, f.Discriminator},
+			}
+		case isReferenceType(f.Type):
+			idx = model.Index{
+				Name:   strings.ToLower(fmt.Sprintf("idx_%s_%s", e.Name, f.Name)),
+				Fields: []string{f.Name},
+			}
+		case model.HasDecorator(f.Decorators, "unique"):
+			idx = model.Index{
+				Name:   strings.ToLower(fmt.Sprintf("idx_%s_%s_uniq", e.Name, f.Name)),
+				Fields: []string{f.Name},
+				Unique: true,
+			}
+		default:
+			continue
+		}
+
+		key := indexFieldKey(idx.Fields)
+		if _, dup := seen[key]; dup {
+			continue
+		}
+		seen[key] = struct{}{}
+		idx.Source = "inferred"
+		e.Indexes = append(e.Indexes, idx)
+	}
+}
+
+// indexFieldKey is the dedup key for an ordered field set: order-sensitive,
+// NUL-joined so distinct field lists cannot alias.
+func indexFieldKey(fields []string) string {
+	return strings.Join(fields, "\x00")
+}
+
+// isReferenceType reports whether t is an entity reference (optionally wrapped
+// in Nullable). Polymorphic unions are handled via the discriminator branch and
+// are not Reference values, so they are not matched here.
+func isReferenceType(t model.TypeExpr) bool {
+	switch v := t.(type) {
+	case model.Reference:
+		return true
+	case model.Nullable:
+		return isReferenceType(v.Inner)
+	}
+	return false
 }
 
 // freeDiscriminatorName returns a field name for source's discriminator that

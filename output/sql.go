@@ -3,6 +3,7 @@ package output
 import (
 	"bytes"
 	"fmt"
+	"hash/fnv"
 	"io"
 	"strings"
 	"time"
@@ -43,6 +44,15 @@ func (s *SQL) Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts po
 		return &errors.Error{Kind: errors.KindValidation, Message: fmt.Sprintf("sql writer: unknown dialect %q", opts.SQLDialect)}
 	}
 
+	idxMode := strings.ToLower(opts.SQLIndexes)
+	switch idxMode {
+	case "":
+		idxMode = "manual"
+	case "none", "manual", "auto":
+	default:
+		return &errors.Error{Kind: errors.KindValidation, Message: fmt.Sprintf("sql writer: unknown index mode %q", opts.SQLIndexes)}
+	}
+
 	order := entityOrder(ds, doc, opts.EntityFilter)
 
 	var buf bytes.Buffer
@@ -57,6 +67,7 @@ func (s *SQL) Write(ds *value.Dataset, doc *model.Document, w io.Writer, opts po
 		if err := writeCreateTable(&buf, ent, name, fields, dialect); err != nil {
 			return err
 		}
+		writeIndexes(&buf, ent, name, dialect, idxMode)
 		if len(rows) == 0 {
 			continue
 		}
@@ -86,6 +97,101 @@ func writeCreateTable(buf *bytes.Buffer, ent *model.Entity, name string, fields 
 	}
 	buf.WriteString(");\n")
 	return nil
+}
+
+// indexIdentLimit is the identifier byte budget per dialect for index names.
+var indexIdentLimit = map[string]int{"postgres": 63, "mysql": 64, "sqlite": 64}
+
+// writeIndexes emits CREATE [UNIQUE] INDEX statements for ent's indexes,
+// filtered by mode ("none" → nothing, "manual" → Source=="manual" only,
+// "auto" → all). Indexes are emitted in Entity.Indexes order. Dialect-specific
+// refinements that a backend lacks are silently dropped (the index is still
+// created): partial WHERE is postgres/sqlite-only, USING <method> is
+// postgres/mysql-only, and MySQL places USING before ON.
+func writeIndexes(buf *bytes.Buffer, ent *model.Entity, table, dialect, mode string) {
+	if ent == nil || mode == "none" {
+		return
+	}
+	tableQ := quoteSQLIdent(table, dialect)
+	for _, idx := range ent.Indexes {
+		if mode == "manual" && idx.Source != "manual" {
+			continue
+		}
+		if len(idx.Fields) == 0 {
+			continue
+		}
+		nameQ := quoteSQLIdent(clampIdent(idx.Name, dialect), dialect)
+		cols := make([]string, len(idx.Fields))
+		for i, f := range idx.Fields {
+			cols[i] = quoteSQLIdent(f, dialect)
+		}
+		colList := strings.Join(cols, ", ")
+		unique := ""
+		if idx.Unique {
+			unique = "UNIQUE "
+		}
+		methodOK := idx.Method != "" && (dialect == "postgres" || dialect == "mysql")
+		whereOK := idx.Where != "" && (dialect == "postgres" || dialect == "sqlite")
+
+		buf.WriteString("CREATE ")
+		buf.WriteString(unique)
+		buf.WriteString("INDEX ")
+		buf.WriteString(nameQ)
+		switch dialect {
+		case "mysql":
+			// MySQL: USING precedes ON.
+			if methodOK {
+				buf.WriteString(" USING ")
+				buf.WriteString(idx.Method)
+			}
+			fmt.Fprintf(buf, " ON %s (%s)", tableQ, colList)
+		case "postgres":
+			fmt.Fprintf(buf, " ON %s", tableQ)
+			if methodOK {
+				buf.WriteString(" USING ")
+				buf.WriteString(idx.Method)
+			}
+			fmt.Fprintf(buf, " (%s)", colList)
+			if whereOK {
+				buf.WriteString(" WHERE ")
+				buf.WriteString(idx.Where)
+			}
+		default: // sqlite
+			fmt.Fprintf(buf, " ON %s (%s)", tableQ, colList)
+			if whereOK {
+				buf.WriteString(" WHERE ")
+				buf.WriteString(idx.Where)
+			}
+		}
+		buf.WriteString(";\n")
+	}
+}
+
+// clampIdent keeps an index identifier within the dialect's length budget. On
+// overflow it truncates and appends a deterministic 8-hex FNV-1a-32 suffix of
+// the full name, so distinct long names stay distinct.
+func clampIdent(name, dialect string) string {
+	limit, ok := indexIdentLimit[dialect]
+	if !ok {
+		limit = 64
+	}
+	if len(name) <= limit {
+		return name
+	}
+	h := fnv.New32a()
+	_, _ = h.Write([]byte(name))
+	suffix := fmt.Sprintf("_%08x", h.Sum32())
+	keep := limit - len(suffix)
+	if keep < 0 {
+		keep = 0
+	}
+	out := name[:keep] + suffix
+	// Defensive: if the budget is smaller than the suffix itself (no real
+	// dialect today), still never exceed the limit.
+	if len(out) > limit {
+		out = out[:limit]
+	}
+	return out
 }
 
 func writeInserts(buf *bytes.Buffer, name string, fields []string, rows []*value.Object, dialect string) error {
