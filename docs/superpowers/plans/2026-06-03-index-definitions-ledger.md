@@ -35,4 +35,4 @@ Unattended build. One row per step. Status: ☐ todo · ◐ in-progress · ☑ d
 | 11 | CLI smoke | ☑ | manual/auto/none × pg/mysql verified end-to-end; dedup + USING-before-ON + WHERE-drop confirmed |
 | 12 | DOD gate make ci | ☑ | lint 0 issues, race tests green, fixtures match, build ok |
 | 13 | final diff review | ☑ | reviewer: DIFF CLEAN; hardened clampIdent latent edge |
-| 14 | commit + push + draft PR | ☑ | see PR link below |
+| 14 | commit + push + draft PR | ☑ | https://github.com/periplon/datjitgo/pull/10 |
