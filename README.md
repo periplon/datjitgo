@@ -151,6 +151,7 @@ For larger integrations, compile the host DSL into `*model.Document`, then call
 | `datjit schema export \| diff \| deps`         | Export a signature, diff two schemas, or print deps |
 | `datjit corpus list \| info \| update`         | Inspect or refresh embedded/overlay corpus data    |
 | `datjit repl [<schema>]`                       | Interactive session                                |
+| `datjit mcp`                                   | MCP server over stdio (generate/validate/inspect/sample) |
 | `datjit version`                               | Print version                                      |
 
 ### `generate` flags
@@ -188,6 +189,41 @@ datjit[my_app]> exit
 
 Full command list: `help`. Tab completion is on for commands, formats, and
 the currently-loaded entity names.
+
+## MCP server
+
+`datjit mcp` runs a [Model Context Protocol](https://modelcontextprotocol.io)
+server over stdio so AI coding agents can synthesize deterministic fixtures on
+demand. It speaks newline-delimited JSON-RPC 2.0 (no Content-Length framing,
+no network listener) and exposes four tools:
+
+| Tool       | Purpose                                                          |
+|------------|------------------------------------------------------------------|
+| `generate` | Generate a dataset from a DDL schema (`json`/`csv`/`ndjson`/`yaml`/`sql`) |
+| `validate` | Parse + statically validate a schema, returning a diagnostic     |
+| `inspect`  | Summarise a schema (entities, fields, rules, volumes) as JSON    |
+| `sample`   | Sample values for one semantic type (e.g. `email`, `person.full`) |
+
+Generation is offline and seeded — the same tool call with the same `seed`
+returns byte-identical text (a missing `seed` defaults to `0`, never the
+clock), so agent retries are reproducible. `--llm-live` and corpus overlays
+are deliberately not exposed over MCP.
+
+Register it with an MCP client (e.g. Claude Desktop) like so:
+
+```json
+{
+  "mcpServers": {
+    "datjit": {
+      "command": "datjit",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+> The `mcp` package is not yet part of the stable public API surface (same
+> status as `repl`).
 
 ## DDL summary
 
