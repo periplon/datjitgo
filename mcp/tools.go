@@ -111,31 +111,36 @@ func readString(m map[string]any, key string, required bool, capBytes int) (stri
 	return s, nil
 }
 
-// readInt extracts an optional integer field. JSON numbers decode as float64;
-// non-integral values are rejected.
+// readInt extracts an optional integer field. Params are decoded with
+// json.Number (see decodeParams) so 64-bit seeds survive without float64
+// precision loss; non-integral values are rejected.
 func readInt(m map[string]any, key string) (int64, bool, error) {
 	raw, ok := m[key]
 	if !ok || raw == nil {
 		return 0, false, nil
 	}
-	f, ok := raw.(float64)
+	n, ok := raw.(json.Number)
 	if !ok {
 		return 0, false, toolErrorf("%q must be an integer", key)
 	}
-	if f != float64(int64(f)) {
+	i, err := n.Int64()
+	if err != nil {
 		return 0, false, toolErrorf("%q must be an integer", key)
 	}
-	return int64(f), true, nil
+	return i, true, nil
 }
 
 // decodeParams unmarshals params into a generic map. Absent params decode to an
-// empty map so optional-only tools work with no arguments.
+// empty map so optional-only tools work with no arguments. Numbers are decoded
+// as json.Number so 64-bit integers (seeds, volumes) keep full precision.
 func decodeParams(params json.RawMessage) (map[string]any, error) {
 	m := map[string]any{}
 	if len(params) == 0 {
 		return m, nil
 	}
-	if err := json.Unmarshal(params, &m); err != nil {
+	dec := json.NewDecoder(strings.NewReader(string(params)))
+	dec.UseNumber()
+	if err := dec.Decode(&m); err != nil {
 		return nil, toolErrorf("invalid arguments: %v", err)
 	}
 	return m, nil
@@ -307,20 +312,26 @@ func readVolumes(m map[string]any) (map[string]int, error) {
 	}
 	out := make(map[string]int, len(obj))
 	for k, v := range obj {
-		f, ok := v.(float64)
-		if !ok || f != float64(int64(f)) {
+		n, ok := v.(json.Number)
+		if !ok {
 			return nil, toolErrorf("volume for %q must be an integer", k)
 		}
-		if f < 0 {
+		i, err := n.Int64()
+		if err != nil {
+			return nil, toolErrorf("volume for %q must be an integer", k)
+		}
+		if i < 0 {
 			return nil, toolErrorf("volume for %q must not be negative", k)
 		}
-		out[k] = int(f)
+		out[k] = int(i)
 	}
 	return out, nil
 }
 
 // plannedTotal sums the effective per-entity volumes the way Generate would,
-// honouring overrides, document volumes, then the default of 10.
+// honouring overrides, document volumes, then the default of 10. It must stay
+// in sync with the generator's volume resolution (generator.resolveVolume) or
+// the row cap could under- or over-count.
 func plannedTotal(doc *model.Document, override map[string]int) int {
 	total := 0
 	doc.Entities.Each(func(name string, _ *model.Entity) bool {

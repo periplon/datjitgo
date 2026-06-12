@@ -118,6 +118,37 @@ func trimNewline(b []byte) []byte {
 	return b
 }
 
+// isBatch reports whether the line's first non-space byte opens a JSON array
+// (a JSON-RPC batch, which this server does not support).
+func isBatch(line []byte) bool {
+	for _, b := range line {
+		switch b {
+		case ' ', '\t', '\r', '\n':
+			continue
+		default:
+			return b == '['
+		}
+	}
+	return false
+}
+
+// isJSONObject reports whether raw's first non-space byte opens an object.
+// JSON null is also accepted: clients may send "arguments": null for a tool
+// that needs no arguments.
+func isJSONObject(raw json.RawMessage) bool {
+	for _, b := range raw {
+		switch b {
+		case ' ', '\t', '\r', '\n':
+			continue
+		case '{', 'n':
+			return true
+		default:
+			return false
+		}
+	}
+	return true
+}
+
 // writeMessage marshals v and writes it as one newline-terminated line to w.
 func writeMessage(w io.Writer, v any) error {
 	data, err := json.Marshal(v)

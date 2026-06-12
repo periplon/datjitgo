@@ -351,3 +351,79 @@ func TestSampleDeterminism(t *testing.T) {
 		t.Fatalf("sample not deterministic:\n%s\n---\n%s", ta, tb)
 	}
 }
+
+func TestToolsCallNotificationGetsNoResponse(t *testing.T) {
+	resps := runScript(t,
+		`{"jsonrpc":"2.0","method":"tools/call","params":{"name":"validate","arguments":{"schema":`+jsonStr(minimalSchema)+`}}}`,
+		`{"jsonrpc":"2.0","id":1,"method":"ping"}`,
+	)
+	if len(resps) != 1 {
+		t.Fatalf("expected only the ping response, got %d responses", len(resps))
+	}
+	if string(resps[0].ID) != "1" {
+		t.Fatalf("response id = %s, want 1", resps[0].ID)
+	}
+}
+
+func TestWrongJSONRPCVersionRejected(t *testing.T) {
+	resps := runScript(t, `{"jsonrpc":"1.0","id":3,"method":"ping"}`)
+	if len(resps) != 1 || resps[0].Error == nil {
+		t.Fatalf("expected one error response, got %+v", resps)
+	}
+	if resps[0].Error.Code != codeInvalidRequest {
+		t.Fatalf("code = %d, want %d", resps[0].Error.Code, codeInvalidRequest)
+	}
+}
+
+func TestBatchRequestIsInvalidRequest(t *testing.T) {
+	resps := runScript(t, `[{"jsonrpc":"2.0","id":1,"method":"ping"},{"jsonrpc":"2.0","id":2,"method":"ping"}]`)
+	if len(resps) != 1 || resps[0].Error == nil {
+		t.Fatalf("expected one error response, got %+v", resps)
+	}
+	if resps[0].Error.Code != codeInvalidRequest {
+		t.Fatalf("code = %d, want %d", resps[0].Error.Code, codeInvalidRequest)
+	}
+	if !strings.Contains(resps[0].Error.Message, "batch") {
+		t.Fatalf("message %q should mention batch", resps[0].Error.Message)
+	}
+}
+
+func TestNonObjectArgumentsIsInvalidParams(t *testing.T) {
+	resps := runScript(t, `{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"validate","arguments":[1,2,3]}}`)
+	if len(resps) != 1 || resps[0].Error == nil {
+		t.Fatalf("expected one rpc error response, got %+v", resps)
+	}
+	if resps[0].Error.Code != codeInvalidParams {
+		t.Fatalf("code = %d, want %d", resps[0].Error.Code, codeInvalidParams)
+	}
+}
+
+func TestNullArgumentsTreatedAsAbsent(t *testing.T) {
+	resps := runScript(t, `{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"validate","arguments":null}}`)
+	if len(resps) != 1 {
+		t.Fatalf("expected one response, got %d", len(resps))
+	}
+	// null arguments decode as absent, so the tool runs and reports the
+	// missing required field as an agent-fixable isError result - not a
+	// -32602 protocol error.
+	text, isErr := toolText(t, resps[0])
+	if !isErr || !strings.Contains(text, "missing required") {
+		t.Fatalf("expected missing-schema tool diagnostic, got isError=%v text=%q", isErr, text)
+	}
+}
+
+// TestLargeSeedsDoNotCollide guards the json.Number decoding path: two seeds
+// that collide when routed through float64 (2^53 and 2^53+1) must yield
+// different sample output.
+func TestLargeSeedsDoNotCollide(t *testing.T) {
+	a := runScript(t, `{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"sample","arguments":{"semantic":"email","count":3,"seed":9007199254740992}}}`)
+	b := runScript(t, `{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"sample","arguments":{"semantic":"email","count":3,"seed":9007199254740993}}}`)
+	ta, errA := toolText(t, a[0])
+	tb, errB := toolText(t, b[0])
+	if errA || errB {
+		t.Fatalf("unexpected tool errors: %v %v", ta, tb)
+	}
+	if ta == tb {
+		t.Fatalf("seeds 2^53 and 2^53+1 produced identical output:\n%s", ta)
+	}
+}

@@ -3,8 +3,8 @@
 // line, no Content-Length framing) and exposes four tools — generate, validate,
 // inspect, and sample — so AI coding agents can synthesize deterministic
 // fixtures on demand. The protocol layer is hand-rolled with the standard
-// library; the package depends only on the root datjit façade and the runtime
-// package.
+// library; the package depends only on the root datjit façade, the runtime
+// package, and the stable core/model types.
 //
 // This package is NOT yet part of the stable public API surface (same status
 // as the repl package): its exported identifiers may change without notice.
@@ -90,7 +90,15 @@ func Serve(ctx context.Context, in io.Reader, out io.Writer, opts Options) error
 func (s *server) handleLine(ctx context.Context, out io.Writer, line []byte) error {
 	var req request
 	if err := json.Unmarshal(line, &req); err != nil {
+		// A JSON array is a batch request: valid JSON, unsupported envelope —
+		// invalid request, not a parse error.
+		if isBatch(line) {
+			return writeMessage(out, newErrorResponse(nil, codeInvalidRequest, "batch requests are not supported"))
+		}
 		return writeMessage(out, newErrorResponse(nil, codeParse, "parse error: "+err.Error()))
+	}
+	if req.JSONRPC != "2.0" {
+		return writeMessage(out, newErrorResponse(req.ID, codeInvalidRequest, `jsonrpc must be "2.0"`))
 	}
 
 	resp, send := s.dispatch(ctx, &req)
@@ -170,11 +178,19 @@ type toolCallParams struct {
 // failures (*toolError) become isError:true results; unknown tools and other
 // protocol problems become JSON-RPC errors.
 func (s *server) handleToolsCall(ctx context.Context, req *request) (response, bool) {
+	if req.isNotification() {
+		// Notifications never receive a response; tools are pure, so skipping
+		// execution entirely is observably identical to running and discarding.
+		return response{}, false
+	}
 	var p toolCallParams
 	if len(req.Params) > 0 {
 		if err := json.Unmarshal(req.Params, &p); err != nil {
 			return newErrorResponse(req.ID, codeInvalidParams, "invalid params: "+err.Error()), true
 		}
+	}
+	if len(p.Arguments) > 0 && !isJSONObject(p.Arguments) {
+		return newErrorResponse(req.ID, codeInvalidParams, "invalid params: arguments must be an object"), true
 	}
 	if p.Name == "" {
 		return newErrorResponse(req.ID, codeInvalidParams, "tools/call: missing tool name"), true

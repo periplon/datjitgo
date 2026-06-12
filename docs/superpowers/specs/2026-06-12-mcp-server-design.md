@@ -67,7 +67,8 @@ includes a minimal schema example, so agents can self-serve syntax.
 ## 4. Package layout
 
 New top-level package `mcp` (mirrors `repl`'s position: depends on the root
-`datjit` facade and `runtime` only — allowed per the architecture):
+`datjit` facade, `runtime`, and the stable `core/model` types — allowed per
+the architecture; no adapter imports):
 
 ```
 mcp/
