@@ -207,7 +207,7 @@ func generateTool() toolDef {
 }
 
 // handleGenerate parses, validates, generates, and serialises per the request.
-func handleGenerate(_ context.Context, svc *datjit.Service, _ djruntime.Runtime, params json.RawMessage) (string, error) {
+func handleGenerate(_ context.Context, _ *datjit.Service, _ djruntime.Runtime, params json.RawMessage) (string, error) {
 	m, err := decodeParams(params)
 	if err != nil {
 		return "", err
@@ -340,11 +340,12 @@ func plannedTotal(doc *model.Document, override map[string]int) int {
 			return true
 		}
 		if v, ok := doc.Volume[name]; ok {
-			if v.Exact > 0 {
+			switch {
+			case v.Exact > 0:
 				total += v.Exact
-			} else if v.Min != 0 || v.Max != 0 {
+			case v.Min != 0 || v.Max != 0:
 				total += (v.Min + v.Max) / 2
-			} else {
+			default:
 				total += 10
 			}
 			return true

@@ -13,6 +13,7 @@ package mcp
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 
 	datjit "github.com/periplon/datjitgo"
@@ -64,10 +65,10 @@ func Serve(ctx context.Context, in io.Reader, out io.Writer, opts Options) error
 		}
 		line, err := lr.readLine()
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				return nil
 			}
-			if err == errLineTooLong {
+			if errors.Is(err, errLineTooLong) {
 				if werr := writeMessage(out, newErrorResponse(nil, codeParse, "request exceeds 4 MiB limit")); werr != nil {
 					return werr
 				}
@@ -202,7 +203,8 @@ func (s *server) handleToolsCall(ctx context.Context, req *request) (response, b
 
 	text, err := tool.handle(ctx, s.svc, s.rt, p.Arguments)
 	if err != nil {
-		if te, ok := err.(*toolError); ok {
+		var te *toolError
+		if errors.As(err, &te) {
 			return s.toolResult(req.ID, te.msg, true)
 		}
 		return newErrorResponse(req.ID, codeInternal, err.Error()), true

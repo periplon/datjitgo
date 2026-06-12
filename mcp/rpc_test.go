@@ -3,6 +3,7 @@ package mcp
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"strings"
 	"testing"
@@ -24,7 +25,7 @@ func TestLineReaderBasic(t *testing.T) {
 	if string(got) != "second" {
 		t.Fatalf("got %q, want second", got)
 	}
-	if _, err := lr.readLine(); err != io.EOF {
+	if _, err := lr.readLine(); !errors.Is(err, io.EOF) {
 		t.Fatalf("expected EOF, got %v", err)
 	}
 }
@@ -38,7 +39,7 @@ func TestLineReaderUnterminatedFinalLine(t *testing.T) {
 	if string(got) != "only" {
 		t.Fatalf("got %q, want only", got)
 	}
-	if _, err := lr.readLine(); err != io.EOF {
+	if _, err := lr.readLine(); !errors.Is(err, io.EOF) {
 		t.Fatalf("expected EOF, got %v", err)
 	}
 }
@@ -58,7 +59,7 @@ func TestLineReaderOversizedLine(t *testing.T) {
 	// One line over the cap, then a valid line after the newline.
 	big := strings.Repeat("a", maxLineBytes+10) + "\n" + "ok\n"
 	lr := newLineReader(strings.NewReader(big))
-	if _, err := lr.readLine(); err != errLineTooLong {
+	if _, err := lr.readLine(); !errors.Is(err, errLineTooLong) {
 		t.Fatalf("expected errLineTooLong, got %v", err)
 	}
 	got, err := lr.readLine()

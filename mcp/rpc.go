@@ -84,7 +84,7 @@ func (lr *lineReader) readLine() ([]byte, error) {
 		if len(buf)+len(chunk) > maxLineBytes {
 			// Drain the rest of the over-long line so the next read starts
 			// cleanly on the following message.
-			for err == bufio.ErrBufferFull {
+			for errors.Is(err, bufio.ErrBufferFull) {
 				_, err = lr.br.ReadSlice('\n')
 			}
 			return nil, errLineTooLong
@@ -93,7 +93,7 @@ func (lr *lineReader) readLine() ([]byte, error) {
 		if err == nil {
 			return trimNewline(buf), nil
 		}
-		if err == bufio.ErrBufferFull {
+		if errors.Is(err, bufio.ErrBufferFull) {
 			continue
 		}
 		if errors.Is(err, io.EOF) {
