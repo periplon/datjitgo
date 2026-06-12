@@ -1,5 +1,9 @@
 # Enhancement Roadmap
 
+> A second brainstorming round covering new ground (data-quality chaos,
+> time-series, AI-agent tooling, schema fitting) and a combined cross-round
+> "killer list" lives in [`enhancements-round2.md`](enhancements-round2.md).
+
 This document captures candidate enhancements for `datjitgo`, evaluated by a multi-expert review panel (spanning CLI/DX, Go-library API, data-realism, reliability/testing, scale/perf, integrations, and privacy/compliance lenses). Each candidate was scored 1–5 on **User Value** and **Feasibility** by three independent judges; the **Score** below is `value × feasibility` from the averaged means. Every proposal was checked against the project's hard invariants — determinism (same schema + seed → same bytes), public-API stability, and hexagonal direction (`core/*` imports no adapter). Items that would breach those invariants are flagged and pushed to the deferred section.
 
 ## Summary ranking
