@@ -106,6 +106,7 @@ svc, _ := datjit.New(
     datjit.WithSeed(42),
     datjit.WithLocale("en-US"),
     datjit.WithVolume(map[string]int{"User": 500, "Order": 2000}),
+    datjit.WithDirtyRate(0.05),              // seeded dirty-data corruption
     datjit.WithCorpus(myCustomCorpus),       // implements ports.CorpusProvider
     datjit.WithLLMProvider(myLLMProvider),   // implements ports.LLMProvider
     datjit.WithWriter(myProtoWriter),         // implements ports.Writer
@@ -169,6 +170,7 @@ For larger integrations, compile the host DSL into `*model.Document`, then call
 | `--dry-run`                      | `false`    | Plan only, do not generate               |
 | `--corpus-dir DIR`               | embedded   | Use on-disk corpus overlay               |
 | `--llm-live`                     | `false`    | Call configured live LLM provider        |
+| `--dirty-rate R`                 | `0`        | Seeded dirty-data corruption rate [0,1]  |
 
 ## REPL tour
 
@@ -233,7 +235,13 @@ The DDL covers primitives, semantic types (`person.full`, `email`,
 distributions (`@dist(normal, μ=35, σ=12)`, Zipf, lognormal, weighted
 categorical, …), pattern templates (`@pattern("SKU-{AA}-{0000}")`),
 `@derived` / `@compute` / `@default_chain` expressions, cross-entity rules
-(`@strict`, `@probability(p)`, `@warn`), and coherence groups.
+(`@strict`, `@probability(p)`, `@warn`), coherence groups, and seeded
+dirty-data injection (`@dirty(rate=0.1, typo, whitespace)` on a field,
+`_meta: "@dirty(...)"` on an entity, or globally via `--dirty-rate` /
+`datjit.WithDirtyRate`). Corruption kinds: `typo`, `case`, `whitespace`,
+`null`, `format_mix`, `duplicate` (entity-level near-duplicate rows).
+Same schema + seed produce the same mess; schemas without `@dirty` are
+byte-identical to clean output.
 
 Full language spec: [`docs/superpowers/specs/2026-04-22-datjitgo-design.md`](docs/superpowers/specs/2026-04-22-datjitgo-design.md)
 

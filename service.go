@@ -27,9 +27,10 @@ type Service struct {
 	corpus  ports.CorpusProvider
 	llm     ports.LLMProvider
 
-	seed    *int64
-	locale  string
-	volumes map[string]int
+	seed      *int64
+	locale    string
+	volumes   map[string]int
+	dirtyRate float64
 }
 
 // WriteOpts is the façade-level write configuration exposed to callers. It
@@ -137,6 +138,7 @@ func (s *Service) Generate(doc *model.Document) (*value.Dataset, error) {
 	opts := ports.GenerateOptions{
 		SeedOverride:   s.seed,
 		LocaleOverride: s.locale,
+		DirtyRate:      s.dirtyRate,
 	}
 	if len(s.volumes) > 0 {
 		opts.VolumeOverride = cloneVolumes(s.volumes)

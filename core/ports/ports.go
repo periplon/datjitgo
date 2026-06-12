@@ -24,6 +24,14 @@ type GenerateOptions struct {
 	LocaleOverride string
 	VolumeOverride map[string]int
 	EntityFilter   string // generate only this entity + its dependencies
+	// DirtyRate, when in (0, 1], enables seeded dirty-data corruption for
+	// every entity that declares no entity-level @dirty of its own, as if
+	// each such entity had `_meta: "@dirty(rate=DirtyRate)"` with the
+	// default kind set (typo, case, whitespace). Field-level @dirty
+	// decorators take precedence over entity meta, which takes precedence
+	// over this dial. Zero (the default) adds no corruption and costs no
+	// RNG draws, keeping output identical to earlier releases.
+	DirtyRate float64
 }
 
 // Generator produces a Dataset from a Document.
