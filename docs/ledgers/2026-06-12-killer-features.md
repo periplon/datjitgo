@@ -11,9 +11,9 @@ spec, implementation plan, and an updated copy of this ledger.
 |---|---|---|---|---|
 | A | #8 (R1-2) | Schema introspection: export, diff, deps | `claude/feat-schema-introspection` | merged (PR #12) |
 | B | #2 (R2-1) | MCP server (`datjit mcp`) | `claude/feat-mcp-server` | merged (PR #13) |
-| C | #3 (R2-2) | Dirty-data injection (`@dirty`) | `claude/feat-dirty-data` | in-review (this PR) |
-| D | #9 (R2-4) | Time-series & stateful sequences | `claude/feat-time-series` | implemented, review clean, queued |
-| E | #12 (R2-5) | Edge-case / hostile generation profiles | `claude/feat-profiles` | implemented, in adversarial review |
+| C | #3 (R2-2) | Dirty-data injection (`@dirty`) | `claude/feat-dirty-data` | merged (PR #14) |
+| D | #9 (R2-4) | Time-series & stateful sequences | `claude/feat-time-series` | in-review (this PR) |
+| E | #12 (R2-5) | Edge-case / hostile generation profiles | `claude/feat-profiles` | review clean (MERGE-READY), queued |
 
 (#9 was added to the program by user request after the initial 2/3/8/12
 selection.)
@@ -105,4 +105,12 @@ selection.)
 - 2026-06-12: D (time-series) MERGE-READY; Inf/NaN chain probabilities now
   rejected (review minor), fixture comment + spec wording corrected.
 - 2026-06-12: E (profiles) implemented (realistic ≡ default proven; writer
-  robustness suite passes); adversarial review in flight.
+  robustness suite passes); adversarial review verdict MERGE-READY. The
+  @len-under-profiles behavior is documented (boundary strings override
+  declared lengths by design). Review also surfaced a PRE-EXISTING bug on
+  main, out of program scope: `applyRange` never clamps decimal fields —
+  recorded here as follow-up work.
+- 2026-06-12: PR C (#14) merged on green CI. D rebased over it (README/
+  CHANGELOG unions); engine post-pass order verified after rebase:
+  stateful → dataset rules → dirty, so @series/@walk values are corruptible
+  by @dirty (consistent with the derived/compute decision D7). PR D opened.
