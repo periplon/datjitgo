@@ -1,0 +1,219 @@
+{
+  "Account": [
+    {
+      "id": "20558a27-c9c6-446f-a1eb-7a8adc1bda99",
+      "owner": "Joseph King",
+      "contact_email": "joseph.king@gmail.com",
+      "display_name": "مرحبا",
+      "note": "line\nbreak",
+      "nickname": "1VN6EZIl6YG",
+      "tags": [
+        "VrK2lPdK",
+        "HiDnrzJz3hbX"
+      ],
+      "age": 18,
+      "karma": 153492,
+      "score": 5e-324,
+      "balance": 0,
+      "joined": "2020-01-01T00:00:00Z",
+      "last_seen": "2022-12-06T13:15:21.260995957Z",
+      "active": false,
+      "status": "banned",
+      "referral_code": "RF-MG-6666",
+      "api_key": "0lX5ZDgyAT6",
+      "motto": "EMqIbVMuzakqVD"
+    },
+    {
+      "id": "ed349254-86de-4c77-b573-57ee24733c31",
+      "owner": "Nicole Torres",
+      "contact_email": "nicole.torres@example.org",
+      "display_name": "embedded \"double\" quotes",
+      "note": " leading space",
+      "nickname": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "tags": [
+        "раypal"
+      ],
+      "age": 99,
+      "karma": -1,
+      "score": 0.25511971143863255,
+      "balance": 77020007.93,
+      "joined": "2021-08-31T00:00:00Z",
+      "last_seen": "1970-01-01T00:00:00Z",
+      "active": true,
+      "status": "pending",
+      "referral_code": "RF-ZY-4723",
+      "api_key": "DcgxnqNjbI",
+      "motto": "73AnEQdD70fU"
+    },
+    {
+      "id": "3b6a5515-4603-4fb0-a110-a8be1229fe00",
+      "owner": "Jacob Perez",
+      "contact_email": "jacob.perez@yahoo.com",
+      "display_name": "مرحبا",
+      "note": "trailing space ",
+      "nickname": "ECAL5mrC2",
+      "tags": [
+        "gEwPBR9x2uKYUJ",
+        "Ns4k6Vv2PiX2OeR"
+      ],
+      "age": 18,
+      "karma": -1,
+      "score": 0.4671605387075489,
+      "balance": 10000,
+      "joined": "2025-12-31T23:59:59.999999999Z",
+      "last_seen": "2100-12-31T00:00:00Z",
+      "active": false,
+      "status": "banned",
+      "referral_code": "RF-UX-5731",
+      "api_key": "lMXWJiVGhG",
+      "motto": "lVgTjabPPYW"
+    },
+    {
+      "id": "dc11fc49-1e52-4906-a299-0859fe8fa001",
+      "owner": "Daniel Smith",
+      "contact_email": "daniel.smith@yahoo.com",
+      "display_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "note": "KE63Jy0wNVwHRw",
+      "nickname": "é",
+      "tags": [
+        "semi;colons; everywhere"
+      ],
+      "age": 18,
+      "karma": 1,
+      "score": 1.7976931348623157e+308,
+      "balance": 0,
+      "joined": "2025-12-31T23:59:59.999999999Z",
+      "last_seen": "1900-01-01T00:00:00Z",
+      "active": true,
+      "status": "pending",
+      "referral_code": "RF-AW-9732",
+      "api_key": "ByvRYlAUxL",
+      "motto": "qzHDNRevW"
+    },
+    {
+      "id": "a2ca5009-f80a-4486-b9ad-8f84b6ea8127",
+      "owner": "Brian Lopez",
+      "contact_email": "brian.lopez@hey.com",
+      "display_name": "Sandra Gonzalez",
+      "note": "",
+      "nickname": null,
+      "tags": [
+        "semi;colons; everywhere"
+      ],
+      "age": 18,
+      "karma": 9223372036854775807,
+      "score": 0.6281998283379792,
+      "balance": 10000,
+      "joined": "2022-01-16T00:00:00Z",
+      "last_seen": "2021-01-19T00:46:26.537837199Z",
+      "active": true,
+      "status": "banned",
+      "referral_code": "RF-UZ-7399",
+      "api_key": "zA5E3uHGuUcfBgJ",
+      "motto": "hyGKHPj2cZHWiI"
+    },
+    {
+      "id": "ccc66a06-9c19-4267-b8fe-75fb3ff49cfc",
+      "owner": "Debra Chen",
+      "contact_email": "debra.chen@gmail.com",
+      "display_name": "Rachel Flores",
+      "note": "zP3OXzWxuK63",
+      "nickname": "GJWoGhH6",
+      "tags": [
+        "3qNv7cURwOQvpO",
+        "tbF5myGkX",
+        "WEjQJugbC"
+      ],
+      "age": 18,
+      "karma": 0,
+      "score": -0,
+      "balance": 76401205,
+      "joined": "2022-09-24T00:00:00Z",
+      "last_seen": "2100-12-31T00:00:00Z",
+      "active": true,
+      "status": "active",
+      "referral_code": "RF-PJ-3600",
+      "api_key": "mCEcQkLPfue",
+      "motto": "uoCf0sIex"
+    },
+    {
+      "id": "eb154d73-9d08-4db6-a519-6f5099379c06",
+      "owner": "Mary Rivera",
+      "contact_email": "mary.rivera@gmail.com",
+      "display_name": "Pamela Campbell",
+      "note": "EfREn9jcnDPzcUM",
+      "nickname": "x",
+      "tags": [
+        "trailing space "
+      ],
+      "age": 99,
+      "karma": 596533,
+      "score": 0.9366244096703135,
+      "balance": 0,
+      "joined": "2025-12-31T23:59:59.999999999Z",
+      "last_seen": "1970-01-01T00:00:00Z",
+      "active": false,
+      "status": "pending",
+      "referral_code": "RF-BQ-7185",
+      "api_key": "tKCuEdtT4G8",
+      "motto": "WWJDLBOU0hXgl"
+    },
+    {
+      "id": "c147bae3-3c76-4cc6-8c01-38102eb253be",
+      "owner": "Laura Nguyen",
+      "contact_email": "laura.nguyen@mail.com",
+      "display_name": "=cmd()",
+      "note": "🎉🚀",
+      "nickname": "hZVs1la9UWnhH",
+      "tags": [
+        "KvoIfhGv",
+        "Qwd52fZqBwu13vdT",
+        "J3Eie8F8tI2",
+        "d5f5mM097E9DM"
+      ],
+      "age": 18,
+      "karma": 0,
+      "score": 0.7058863783906523,
+      "balance": 0,
+      "joined": "2021-03-18T00:00:00Z",
+      "last_seen": "2018-12-29T08:15:33.378995002Z",
+      "active": true,
+      "status": "pending",
+      "referral_code": "RF-TV-0798",
+      "api_key": "NAIvJ29Wb",
+      "motto": "80a40TJEE8sjeS0"
+    }
+  ],
+  "Device": [
+    {
+      "id": "6390344f-9637-4686-9535-f28c2035afd5",
+      "hardware_uuid": "37b95946-7190-4624-b480-ec72ff028374",
+      "label": "G2H1R0lrBtyjJq",
+      "account": "20558a27-c9c6-446f-a1eb-7a8adc1bda99"
+    },
+    {
+      "id": "4e7780a8-583c-4d5e-b258-19321e9c0e73",
+      "hardware_uuid": "00000000-0000-0000-0000-000000000000",
+      "label": "tab\tseparated",
+      "account": "eb154d73-9d08-4db6-a519-6f5099379c06"
+    },
+    {
+      "id": "d1366e04-f656-435b-8866-3783b62618fa",
+      "hardware_uuid": "24782567-611e-4bfa-b2a1-f1b2218baece",
+      "label": "trailing space ",
+      "account": "c147bae3-3c76-4cc6-8c01-38102eb253be"
+    },
+    {
+      "id": "a9264677-9b20-44a9-be07-7ebccde6e1a8",
+      "hardware_uuid": "35865177-475a-4359-9086-0e57190c7fb3",
+      "label": "semi;colons; everywhere",
+      "account": "eb154d73-9d08-4db6-a519-6f5099379c06"
+    },
+    {
+      "id": "8f228568-8712-435f-8629-eac794e28036",
+      "hardware_uuid": "00000000-0000-0000-0000-000000000000",
+      "label": "z5ARhhToi5",
+      "account": "ed349254-86de-4c77-b573-57ee24733c31"
+    }
+  ]
+}

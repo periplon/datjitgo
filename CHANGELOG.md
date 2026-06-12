@@ -51,6 +51,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   states, and stateful decorators on coherence members, references or
   compound types. See
   `docs/superpowers/specs/2026-06-12-time-series-design.md`.
+- Generation profiles for negative testing. `datjit generate --profile
+  realistic|edge|hostile` (and `datjit.WithProfile` /
+  `ports.GenerateOptions.Profile`) bias eligible field values toward boundary
+  cases: `edge` substitutes curated extremes (empty/oversized strings,
+  multi-byte/RTL/emoji/combining text, numeric min/max honouring declared
+  `@range` bounds, epoch dates, all-zeros UUIDs); `hostile` adds adversarial
+  payloads (CSV/SQL/spreadsheet injection shapes, 4 KiB strings, mixed-script
+  homoglyphs — no NUL bytes). Keys, references, discriminators, coherence
+  members, unique/pattern/derived/computed fields, and fields annotated
+  `@profile(realistic)` are never substituted. The default profile is
+  byte-identical to previous output; edge/hostile are deterministic per
+  schema + seed + profile.
 
 ## [0.3.5] - 2026-06-03
 

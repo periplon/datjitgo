@@ -31,6 +31,7 @@ type Service struct {
 	locale    string
 	volumes   map[string]int
 	dirtyRate float64
+	profile   string
 }
 
 // WriteOpts is the façade-level write configuration exposed to callers. It
@@ -139,6 +140,7 @@ func (s *Service) Generate(doc *model.Document) (*value.Dataset, error) {
 		SeedOverride:   s.seed,
 		LocaleOverride: s.locale,
 		DirtyRate:      s.dirtyRate,
+		Profile:        s.profile,
 	}
 	if len(s.volumes) > 0 {
 		opts.VolumeOverride = cloneVolumes(s.volumes)
