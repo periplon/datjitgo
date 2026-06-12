@@ -148,6 +148,7 @@ For larger integrations, compile the host DSL into `*model.Document`, then call
 | `datjit generate <schema> [flags]`             | Generate data                                      |
 | `datjit validate <schema>`                     | Parse + validate, exit 1 on error                  |
 | `datjit inspect  <schema> [--infer-tools]`     | Print entity/field/rule summary                    |
+| `datjit schema export \| diff \| deps`         | Export a signature, diff two schemas, or print deps |
 | `datjit corpus list \| info \| update`         | Inspect or refresh embedded/overlay corpus data    |
 | `datjit repl [<schema>]`                       | Interactive session                                |
 | `datjit version`                               | Print version                                      |

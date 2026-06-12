@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Schema introspection. New read-only API over a parsed document:
+  `Service.SchemaSummary` exports a stable, ordered, machine-readable schema
+  signature (commit it as a CI drift fixture); `DiffSchemaSummaries` compares
+  two signatures and classifies each change as breaking or compatible; and
+  `Service.DependencyGraph` reports entity reference edges (polymorphic unions
+  expand to one edge per target, `<->` is many-to-many) plus exemplar cycle
+  paths. The cyclic-dependency validation error now names the path
+  (`cyclic dependency: A -> B -> A`). A new `datjit schema export|diff|deps`
+  command group surfaces all three: `export` emits JSON (or YAML), `diff`
+  accepts schemas or previously exported summaries and supports `--strict`
+  (exit 1 on breaking changes), and `deps` prints text or Graphviz `dot`.
+
 ## [0.3.5] - 2026-06-03
 
 ### Added

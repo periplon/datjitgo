@@ -148,3 +148,43 @@ func TestCollectRefsIncludesNestedCompositeTargets(t *testing.T) {
 		}
 	}
 }
+
+func TestCyclesTwoNode(t *testing.T) {
+	doc := mkDoc(entWithRef("A", "B"), entWithRef("B", "A"))
+	cycles := Cycles(doc)
+	if len(cycles) != 1 {
+		t.Fatalf("expected one cycle, got %v", cycles)
+	}
+	c := cycles[0]
+	if len(c) < 3 || c[0] != c[len(c)-1] {
+		t.Fatalf("malformed cycle path %v", c)
+	}
+}
+
+func TestCyclesSelfRefExcluded(t *testing.T) {
+	a := model.NewEntity("A")
+	a.Fields.Set("parent", &model.Field{Name: "parent", Type: model.Reference{Target: "self"}})
+	if cycles := Cycles(mkDoc(a)); len(cycles) != 0 {
+		t.Fatalf("self-reference must not be a cycle, got %v", cycles)
+	}
+}
+
+func TestCyclesNoneForDAG(t *testing.T) {
+	doc := mkDoc(entWithRef("Order", "User"), model.NewEntity("User"))
+	if cycles := Cycles(doc); len(cycles) != 0 {
+		t.Fatalf("expected no cycles, got %v", cycles)
+	}
+}
+
+func TestEntitiesCycleErrorMessageHasPath(t *testing.T) {
+	doc := mkDoc(entWithRef("A", "B"), entWithRef("B", "A"))
+	_, err := Entities(doc)
+	if err == nil {
+		t.Fatal("expected cycle error")
+	}
+	// Exact match guards against the Kind prefix being duplicated in the
+	// message (the Error formatter already prepends "cyclic dependency: ").
+	if got, want := err.Error(), "cyclic dependency: A -> B -> A"; got != want {
+		t.Fatalf("error = %q, want %q", got, want)
+	}
+}
