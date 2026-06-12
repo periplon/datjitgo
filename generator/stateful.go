@@ -207,8 +207,8 @@ func parseChainConfig(d *model.Decorator) (chainConfig, error) {
 		if err != nil {
 			return cfg, fmt.Errorf("@chain: transition %q: probability not a number: %s", entry, probRaw)
 		}
-		if prob <= 0 {
-			return cfg, fmt.Errorf("@chain: transition %q: probability must be > 0", entry)
+		if prob <= 0 || math.IsInf(prob, 0) || math.IsNaN(prob) {
+			return cfg, fmt.Errorf("@chain: transition %q: probability must be a finite number > 0", entry)
 		}
 		mention(from)
 		mention(to)

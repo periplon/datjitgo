@@ -74,7 +74,10 @@ Interactions, documented in godoc and spec:
 
 - Row-level `@strict` rules and `@derived`/`@compute` expressions evaluate
   **before** the stateful pass and therefore see null for stateful fields in
-  v1 (limitation; revisit if demanded). `@warn` dataset rules run after, so
+  v1 (limitation; revisit if demanded). Note the derived evaluator's
+  pre-existing behavior on null operands is a hard generation error, so a
+  `@derived` expression over a stateful field fails the run rather than
+  degrading — same as `@derived` over any null value. `@warn` dataset rules run after, so
   they see final values.
 - `@unique`, `@null_rate`, `@dist`, `@range` combined with a stateful
   decorator: the stateful decorator wins; `@range` is honored via min/max

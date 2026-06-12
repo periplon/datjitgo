@@ -167,6 +167,8 @@ func TestParseChainConfigErrors(t *testing.T) {
 		"prob not a number": {strArg("pending>shipped:often")},
 		"zero prob":         {strArg("pending>shipped:0")},
 		"negative prob":     {strArg("pending>shipped:-1")},
+		"inf prob":          {strArg("pending>shipped:Inf")},
+		"nan prob":          {strArg("pending>shipped:NaN")},
 	}
 	for name, args := range cases {
 		if _, err := parseChainConfig(&model.Decorator{Name: "chain", Args: args}); err == nil {
