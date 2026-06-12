@@ -180,15 +180,20 @@ func renderSemantic(s Semantic) string {
 }
 
 // renderReference renders an entity reference in its canonical arrow form:
-// ->E, ->E?, ->[E], or <->E.
+// ->E, ->[E], or <->E, with a trailing ? when Optional. The parser never
+// produces Optional combined with Many/ManyToMany, but programmatically built
+// documents can; rendering the flag keeps such types distinguishable in
+// summaries and diffs.
 func renderReference(r Reference) string {
-	if r.ManyToMany {
-		return "<->" + r.Target
+	var out string
+	switch {
+	case r.ManyToMany:
+		out = "<->" + r.Target
+	case r.Many:
+		out = "->[" + r.Target + "]"
+	default:
+		out = "->" + r.Target
 	}
-	if r.Many {
-		return "->[" + r.Target + "]"
-	}
-	out := "->" + r.Target
 	if r.Optional {
 		out += "?"
 	}

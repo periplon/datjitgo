@@ -67,9 +67,11 @@ func Entities(doc *model.Document) ([]string, error) {
 	}
 
 	if len(result) != len(order) {
+		// The error Kind already renders a "cyclic dependency: " prefix, so the
+		// message carries only the exemplar path.
 		msg := "cycle detected in entity references"
 		if cycles := Cycles(doc); len(cycles) > 0 {
-			msg = "cyclic dependency: " + strings.Join(cycles[0], " -> ")
+			msg = strings.Join(cycles[0], " -> ")
 		}
 		return nil, &errors.Error{
 			Kind:    errors.KindCyclicDependency,

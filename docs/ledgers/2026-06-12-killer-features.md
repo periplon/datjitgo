@@ -67,6 +67,28 @@ selection.)
 ## Log
 
 - 2026-06-12: Program started. Worktrees created for A and B off
-  `origin/main` @ 47302ce. Baseline `make ci` launched.
-- 2026-06-12: Specs and plans written for A (schema introspection) and
-  B (MCP server). Opus implementation agents launched in parallel.
+  `origin/main` @ 47302ce. Baseline `make ci` verified green.
+- 2026-06-12: Specs and plans written for all five features. Wave-1 (A, B)
+  Opus implementation agents launched in parallel; wave-2 (C, D, E)
+  default-model agents staggered behind them.
+- 2026-06-12: B (MCP) implemented; adversarial review found 2 major
+  (spurious responses to tools/call notifications; 64-bit seed collisions
+  via float64 param decoding) + 4 minor findings. All fixed with regression
+  tests (json.Number decoding, jsonrpc version check, batch rejection,
+  -32602 for non-object arguments); gate green.
+- 2026-06-12: A (introspection) implemented; adversarial review found a
+  doubled "cyclic dependency:" prefix regression (+ too-weak test), a lossy
+  renderReference for programmatic Optional+Many refs, fragile JSON-summary
+  sniffing for flow-style YAML, and HTML-escaped JSON export. All fixed:
+  exact-message + CLI cyclic tests, trailing-? rendering, decode-with-
+  fallback sniffing, SetEscapeHTML(false). Gate green.
+- 2026-06-12: D (time-series) implemented; adversarial review verdict
+  MERGE-READY (no major findings; draw-position stability and zero-draw
+  guarantee verified by code trace + 5× byte comparison). Minor follow-ups
+  applied before PR: reject Inf/NaN chain probabilities; fixture comment
+  accuracy; spec wording for derived-over-stateful (hard error, pre-existing
+  evaluator behavior, not graceful null).
+- 2026-06-12: C (@dirty) implemented (zero-draw default path, draw-budget
+  content independence, @unique re-check); adversarial review launched.
+- 2026-06-12: PR A opened (schema introspection, carries this ledger);
+  automerge enabled.

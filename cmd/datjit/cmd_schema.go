@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -157,11 +158,7 @@ func encodeSummary(sum *model.SchemaSummary, format string) ([]byte, error) {
 	case "yaml":
 		return marshalSummaryYAML(sum)
 	default:
-		data, err := json.MarshalIndent(sum, "", "  ")
-		if err != nil {
-			return nil, err
-		}
-		return append(data, '\n'), nil
+		return marshalJSONNoEscape(sum)
 	}
 }
 
@@ -180,20 +177,43 @@ func marshalSummaryYAML(sum *model.SchemaSummary) ([]byte, error) {
 	return yaml.Marshal(generic)
 }
 
-// loadSummary resolves path to a SchemaSummary. A path ending in .json, or
-// whose first non-space byte is '{', is decoded as a previously exported
-// summary; otherwise it is parsed as a YAML schema and summarized.
+// marshalJSONNoEscape renders v as pretty JSON without HTML escaping, so
+// type strings like "->User" stay readable in committed drift fixtures. A
+// trailing newline is included.
+func marshalJSONNoEscape(v any) ([]byte, error) {
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	enc.SetEscapeHTML(false)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(v); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// loadSummary resolves path to a SchemaSummary. A path ending in .json is
+// decoded as a previously exported summary; otherwise a leading '{' triggers a
+// summary-decode attempt with fallback to YAML schema parsing (flow-style YAML
+// schemas also start with '{').
 func loadSummary(svc *datjit.Service, path string) (*model.SchemaSummary, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("open %s: %w", path, err)
 	}
-	if looksLikeJSONSummary(path, data) {
+	if strings.HasSuffix(strings.ToLower(path), ".json") {
 		var sum model.SchemaSummary
 		if err := json.Unmarshal(data, &sum); err != nil {
 			return nil, fmt.Errorf("parse summary %s: %w", path, err)
 		}
 		return &sum, nil
+	}
+	if startsWithBrace(data) {
+		// Could be an exported summary or a flow-style YAML schema; try the
+		// summary first and fall through to schema parsing if it doesn't fit.
+		var sum model.SchemaSummary
+		if err := json.Unmarshal(data, &sum); err == nil {
+			return &sum, nil
+		}
 	}
 	doc, err := svc.Parse(strings.NewReader(string(data)), path)
 	if err != nil {
@@ -202,12 +222,8 @@ func loadSummary(svc *datjit.Service, path string) (*model.SchemaSummary, error)
 	return svc.SchemaSummary(doc), nil
 }
 
-// looksLikeJSONSummary reports whether data should be treated as an exported
-// JSON summary rather than a YAML schema.
-func looksLikeJSONSummary(path string, data []byte) bool {
-	if strings.HasSuffix(strings.ToLower(path), ".json") {
-		return true
-	}
+// startsWithBrace reports whether data's first non-space byte is '{'.
+func startsWithBrace(data []byte) bool {
 	for _, b := range data {
 		switch b {
 		case ' ', '\t', '\r', '\n':
@@ -225,11 +241,11 @@ func looksLikeJSONSummary(path string, data []byte) bool {
 // empty diff prints "no changes" in text mode.
 func printDiff(w io.Writer, diff *model.SchemaDiff, format string) error {
 	if format == "json" {
-		data, err := json.MarshalIndent(diff, "", "  ")
+		data, err := marshalJSONNoEscape(diff)
 		if err != nil {
 			return err
 		}
-		_, err = fmt.Fprintln(w, string(data))
+		_, err = w.Write(data)
 		return err
 	}
 	if diff.Empty() {

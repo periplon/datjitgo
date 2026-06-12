@@ -2,7 +2,6 @@ package plan
 
 import (
 	stderrors "errors"
-	"strings"
 	"testing"
 
 	"github.com/periplon/datjitgo/core/errors"
@@ -183,7 +182,9 @@ func TestEntitiesCycleErrorMessageHasPath(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected cycle error")
 	}
-	if !strings.Contains(err.Error(), "cyclic dependency: ") || !strings.Contains(err.Error(), "->") {
-		t.Fatalf("expected path in error message, got %q", err.Error())
+	// Exact match guards against the Kind prefix being duplicated in the
+	// message (the Error formatter already prepends "cyclic dependency: ").
+	if got, want := err.Error(), "cyclic dependency: A -> B -> A"; got != want {
+		t.Fatalf("error = %q, want %q", got, want)
 	}
 }

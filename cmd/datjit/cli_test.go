@@ -386,3 +386,25 @@ func TestSchemaExportBadFormat(t *testing.T) {
 		t.Fatalf("expected exit 2 for bad format, got %d stderr=%q", code, stderr)
 	}
 }
+
+func TestValidateCyclicSchemaMessage(t *testing.T) {
+	dir := t.TempDir()
+	schema := filepath.Join(dir, "cyclic.yaml")
+	body := "domain: c\nentities:\n  A:\n    id: uuid @primary\n    b: ->B\n  B:\n    id: uuid @primary\n    a: ->A\n"
+	if err := os.WriteFile(schema, []byte(body), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	stdout, stderr, code := runCmd(t, "validate", schema)
+	if code != 1 {
+		t.Fatalf("exit = %d, want 1 (out=%q err=%q)", code, stdout, stderr)
+	}
+	combined := stdout + stderr
+	// Exactly one prefix: guards against the Kind formatter and the plan
+	// message both contributing "cyclic dependency: ".
+	if strings.Count(combined, "cyclic dependency:") != 1 {
+		t.Fatalf("expected exactly one 'cyclic dependency:' prefix, got %q", combined)
+	}
+	if !strings.Contains(combined, "A -> B -> A") && !strings.Contains(combined, "B -> A -> B") {
+		t.Fatalf("expected cycle path in output, got %q", combined)
+	}
+}
