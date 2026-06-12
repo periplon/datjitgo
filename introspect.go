@@ -227,7 +227,7 @@ func countDistinctTargets(refs []model.Reference) int {
 	return len(seen)
 }
 
-// DiffSchemaSummaries compares an old and new SchemaSummary and reports every
+// DiffSchemaSummaries compares an prev and next SchemaSummary and reports every
 // structural change, classifying each as breaking or compatible.
 //
 // Breaking changes alter the consumer-visible shape: removing an entity, field,
@@ -236,42 +236,42 @@ func countDistinctTargets(refs []model.Reference) int {
 // decorator changes (which can alter generated values but not the visible
 // shape), and enum-variant additions. Either argument may be nil (treated as an
 // empty summary). Output ordering is deterministic.
-func DiffSchemaSummaries(old, new *model.SchemaSummary) *model.SchemaDiff {
-	if old == nil {
-		old = &model.SchemaSummary{}
+func DiffSchemaSummaries(prev, next *model.SchemaSummary) *model.SchemaDiff {
+	if prev == nil {
+		prev = &model.SchemaSummary{}
 	}
-	if new == nil {
-		new = &model.SchemaSummary{}
+	if next == nil {
+		next = &model.SchemaSummary{}
 	}
 	diff := &model.SchemaDiff{}
 
-	if old.Domain != new.Domain {
+	if prev.Domain != next.Domain {
 		diff.Changes = append(diff.Changes, model.SchemaChange{
-			Kind: "domain-changed", Old: old.Domain, New: new.Domain, Breaking: true,
+			Kind: "domain-changed", Old: prev.Domain, New: next.Domain, Breaking: true,
 		})
 	}
 
-	diffEntities(old, new, diff)
-	diffEnums(old, new, diff)
-	diffVolumes(old, new, diff)
-	diffRules(old, new, diff)
+	diffEntities(prev, next, diff)
+	diffEnums(prev, next, diff)
+	diffVolumes(prev, next, diff)
+	diffRules(prev, next, diff)
 
 	return diff
 }
 
 // diffEntities compares the entity (and nested field) sets of two summaries.
-func diffEntities(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
-	oldEnts := indexEntities(old)
-	newEnts := indexEntities(new)
+func diffEntities(prev, next *model.SchemaSummary, diff *model.SchemaDiff) {
+	oldEnts := indexEntities(prev)
+	newEnts := indexEntities(next)
 
-	for _, e := range old.Entities {
+	for _, e := range prev.Entities {
 		if _, ok := newEnts[e.Name]; !ok {
 			diff.Changes = append(diff.Changes, model.SchemaChange{
 				Kind: "entity-removed", Entity: e.Name, Breaking: true,
 			})
 		}
 	}
-	for _, e := range new.Entities {
+	for _, e := range next.Entities {
 		oldEnt, ok := oldEnts[e.Name]
 		if !ok {
 			diff.Changes = append(diff.Changes, model.SchemaChange{
@@ -319,18 +319,18 @@ func diffFields(entity string, oldEnt, newEnt model.SchemaEntitySummary, diff *m
 }
 
 // diffEnums compares the enum sets of two summaries.
-func diffEnums(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
-	oldEnums := indexEnums(old)
-	newEnums := indexEnums(new)
+func diffEnums(prev, next *model.SchemaSummary, diff *model.SchemaDiff) {
+	oldEnums := indexEnums(prev)
+	newEnums := indexEnums(next)
 
-	for _, e := range old.Enums {
+	for _, e := range prev.Enums {
 		if _, ok := newEnums[e.Name]; !ok {
 			diff.Changes = append(diff.Changes, model.SchemaChange{
 				Kind: "enum-removed", Entity: e.Name, Breaking: true,
 			})
 		}
 	}
-	for _, e := range new.Enums {
+	for _, e := range next.Enums {
 		oldE, ok := oldEnums[e.Name]
 		if !ok {
 			diff.Changes = append(diff.Changes, model.SchemaChange{
@@ -349,9 +349,9 @@ func diffEnums(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
 }
 
 // diffVolumes compares per-entity volume specs.
-func diffVolumes(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
-	oldVols := indexVolumes(old)
-	for _, v := range new.Volumes {
+func diffVolumes(prev, next *model.SchemaSummary, diff *model.SchemaDiff) {
+	oldVols := indexVolumes(prev)
+	for _, v := range next.Volumes {
 		if oldSpec, ok := oldVols[v.Entity]; ok && oldSpec != v.Spec {
 			diff.Changes = append(diff.Changes, model.SchemaChange{
 				Kind: "volume-changed", Entity: v.Entity, Old: oldSpec, New: v.Spec,
@@ -362,11 +362,11 @@ func diffVolumes(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
 
 // diffRules compares the rule sets of two summaries as ordered multisets,
 // reporting net removals and additions.
-func diffRules(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
-	oldCount := countStrings(old.Rules)
-	newCount := countStrings(new.Rules)
+func diffRules(prev, next *model.SchemaSummary, diff *model.SchemaDiff) {
+	oldCount := countStrings(prev.Rules)
+	newCount := countStrings(next.Rules)
 
-	for _, r := range old.Rules {
+	for _, r := range prev.Rules {
 		if oldCount[r] > newCount[r] {
 			oldCount[r]--
 			diff.Changes = append(diff.Changes, model.SchemaChange{
@@ -374,7 +374,7 @@ func diffRules(old, new *model.SchemaSummary, diff *model.SchemaDiff) {
 			})
 		}
 	}
-	for _, r := range new.Rules {
+	for _, r := range next.Rules {
 		if newCount[r] > oldCount[r] {
 			newCount[r]--
 			diff.Changes = append(diff.Changes, model.SchemaChange{
@@ -461,14 +461,14 @@ func equalStrings(a, b []string) bool {
 	return true
 }
 
-// removesVariant reports whether any value present in old is absent from new
+// removesVariant reports whether any value present in prev is absent from next
 // (i.e. the change removes at least one enum variant, which is breaking).
-func removesVariant(old, new []string) bool {
-	present := make(map[string]struct{}, len(new))
-	for _, v := range new {
+func removesVariant(prev, next []string) bool {
+	present := make(map[string]struct{}, len(next))
+	for _, v := range next {
 		present[v] = struct{}{}
 	}
-	for _, v := range old {
+	for _, v := range prev {
 		if _, ok := present[v]; !ok {
 			return true
 		}

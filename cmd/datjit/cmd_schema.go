@@ -45,7 +45,7 @@ func cmdSchemaExport() *cobra.Command {
 			}
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			if format != "json" && format != "yaml" {
 				return usageErrorf("unknown --format %q (want json|yaml)", format)
 			}
