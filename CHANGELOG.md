@@ -19,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   command group surfaces all three: `export` emits JSON (or YAML), `diff`
   accepts schemas or previously exported summaries and supports `--strict`
   (exit 1 on breaking changes), and `deps` prints text or Graphviz `dot`.
+- MCP server: `datjit mcp` runs a Model Context Protocol server over stdio
+  (newline-delimited JSON-RPC 2.0, no new dependencies) so AI coding agents can
+  drive the parse→validate→generate pipeline. Four tools — `generate`,
+  `validate`, `inspect`, and `sample` — backed by the root facade and the
+  `runtime` package. Generation is offline and seeded: a missing `seed`
+  defaults to `0` (never the clock), so the same tool call yields byte-identical
+  output. The new `mcp` package is not yet part of the stable public API.
 
 ## [0.3.5] - 2026-06-03
 

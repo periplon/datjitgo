@@ -53,6 +53,7 @@ func newRootCmd() *cobra.Command {
 		cmdSchema(),
 		cmdCorpus(),
 		cmdRepl(),
+		cmdMCP(),
 		cmdVersion(),
 	)
 	return root
