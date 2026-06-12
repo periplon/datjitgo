@@ -122,6 +122,14 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 			rowState.generated[name] = append(rowState.generated[name], row)
 		}
 
+		// Stateful sequence post-pass: fill @series/@walk/@chain fields in
+		// row-index order from per-field substreams. Runs before dataset
+		// rules so @warn checks see final values. No-op (zero substream
+		// derivations, zero draws) for entities without stateful fields.
+		if err := e.applyStatefulSequences(entity, rows, entSub, rowState); err != nil {
+			return nil, err
+		}
+
 		// Entity-level rule validation post-pass: emit warnings or enforce
 		// strict rules across the produced set.
 		e.enforceDatasetRules(doc, name, rows, rowState.pk, rowState.ruleScope)

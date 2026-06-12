@@ -39,6 +39,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   config, and corrupted `@unique` fields fall back to their original value
   on collision. Schemas without `@dirty` are byte-identical to previous
   output. See `docs/superpowers/specs/2026-06-12-dirty-data-design.md`.
+- Time-series & stateful sequence decorators. An entity's rows can now form
+  an ordered sequence: `@series(start=, interval=, jitter=)` produces
+  monotonic timestamps on date/datetime fields, `@walk(start=, drift=,
+  volatility=, min=, max=)` cumulative random walks on int/float/decimal
+  fields, and `@chain("from>to:prob, ...", start=)` Markov state
+  progressions over enum fields. Values are drawn from per-entity seeded
+  substreams in row-index order, so output is deterministic and schemas
+  without these decorators are byte-identical to before (zero new draws on
+  the default path). Validation rejects type mismatches, unknown chain
+  states, and stateful decorators on coherence members, references or
+  compound types. See
+  `docs/superpowers/specs/2026-06-12-time-series-design.md`.
 
 ## [0.3.5] - 2026-06-03
 

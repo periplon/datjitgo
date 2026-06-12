@@ -1,0 +1,34 @@
+domain: test_time_series
+version: 0.1.0
+seed: 42
+
+volume:
+  Metric: 24
+  Control: 5
+
+enums:
+  OrderStatus: [pending, shipped, delivered, cancelled]
+
+entities:
+  # One entity exercising all three stateful sequence decorators.
+  Metric:
+    id: uuid @primary
+    # Monotonic timestamps: jitter (10s) < interval/2 (30s) keeps the series
+    # non-decreasing.
+    ts: datetime @series(start=2026-01-01T00:00:00Z, interval=1m, jitter=10s)
+    # Day-interval series on a date field, no jitter (draw-free).
+    day: date @series(start=2026-01-01, interval=1d)
+    # Random walk with [0, 200] clamp bounds declared (bounds are not
+    # expected to be hit at this volatility; clamp behavior is unit-tested).
+    value: float @walk(start=100, drift=0.5, volatility=2.5, min=0, max=200)
+    # Integer walk: rounded half-away-from-zero, clamped to [0, 500].
+    count: int @walk(start=10, drift=2, volatility=3, min=0, max=500)
+    # Markov chain over the named enum; delivered/cancelled are absorbing.
+    status: OrderStatus @chain("pending>shipped:0.8, pending>cancelled:0.2, shipped>delivered:1.0", start=pending)
+
+  # Control entity without stateful fields: its output must be byte-identical
+  # to what it would be in a schema without this feature.
+  Control:
+    id: uuid @primary
+    name: string
+    score: int @range(0..100)
