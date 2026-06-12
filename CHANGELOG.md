@@ -26,6 +26,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `runtime` package. Generation is offline and seeded: a missing `seed`
   defaults to `0` (never the clock), so the same tool call yields byte-identical
   output. The new `mcp` package is not yet part of the stable public API.
+- Dirty-data injection. A seeded corruption layer makes generated data
+  realistically messy — typos, case mangling, stray whitespace, unexpected
+  nulls, mixed timestamp formats, near-duplicate rows — deterministically:
+  the same schema + seed produce the same mess. Opt in per field
+  (`@dirty(rate=0.1, typo, whitespace)`), per entity
+  (`_meta: "@dirty(rate=0.02, typo, case, null, duplicate)"`), or globally
+  via `datjit.WithDirtyRate` / `ports.GenerateOptions.DirtyRate` / CLI
+  `generate --dirty-rate R`. Field config wins over entity meta, which wins
+  over the global dial. Safety exemptions keep `@primary`/`@auto` fields,
+  references and polymorphic discriminators clean under entity/global
+  config, and corrupted `@unique` fields fall back to their original value
+  on collision. Schemas without `@dirty` are byte-identical to previous
+  output. See `docs/superpowers/specs/2026-06-12-dirty-data-design.md`.
 
 ## [0.3.5] - 2026-06-03
 

@@ -32,6 +32,7 @@ func cmdGenerate() *cobra.Command {
 		dryRun     bool
 		corpusDir  string
 		llmLive    bool
+		dirtyRate  float64
 	)
 
 	c := &cobra.Command{
@@ -53,6 +54,9 @@ func cmdGenerate() *cobra.Command {
 			if err != nil {
 				return &usageErr{err: err}
 			}
+			if dirtyRate < 0 || dirtyRate > 1 {
+				return &usageErr{err: fmt.Errorf("invalid --dirty-rate %v (must be between 0 and 1)", dirtyRate)}
+			}
 
 			opts := []datjit.Option{}
 			if seedSet {
@@ -69,6 +73,9 @@ func cmdGenerate() *cobra.Command {
 			}
 			if llmLive {
 				opts = append(opts, datjit.WithLLMProvider(llm.NewHTTP()))
+			}
+			if dirtyRate > 0 {
+				opts = append(opts, datjit.WithDirtyRate(dirtyRate))
 			}
 
 			svc, err := datjit.New(opts...)
@@ -130,6 +137,7 @@ func cmdGenerate() *cobra.Command {
 	c.Flags().BoolVar(&dryRun, "dry-run", false, "parse and validate only; print the plan and exit 0")
 	c.Flags().StringVar(&corpusDir, "corpus-dir", "", "read corpus overlay files from this directory")
 	c.Flags().BoolVar(&llmLive, "llm-live", false, "call configured live LLM provider instead of deterministic stubs")
+	c.Flags().Float64Var(&dirtyRate, "dirty-rate", 0, "global dirty-data rate in [0,1]: corrupt eligible fields as if every entity declared @dirty(rate=R); 0 disables")
 
 	return c
 }

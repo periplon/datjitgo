@@ -85,6 +85,24 @@ func WithLLMProvider(p ports.LLMProvider) Option {
 	}
 }
 
+// WithDirtyRate enables seeded dirty-data corruption for every subsequent
+// Generate call. A rate in (0, 1] acts like an entity-level
+// `_meta: "@dirty(rate=rate)"` with the default kinds (typo, case,
+// whitespace) for every entity that has no entity-level @dirty of its own;
+// field-level @dirty decorators always win. rate must be in [0, 1]; zero
+// disables the global dial (schema-declared @dirty decorators still apply).
+// Corruption is applied after rule enforcement, so dirty rows may violate
+// cross-entity rules — that is the point of the feature.
+func WithDirtyRate(rate float64) Option {
+	return func(s *Service) error {
+		if rate < 0 || rate > 1 {
+			return &errors.Error{Kind: errors.KindValidation, Message: "WithDirtyRate: rate must be between 0 and 1"}
+		}
+		s.dirtyRate = rate
+		return nil
+	}
+}
+
 // WithSeed pins the seed used for every subsequent Generate call. Mirrors
 // the ports.GenerateOptions.SeedOverride override precedence.
 func WithSeed(seed int64) Option {

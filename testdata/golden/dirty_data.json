@@ -1,0 +1,180 @@
+{
+  "Customer": [
+    {
+      "name": "Rachel Sanchez",
+      "email": "cynthia.harris@tutanota.com",
+      "city": "Pittsburgh",
+      "signup_date": "11/21/2016",
+      "status": "inactive"
+    },
+    {
+      "name": "William Wright",
+      "email": "richard.clark@outlook.com",
+      "city": "Nashville",
+      "signup_date": "Feb 18, 2020",
+      "status": "inacttive"
+    },
+    {
+      "name": "Melissa Torres",
+      "email": "richard.rodriguez@test.org ",
+      "city": null,
+      "signup_date": "2022-03-02T16:32:25.533203747Z",
+      "status": "banned"
+    },
+    {
+      "name": "Melissa Torrs",
+      "email": " matthew.flores@yahoo.com",
+      "city": null,
+      "signup_date": "03/02/2022",
+      "status": "banned"
+    },
+    {
+      "name": "Melissa Torrrs",
+      "email": "samantha.nguyen@protonmail.com",
+      "city": null,
+      "signup_date": "03/02/2022",
+      "status": "banned"
+    },
+    {
+      "name": "Melissa Torrrs",
+      "email": "ashley.hernandez@gmail.com ",
+      "city": null,
+      "signup_date": "03/02/2022",
+      "status": "banned"
+    },
+    {
+      "name": "Sandra White",
+      "email": "linda.green@icloud.com",
+      "city": "Portland",
+      "signup_date": "2021-01-26T04:46:52.662561922Z",
+      "status": "active"
+    },
+    {
+      "name": "Sandra White",
+      "email": "sandra.thomas@yahoo.ccom",
+      "city": "Portland  ",
+      "signup_date": "2021-01-26T04:46:52.662561922Z",
+      "status": "ative"
+    },
+    {
+      "name": "Ashley Wang",
+      "email": "janet.brown@aol.com",
+      "city": "HOUSTON",
+      "signup_date": "Jan 2, 2018",
+      "status": "active"
+    },
+    {
+      "name": null,
+      "email": "yran.chen@outlook.com",
+      "city": "hOUSTON",
+      "signup_date": "Jan 2, 2018",
+      "status": "active"
+    },
+    {
+      "name": "Paul Hall",
+      "email": "catherine.kim@yahoo.com",
+      "city": "san diego",
+      "signup_date": "Jul 1, 2019",
+      "status": "inactive"
+    },
+    {
+      "name": "Jennifer Thompson",
+      "email": "sandra.garcia@gmail.com",
+      "city": "Mesa",
+      "signup_date": "2018-08-14T05:48:02.525895072Z",
+      "status": "active"
+    }
+  ],
+  "Order": [
+    {
+      "customer": "d11432b7-92f3-4363-8ff6-1794971b41d2",
+      "sku": "SKU-XZ-0253",
+      "note": "Users surprise you if you actually listen to them.",
+      "total": 5
+    },
+    {
+      "customer": "698cc2b8-adf7-43d3-a71d-df20a4ba8d62",
+      "sku": "SKU-VW-7988",
+      "note": "Careful planning saved the project from an expensive detour.",
+      "total": 5
+    },
+    {
+      "customer": "7aef80ba-984b-4ac3-ba38-1cb10c7c740b",
+      "sku": "SKU-CM-7194",
+      "note": null,
+      "total": 5
+    },
+    {
+      "customer": "15f028d4-2ede-4e6d-bcac-ca66dfe24230",
+      "sku": "SKU-IY-1121",
+      "note": "Process is important, but outcomes matter more.",
+      "total": 5
+    },
+    {
+      "customer": "2a598b71-7db1-42f6-abcc-dc751d6fc56b",
+      "sku": "SKU-DL-1785",
+      "note": "A small team delivered outsized impact on the quarterly roadmap.",
+      "total": 5
+    },
+    {
+      "customer": "23dadcb2-f03a-4bb5-b26c-2855a63ade2a",
+      "sku": "SKU-VR-4158",
+      "note": "Iteration is the secret behind every polished product.",
+      "total": 5
+    },
+    {
+      "customer": "68ca7227-ba47-4ee3-89dd-07517f71683f",
+      "sku": "SKU-TN-0537",
+      "note": "Time spent on  clarity is always repaid later.",
+      "total": 5
+    },
+    {
+      "customer": "23dadcb2-f03a-4bb5-b26c-2855a63ade2a",
+      "sku": "SKU-ZN-0500",
+      "note": "The quick brown fox jumps over the lazy dog.",
+      "total": 5
+    },
+    {
+      "customer": "afe7883d-11ab-409d-ada3-5e756239001e",
+      "sku": "SKU-BV-9572",
+      "note": "Success usually follows a long, quiet period of effort.",
+      "total": 5
+    },
+    {
+      "customer": "698cc2b8-adf7-43d3-a71d-df20a4ba8d62",
+      "sku": "SKU-UE-6576",
+      "note": "A fresh perspective can unlock new possibilities in familiar work.",
+      "total": 5
+    },
+    {
+      "customer": "15f028d4-2ede-4e6d-bcac-ca66dfe24230",
+      "sku": "SKU-RX-2034",
+      "note": "Reliability begins with simplicity and ends with empathy.",
+      "total": 5
+    },
+    {
+      "customer": "15f028d4-2ede-4e6d-bcac-ca66dfe24230",
+      "sku": "SKU-EJ-6455",
+      "note": " Simple solutions are often the hardest to design.",
+      "total": 5
+    },
+    {
+      "customer": "1b4fb6ab-8c82-4190-abed-8ad0eaef3815",
+      "sku": "SKU-RD-3330",
+      "note": "Great systems emerge from countless small, careful choices.",
+      "total": 5
+    },
+    {
+      "customer": "23dadcb2-f03a-4bb5-b26c-2855a63ade2a",
+      "sku": "SKU-FA-4830",
+      "note": "Team culture shapes every decision in subtle ways.",
+      "total": 5
+    },
+    {
+      "customer": "7aef80ba-984b-4ac3-ba38-1cb10c7c740b",
+      "sku": "SKU-LA-3227",
+      "note": "Careful planning saved the project from an expensive detour.",
+      "total": 5
+    }
+  ]
+}

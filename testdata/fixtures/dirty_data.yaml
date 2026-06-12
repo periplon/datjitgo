@@ -1,0 +1,30 @@
+domain: test_dirty_data
+version: 0.1.0
+seed: 42
+
+volume:
+  Customer: 12
+  Order: 15
+
+entities:
+  # Entity-level @dirty: every eligible field (name, city, status) gets
+  # typo/case/null corruption; duplicate makes some rows near-copies of the
+  # previous row. id (@primary) and email/signup_date (field-level @dirty)
+  # are not covered by the entity config.
+  Customer:
+    _meta: "@dirty(rate=0.3, typo, case, null, duplicate)"
+    id: uuid @primary
+    name: person.full
+    email: email @unique @dirty(rate=0.4, typo, whitespace)
+    city: address.city
+    signup_date: datetime @dirty(rate=0.5, format_mix)
+    status: enum(active, inactive, banned)
+
+  # No entity meta: only the field-level @dirty on note applies; the
+  # reference and pattern fields stay clean.
+  Order:
+    id: uuid @primary
+    customer: ->Customer
+    sku: string @pattern("SKU-{AA}-{0000}")
+    note: text.sentence @dirty(rate=0.5, whitespace, null)
+    total: float @range(5..500)

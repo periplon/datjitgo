@@ -126,6 +126,11 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 		// strict rules across the produced set.
 		e.enforceDatasetRules(doc, name, rows, rowState.pk, rowState.ruleScope)
 
+		// Dirty-data post-pass (@dirty / GenerateOptions.DirtyRate). Runs
+		// after rule enforcement by design: dirty data may violate rules.
+		// Entities without any dirty config cost zero RNG draws here.
+		e.applyDirty(entity, rows, entSub, opts, rowState)
+
 		ds.Entities.Set(name, rows)
 	}
 
