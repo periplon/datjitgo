@@ -80,6 +80,13 @@ explicitly placed on such a field wins — the user asked for it):
 `@dirty` on `@internal` fields is pointless (they are stripped) — validation
 warning not required, just document.
 
+`@derived`/`@compute`/`@default_chain` fields are deliberately NOT exempt
+from entity-level or global config: the dirty pass runs after computation,
+so a computed value can be corrupted — which mirrors real-world data where
+derived columns go stale or wrong. Reviewed and kept by decision (see the
+program ledger); pin a field with no per-field `@dirty` exemption needs by
+simply not configuring entity/global dirt for that entity.
+
 ## 5. Engine integration
 
 A post-pass per entity, after the row loop and `enforceDatasetRules`, before
