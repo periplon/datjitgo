@@ -9,11 +9,11 @@ spec, implementation plan, and an updated copy of this ledger.
 
 | PR | Item | Feature | Branch | Status |
 |---|---|---|---|---|
-| A | #8 (R1-2) | Schema introspection: export, diff, deps | `claude/feat-schema-introspection` | in-progress |
-| B | #2 (R2-1) | MCP server (`datjit mcp`) | `claude/feat-mcp-server` | in-progress |
-| C | #3 (R2-2) | Dirty-data injection (`@dirty`) | `claude/feat-dirty-data` | todo |
-| D | #9 (R2-4) | Time-series & stateful sequences | `claude/feat-time-series` | todo |
-| E | #12 (R2-5) | Edge-case / hostile generation profiles | `claude/feat-profiles` | todo |
+| A | #8 (R1-2) | Schema introspection: export, diff, deps | `claude/feat-schema-introspection` | merged (PR #12) |
+| B | #2 (R2-1) | MCP server (`datjit mcp`) | `claude/feat-mcp-server` | merged (PR #13) |
+| C | #3 (R2-2) | Dirty-data injection (`@dirty`) | `claude/feat-dirty-data` | in-review (this PR) |
+| D | #9 (R2-4) | Time-series & stateful sequences | `claude/feat-time-series` | implemented, review clean, queued |
+| E | #12 (R2-5) | Edge-case / hostile generation profiles | `claude/feat-profiles` | implemented, in adversarial review |
 
 (#9 was added to the program by user request after the initial 2/3/8/12
 selection.)
@@ -90,5 +90,19 @@ selection.)
   evaluator behavior, not graceful null).
 - 2026-06-12: C (@dirty) implemented (zero-draw default path, draw-budget
   content independence, @unique re-check); adversarial review launched.
-- 2026-06-12: PR A opened (schema introspection, carries this ledger);
-  automerge enabled.
+- 2026-06-12: PR A opened (schema introspection, carries this ledger).
+  Repo-level auto-merge is disabled in settings, so the orchestrator merges
+  each PR on green CI instead (decision D6). CI lint surfaced revive/
+  errorlint findings invisible to the stale local linter (since rebuilt for
+  go1.26); fixed on both wave-1 branches. PR #12 merged.
+- 2026-06-12: PR B (#13) rebased over #12 (changelog union), CI green,
+  merged.
+- 2026-06-12: C (@dirty) adversarial verdict MERGE-READY (zero-draw default
+  proven, draw budgets content-independent, @unique re-check correct both
+  directions). Decision D7: derived/compute fields stay corruptible under
+  entity/global dirt — recorded in the spec; misspelled-kind fallback and a
+  targeted collision-branch test noted as follow-ups. PR C opened.
+- 2026-06-12: D (time-series) MERGE-READY; Inf/NaN chain probabilities now
+  rejected (review minor), fixture comment + spec wording corrected.
+- 2026-06-12: E (profiles) implemented (realistic ≡ default proven; writer
+  robustness suite passes); adversarial review in flight.
