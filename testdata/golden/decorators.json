@@ -3,7 +3,7 @@
     {
       "age": 18,
       "price": 0.6469115325464707,
-      "rating": 47.9,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": 134239,
       "title": "XbIAWL8wN4Y",
@@ -18,7 +18,7 @@
     {
       "age": 18,
       "price": 0.09741971219636036,
-      "rating": 33.5,
+      "rating": 5,
       "start_date": "2021-12-01T00:00:00Z",
       "quantity": 3790,
       "title": "6ybgQAS",
@@ -33,7 +33,7 @@
     {
       "age": 65,
       "price": 0.7900692945366338,
-      "rating": 14.9,
+      "rating": 5,
       "start_date": "2023-11-30T00:00:00Z",
       "quantity": -417589,
       "title": "rF6n1HI8xd",
@@ -48,7 +48,7 @@
     {
       "age": 65,
       "price": 0.45466792562277425,
-      "rating": 50.9,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -356876,
       "title": "LaE79JTkpa9BkJ2BzOhk9iYqnZ",
@@ -63,7 +63,7 @@
     {
       "age": 18,
       "price": 0.17389969791140036,
-      "rating": 30.9,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": 569833,
       "title": "OA3IJS5YTUcOs5dWuRUVKoPs2x9OVW8kfYY4lwghBf",
@@ -78,7 +78,7 @@
     {
       "age": 65,
       "price": 0.11830113095967687,
-      "rating": 73.2,
+      "rating": 5,
       "start_date": "2024-03-04T00:00:00Z",
       "quantity": -893506,
       "title": "TuqE4AwoqZnozFcqyK",
@@ -93,7 +93,7 @@
     {
       "age": 18,
       "price": 0.9036870621963198,
-      "rating": 30.3,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": -229462,
       "title": "x0GfYSFikLTto61K0f",
@@ -108,7 +108,7 @@
     {
       "age": 18,
       "price": 0.47466390852658613,
-      "rating": 80.6,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": 114472,
       "title": "2DhA1KjCHGZOeXRFX9wKbBcROdmQbpYqR",
@@ -123,7 +123,7 @@
     {
       "age": 65,
       "price": 0.8561146917042646,
-      "rating": 32.4,
+      "rating": 5,
       "start_date": "2025-11-22T00:00:00Z",
       "quantity": -545189,
       "title": "ZywNeQTzZ",
@@ -138,7 +138,7 @@
     {
       "age": 18,
       "price": 0.810218667855855,
-      "rating": 97.5,
+      "rating": 5,
       "start_date": "2023-04-07T00:00:00Z",
       "quantity": -652330,
       "title": "QIJitViASa9yAkzqpWOUUobEAfMhXb1O1Y8xfArdFmj9qkFkyo",
@@ -153,7 +153,7 @@
     {
       "age": 65,
       "price": 0.0580976339944147,
-      "rating": 40.9,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": 135226,
       "title": "OiLb5XZImcmWwgFBctF",
@@ -168,7 +168,7 @@
     {
       "age": 18,
       "price": 0.33241504052457105,
-      "rating": 35.5,
+      "rating": 5,
       "start_date": "2023-10-22T00:00:00Z",
       "quantity": 309595,
       "title": "7FO0GH",
@@ -183,7 +183,7 @@
     {
       "age": 65,
       "price": 0.47890091547001545,
-      "rating": 95.7,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -733278,
       "title": "Y33CLk6KTRcPLjcD2EXI8fzEIaV2S",
@@ -198,7 +198,7 @@
     {
       "age": 18,
       "price": 0.3750126848626323,
-      "rating": 75.4,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -861363,
       "title": "AhBGl6Pmi6ChrK",
@@ -213,7 +213,7 @@
     {
       "age": 18,
       "price": 0.5900675065085051,
-      "rating": 68.5,
+      "rating": 5,
       "start_date": "2021-08-05T00:00:00Z",
       "quantity": -782057,
       "title": "prMHLdvgkAAwp0xDdP",
@@ -228,7 +228,7 @@
     {
       "age": 18,
       "price": 0.12597316432187988,
-      "rating": 66.9,
+      "rating": 5,
       "start_date": "2023-02-14T00:00:00Z",
       "quantity": -92054,
       "title": "jnR0iEGXVEISY9nYFfOwknzs1sSr4cjN8vOW9",
@@ -243,7 +243,7 @@
     {
       "age": 65,
       "price": 0.4800417829657012,
-      "rating": 22.8,
+      "rating": 5,
       "start_date": "2020-11-28T00:00:00Z",
       "quantity": 172009,
       "title": "z4ZolDguAtS2ckVam09jhPWDr",
@@ -258,7 +258,7 @@
     {
       "age": 18,
       "price": 0.6483753861537594,
-      "rating": 31.3,
+      "rating": 5,
       "start_date": "2020-03-20T00:00:00Z",
       "quantity": 428523,
       "title": "U6bGUc6",
@@ -273,7 +273,7 @@
     {
       "age": 18,
       "price": 0.12827605334265013,
-      "rating": 79,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": 175992,
       "title": "6Ls70ZikFBfYaSjfEPZBch5FZmaaKztjcVsGhGZ",
@@ -288,7 +288,7 @@
     {
       "age": 18,
       "price": 0.32147101070554573,
-      "rating": 66.4,
+      "rating": 5,
       "start_date": "2023-03-12T00:00:00Z",
       "quantity": -74319,
       "title": "SmmJL7rNX8fLhDvKhocKExQtQlKoAH1YeaPGjPkZfkXGe",
@@ -303,7 +303,7 @@
     {
       "age": 18,
       "price": 0.09892953427098106,
-      "rating": 35.6,
+      "rating": 5,
       "start_date": "2022-09-01T00:00:00Z",
       "quantity": 775799,
       "title": "WOc98Eh0VyThooQDE1038j7xHugFKSklo9U",
@@ -318,7 +318,7 @@
     {
       "age": 65,
       "price": 0.45340546436850004,
-      "rating": 87.9,
+      "rating": 5,
       "start_date": "2020-06-16T00:00:00Z",
       "quantity": 32155,
       "title": "NO97oLfb2EClJTNaI3tTLYAtGwDE7JQmFrDK",
@@ -333,7 +333,7 @@
     {
       "age": 65,
       "price": 0.648359125054777,
-      "rating": 63.8,
+      "rating": 5,
       "start_date": "2021-10-20T00:00:00Z",
       "quantity": -29156,
       "title": "fPJUA",
@@ -348,7 +348,7 @@
     {
       "age": 65,
       "price": 0.9465617879276436,
-      "rating": 39.3,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": -886493,
       "title": "sWUy3jPcNCLzLsTgruUAcmPY63R8EU",
@@ -363,7 +363,7 @@
     {
       "age": 18,
       "price": 0.14807786331213912,
-      "rating": 53.8,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": -381244,
       "title": "r14viNzfRJEPHJcAFqeRm",
@@ -378,7 +378,7 @@
     {
       "age": 18,
       "price": 0.7042730952630298,
-      "rating": 42.6,
+      "rating": 5,
       "start_date": "2020-10-29T00:00:00Z",
       "quantity": -927743,
       "title": "0hq0UPIAEnHv2FTKrQdQKWGbqH6NuGbR",
@@ -393,7 +393,7 @@
     {
       "age": 65,
       "price": 0.6824233631813377,
-      "rating": 30.6,
+      "rating": 5,
       "start_date": "2025-08-18T00:00:00Z",
       "quantity": -110104,
       "title": "3hSbmf4hbfEHoTMjD25CHRpnITmZZ0",
@@ -408,7 +408,7 @@
     {
       "age": 18,
       "price": 0.3214376360394622,
-      "rating": 79,
+      "rating": 5,
       "start_date": "2022-08-22T00:00:00Z",
       "quantity": 369648,
       "title": "mupCxaCL9wMllUXABU3oIeXeKlpwGvuVuSiefwlhtErc7",
@@ -423,7 +423,7 @@
     {
       "age": 18,
       "price": 0.9495760991758518,
-      "rating": 44.1,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -264813,
       "title": "W5cyY6wntJE",
@@ -438,7 +438,7 @@
     {
       "age": 65,
       "price": 0.9314777419772071,
-      "rating": 73.6,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -765125,
       "title": "sPpBZcD35wTXlifu",
@@ -453,7 +453,7 @@
     {
       "age": 18,
       "price": 0.8845237174107636,
-      "rating": 65.3,
+      "rating": 5,
       "start_date": "2021-04-13T00:00:00Z",
       "quantity": -278157,
       "title": "aT0RtEsujVfNuXDGbD",
@@ -468,7 +468,7 @@
     {
       "age": 18,
       "price": 0.14823448587048405,
-      "rating": 84.1,
+      "rating": 5,
       "start_date": "2023-01-14T00:00:00Z",
       "quantity": -739241,
       "title": "3ll76B1FD059AIcUAPSJtGX8uW",
@@ -483,7 +483,7 @@
     {
       "age": 65,
       "price": 0.9838589639495274,
-      "rating": 32.9,
+      "rating": 5,
       "start_date": "2021-10-21T00:00:00Z",
       "quantity": 7935,
       "title": "9kPIdYFpGbYMzH4pntzOroaH6vaL0yXOoGG0FkLHJ2WTE08",
@@ -498,7 +498,7 @@
     {
       "age": 65,
       "price": 0.8707563999325303,
-      "rating": 92.6,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": 392110,
       "title": "SVrTZcz5OBUx",
@@ -513,7 +513,7 @@
     {
       "age": 65,
       "price": 0.45740180673917585,
-      "rating": 56.5,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": 489639,
       "title": "spLJ1tcE7Ztfy3Y0HY",
@@ -528,7 +528,7 @@
     {
       "age": 65,
       "price": 0.9090506334928586,
-      "rating": 11.7,
+      "rating": 5,
       "start_date": "2025-11-15T00:00:00Z",
       "quantity": 720025,
       "title": "zm4qNbv2qEqlbbMr3VskGhFz7iMxkBS9GPsls4ksHToOa2",
@@ -543,7 +543,7 @@
     {
       "age": 18,
       "price": 0.7454354251857551,
-      "rating": 96.2,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": 585274,
       "title": "xk14j2IK4RVyelwb969n1Hx1Jf0pU69R3IC8iWfJgPOHzvJj",
@@ -558,7 +558,7 @@
     {
       "age": 18,
       "price": 0.34002150007647325,
-      "rating": 24.5,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -530773,
       "title": "vNSTndHFUKm9z9iFeI",
@@ -573,7 +573,7 @@
     {
       "age": 18,
       "price": 0.17213816764476075,
-      "rating": 48.9,
+      "rating": 5,
       "start_date": "2023-08-16T00:00:00Z",
       "quantity": -527468,
       "title": "TwRukKg3vT4YSZTmFqzkyDZ8gj",
@@ -588,7 +588,7 @@
     {
       "age": 65,
       "price": 0.2047027393478199,
-      "rating": 5.4,
+      "rating": 5,
       "start_date": "2023-11-08T00:00:00Z",
       "quantity": -3401,
       "title": "xkvfDK2oOwO1yomkrOlsnVbJMnoxKjgAG",
@@ -603,7 +603,7 @@
     {
       "age": 65,
       "price": 0.2473414923888465,
-      "rating": 88,
+      "rating": 5,
       "start_date": "2020-07-27T00:00:00Z",
       "quantity": 544403,
       "title": "Z1vwyqIpQefSeiao8ZLmiYpyJdaStYOrl",
@@ -618,7 +618,7 @@
     {
       "age": 18,
       "price": 0.2550266085586337,
-      "rating": 34.1,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": 105477,
       "title": "ACDNHmveoOXpsbGXbu4AKsXwElmM6aXnSpJ2",
@@ -633,7 +633,7 @@
     {
       "age": 65,
       "price": 0.8356442992967232,
-      "rating": 92.1,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -303731,
       "title": "zH3gcbBh7GQyc1GjGw",
@@ -648,7 +648,7 @@
     {
       "age": 65,
       "price": 0.01,
-      "rating": 23.8,
+      "rating": 5,
       "start_date": "2024-01-12T00:00:00Z",
       "quantity": 533883,
       "title": "RIhoF",
@@ -663,7 +663,7 @@
     {
       "age": 65,
       "price": 0.681095305950865,
-      "rating": 62.9,
+      "rating": 5,
       "start_date": "2025-11-06T00:00:00Z",
       "quantity": -274637,
       "title": "HwYIeCnizgTC4CZ9Vhs",
@@ -678,7 +678,7 @@
     {
       "age": 18,
       "price": 0.32243297182079544,
-      "rating": 51.6,
+      "rating": 5,
       "start_date": "2025-01-18T00:00:00Z",
       "quantity": -175262,
       "title": "XLZbijuoz0efP01NptUQfEJ8DF79",
@@ -693,7 +693,7 @@
     {
       "age": 65,
       "price": 0.5717093502085154,
-      "rating": 68.4,
+      "rating": 5,
       "start_date": "2022-03-04T00:00:00Z",
       "quantity": 880832,
       "title": "8TbZjAmJ5u5D754WaKaNs68RSOdkSB",
@@ -708,7 +708,7 @@
     {
       "age": 65,
       "price": 0.8936446371906784,
-      "rating": 72.5,
+      "rating": 5,
       "start_date": "2025-12-31T23:59:59.999999999Z",
       "quantity": 156280,
       "title": "xcdYl1z6hmnuLM5B4vFYg0WrM8CxoNXTMMPSbcBMY9GI",
@@ -723,7 +723,7 @@
     {
       "age": 65,
       "price": 0.5885531857551387,
-      "rating": 44.4,
+      "rating": 5,
       "start_date": "2020-01-01T00:00:00Z",
       "quantity": -934191,
       "title": "ixmnzJWB6bi1kFbYrt47zgC97GiWpRtBDPmUgS",
@@ -738,7 +738,7 @@
     {
       "age": 65,
       "price": 0.1894668100270388,
-      "rating": 63.9,
+      "rating": 5,
       "start_date": "2024-10-08T00:00:00Z",
       "quantity": -938944,
       "title": "pWR5MnKmRclD38spx6L0vTpaLfObS9NpLmIM1mUVmHWE",

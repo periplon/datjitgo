@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `@range` now clamps `decimal` fields. Previously `applyRange` handled only
+  int and float kinds, so e.g. `decimal(10, 2) @range(0..10000)` could emit
+  values up to ~10^8. Bounds are parsed exactly (scale-preserving) and
+  exclusive endpoints step inward by one unit of the value's scale, matching
+  the time-range nanosecond convention. Goldens for the two fixtures that
+  declare ranged decimals (`decorators`, `profiles`) were regenerated for
+  this intentional behavior fix; only `rating`/`balance` values changed.
+
 ### Added
 - Schema introspection. New read-only API over a parsed document:
   `Service.SchemaSummary` exports a stable, ordered, machine-readable schema

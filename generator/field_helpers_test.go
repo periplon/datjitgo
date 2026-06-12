@@ -84,3 +84,39 @@ func TestLiteralAndDisplayHelpers(t *testing.T) {
 		t.Fatal("time display mismatch")
 	}
 }
+
+func TestApplyRangeClampsDecimal(t *testing.T) {
+	rangeArg := func(from, to string, loExcl, hiExcl bool) []model.Decorator {
+		return []model.Decorator{{Name: "range", Args: []model.DecoratorArg{{
+			Kind: model.ArgRange, From: from, To: to, LoExcl: loExcl, HiExcl: hiExcl,
+		}}}}
+	}
+	dec := func(s string) value.Value {
+		d, err := decimal.NewFromString(s)
+		if err != nil {
+			t.Fatalf("decimal %q: %v", s, err)
+		}
+		return value.Dec(d)
+	}
+	cases := []struct {
+		name string
+		in   value.Value
+		decs []model.Decorator
+		want string
+	}{
+		{"above hi clamps", dec("96714809.21"), rangeArg("0", "10000", false, false), "10000"},
+		{"below lo clamps", dec("-3.5"), rangeArg("0", "5", false, false), "0"},
+		{"inside untouched", dec("3.7"), rangeArg("0", "5", false, false), "3.7"},
+		{"hi exclusive steps by scale", dec("7.25"), rangeArg("0", "5", false, true), "4.99"},
+		{"lo exclusive steps by scale", dec("-1.0"), rangeArg("0", "5", true, false), "0.1"},
+		{"bad bounds untouched", dec("42"), rangeArg("x", "y", false, false), "42"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := applyRange(tc.in, tc.decs)
+			if got.Kind != value.KindDecimal || !got.D.Equal(decimal.RequireFromString(tc.want)) {
+				t.Fatalf("applyRange = %v, want %s", got.D, tc.want)
+			}
+		})
+	}
+}

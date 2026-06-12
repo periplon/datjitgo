@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/shopspring/decimal"
+
 	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
 	"github.com/periplon/datjitgo/core/ports"
@@ -444,10 +446,38 @@ func applyRange(val value.Value, decs []model.Decorator) value.Value {
 		if val.F > hi {
 			val.F = hi
 		}
+	case value.KindDecimal:
+		return applyDecimalRange(val, a)
 	case value.KindTime:
 		return applyTimeRange(val, a)
 	default:
 		// other kinds fall through to the trailing return
+	}
+	return val
+}
+
+// applyDecimalRange clamps a decimal value to the declared bounds, parsed
+// exactly via decimal.NewFromString so scale is preserved. Exclusive bounds
+// step inward by one unit of the value's own scale, mirroring the nanosecond
+// step used for time ranges.
+func applyDecimalRange(val value.Value, a model.DecoratorArg) value.Value {
+	lo, errLo := decimal.NewFromString(strings.TrimSpace(a.From))
+	hi, errHi := decimal.NewFromString(strings.TrimSpace(a.To))
+	if errLo != nil || errHi != nil || hi.LessThan(lo) {
+		return val
+	}
+	step := decimal.New(1, val.D.Exponent())
+	if a.LoExcl {
+		lo = lo.Add(step)
+	}
+	if a.HiExcl {
+		hi = hi.Sub(step)
+	}
+	if val.D.LessThan(lo) {
+		val.D = lo
+	}
+	if val.D.GreaterThan(hi) {
+		val.D = hi
 	}
 	return val
 }
