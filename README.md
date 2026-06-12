@@ -179,8 +179,9 @@ extremes, epoch dates, all-zeros UUIDs) into eligible fields, and `hostile`
 adds adversarial payloads (CSV/SQL/spreadsheet injection shapes, 4 KiB
 strings, mixed-script homoglyphs). Keys, references, unique/pattern/derived
 fields, and fields pinned with `@profile(realistic)` are never substituted,
-and output stays deterministic per schema + seed + profile. Programmatic
-equivalent: `datjit.WithProfile("edge")`.
+and output stays deterministic per schema + seed + profile. Declared `@len`
+does not constrain substituted boundary strings (length extremes are part of
+the signal). Programmatic equivalent: `datjit.WithProfile("edge")`.
 
 ## REPL tour
 
