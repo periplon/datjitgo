@@ -32,6 +32,13 @@ type GenerateOptions struct {
 	// over this dial. Zero (the default) adds no corruption and costs no
 	// RNG draws, keeping output identical to earlier releases.
 	DirtyRate float64
+
+	// Profile selects the generation profile: "" or "realistic" keeps the
+	// default realistic output (bit-for-bit identical to runs without a
+	// profile); "edge" biases eligible fields toward boundary values;
+	// "hostile" additionally injects adversarial payloads for negative
+	// testing. Output stays deterministic per (schema, seed, profile).
+	Profile string
 }
 
 // Generator produces a Dataset from a Document.

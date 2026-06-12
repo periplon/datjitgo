@@ -139,6 +139,45 @@ func TestGenerateMinimal(t *testing.T) {
 	}
 }
 
+func TestGenerateProfileFlag(t *testing.T) {
+	path := fixturePath(t, "profiles.yaml")
+
+	// Default and explicit realistic must produce identical bytes.
+	base, stderr, code := runCmd(t, "generate", path, "--seed", "42")
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	realistic, stderr, code := runCmd(t, "generate", path, "--seed", "42", "--profile", "realistic")
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if base != realistic {
+		t.Fatal("--profile realistic output differs from default output")
+	}
+
+	// Edge is deterministic and differs from realistic.
+	edge1, stderr, code := runCmd(t, "generate", path, "--seed", "42", "--profile", "edge")
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	edge2, _, _ := runCmd(t, "generate", path, "--seed", "42", "--profile", "edge")
+	if edge1 != edge2 {
+		t.Fatal("--profile edge is not deterministic across runs")
+	}
+	if edge1 == base {
+		t.Fatal("--profile edge output should differ from realistic for this fixture")
+	}
+
+	// Unknown profiles are usage errors (exit 2).
+	_, stderr, code = runCmd(t, "generate", path, "--profile", "bogus")
+	if code != 2 {
+		t.Fatalf("expected exit 2 for unknown profile, got %d (stderr=%q)", code, stderr)
+	}
+	if !strings.Contains(stderr, "unknown --profile") {
+		t.Fatalf("expected unknown-profile message, got %q", stderr)
+	}
+}
+
 func TestGenerateDryRun(t *testing.T) {
 	path := fixturePath(t, "minimal.yaml")
 	stdout, stderr, code := runCmd(t, "generate", path, "--dry-run")

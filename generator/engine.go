@@ -45,6 +45,13 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 	seed := resolveSeed(doc, opts)
 	locale := resolveLocale(doc, opts)
 	e.locale = locale
+	// Resolved once per run and threaded via generationState (not the engine
+	// receiver like locale): the profile is per-Generate-call state, and
+	// generationState already travels everywhere field generation happens.
+	profile, err := resolveProfile(opts)
+	if err != nil {
+		return nil, err
+	}
 
 	order, err := coreplan.Entities(doc)
 	if err != nil {
@@ -73,6 +80,7 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 	root := NewRand(seed)
 	rowState := &generationState{
 		doc:       doc,
+		profile:   profile,
 		llmConfig: doc.Generation.LLM,
 		enumDefs:  enumByName,
 		typeDefs:  typeByName,
@@ -160,6 +168,11 @@ func (e *Engine) Generate(doc *model.Document, opts ports.GenerateOptions) (*val
 type generationState struct {
 	doc       *model.Document
 	llmConfig *model.LLMConfig
+	// profile is the generation profile resolved from GenerateOptions
+	// (realistic|edge|hostile). It gates boundary-value substitution in
+	// generateField; ProfileRealistic (or "") means no substitution and no
+	// extra RNG draws.
+	profile   string
 	enumDefs  map[string]model.EnumDef
 	typeDefs  map[string]*model.Entity
 	rng       ports.Randomizer

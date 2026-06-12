@@ -1,0 +1,213 @@
+{
+  "Account": [
+    {
+      "owner": "Joseph King",
+      "contact_email": "joseph.king@gmail.com",
+      "display_name": "Joseph Hill",
+      "note": "oSMnEMgo0ePzomBL",
+      "nickname": null,
+      "tags": [
+        "A1VN6EZIl6YGTzBa",
+        "rK2lPdKEHiDnrz",
+        "z3hbXi0k1TJrW"
+      ],
+      "age": 99,
+      "karma": -461437,
+      "score": 0.42040453550680235,
+      "balance": 91122856.9,
+      "joined": "2024-10-19T00:00:00Z",
+      "last_seen": "2021-01-27T01:38:12.70986167Z",
+      "active": false,
+      "status": "banned",
+      "referral_code": "RF-PQ-3905",
+      "api_key": "U0CoPw0lX5ZDg",
+      "motto": "AT6PEMqIbVM"
+    },
+    {
+      "owner": "Nicole Torres",
+      "contact_email": "nicole.torres@example.org",
+      "display_name": "Gary Chen",
+      "note": "JjbVeJkEiWLhxNP",
+      "nickname": "RuljkvJy",
+      "tags": [
+        "RQlaX9NmvRFDhsRj",
+        "TF7ZEegbF87DsDc",
+        "xnqNjbIF7"
+      ],
+      "age": 99,
+      "karma": -138591,
+      "score": 0.9611522698763872,
+      "balance": 1530232.51,
+      "joined": "2023-08-17T00:00:00Z",
+      "last_seen": "2016-09-12T08:13:41.436271926Z",
+      "active": true,
+      "status": "banned",
+      "referral_code": "RF-VC-7468",
+      "api_key": "xXZWaIXPKY1",
+      "motto": "5Mg8lnI8"
+    },
+    {
+      "owner": "Jacob Perez",
+      "contact_email": "jacob.perez@yahoo.com",
+      "display_name": "William Yang",
+      "note": "ouecKOf8CvuG1A",
+      "nickname": "ECAL5mrC2",
+      "tags": [
+        "FUgEwPBR9x2u",
+        "YUJYNs4k6Vv2P",
+        "X2OeRG9za"
+      ],
+      "age": 18,
+      "karma": -463581,
+      "score": 0.19510428885986975,
+      "balance": 65523739.37,
+      "joined": "2024-06-30T00:00:00Z",
+      "last_seen": "2020-12-10T13:59:34.236886252Z",
+      "active": false,
+      "status": "pending",
+      "referral_code": "RF-QV-4841",
+      "api_key": "DTo1o2X4Jql",
+      "motto": "XWJiVGhGAlVgT"
+    },
+    {
+      "owner": "Daniel Smith",
+      "contact_email": "daniel.smith@yahoo.com",
+      "display_name": "Benjamin Martin",
+      "note": "jTKE63Jy0wNV",
+      "nickname": "Rwi4GKgYtRR3",
+      "tags": [
+        "vVZ3K1xoDgGHT",
+        "0uk0EPNEPe4cCRx1",
+        "U3Ox9AwAkNsxb2",
+        "uByvRYlAUxLjqzHD"
+      ],
+      "age": 99,
+      "karma": 413728,
+      "score": 0.7879324289844701,
+      "balance": 45696489.33,
+      "joined": "2024-09-24T00:00:00Z",
+      "last_seen": "2023-09-27T18:22:19.61759594Z",
+      "active": false,
+      "status": "active",
+      "referral_code": "RF-QS-5528",
+      "api_key": "0jgx3Oth",
+      "motto": "6Vf8bHgB78Fh9ynj"
+    },
+    {
+      "owner": "Brian Lopez",
+      "contact_email": "brian.lopez@hey.com",
+      "display_name": "Sandra Gonzalez",
+      "note": "FyPz66Z0w",
+      "nickname": "OMfa3oz6E",
+      "tags": [
+        "1twuPwxr40rVf",
+        "LqDea2DaHXCwA3bt",
+        "iTmEnA8nE",
+        "PnXDp1RRQV1t"
+      ],
+      "age": 99,
+      "karma": 91758,
+      "score": 0.8721093617651025,
+      "balance": 88730103.43,
+      "joined": "2021-01-19T00:00:00Z",
+      "last_seen": "2018-05-29T00:25:44.24170986Z",
+      "active": false,
+      "status": "banned",
+      "referral_code": "RF-YU-9894",
+      "api_key": "YzA5E3uHGuUcfB",
+      "motto": "JUhyGKHP"
+    },
+    {
+      "owner": "Debra Chen",
+      "contact_email": "debra.chen@gmail.com",
+      "display_name": "Rachel Flores",
+      "note": "GEzP3OXzWx",
+      "nickname": "63cT5cGJWoGhH",
+      "tags": [
+        "FOQ3qNv7cURw",
+        "QvpOmtbF5myGk",
+        "hWEjQJugbCrtzkK",
+        "Xiw8y47KL8BSxPlh"
+      ],
+      "age": 99,
+      "karma": -275208,
+      "score": 0.4366832097854053,
+      "balance": 8869763.81,
+      "joined": "2020-01-01T00:00:00Z",
+      "last_seen": "2021-01-11T02:03:12.447073862Z",
+      "active": true,
+      "status": "active",
+      "referral_code": "RF-RE-6026",
+      "api_key": "fuenuoCf0sIex",
+      "motto": "wNGI8hBFzkBeShe"
+    },
+    {
+      "owner": "Mary Rivera",
+      "contact_email": "mary.rivera@gmail.com",
+      "display_name": "Pamela Campbell",
+      "note": "t1EfREn9jcnDPz",
+      "nickname": "MMVtzSx2QakQjR",
+      "tags": null,
+      "age": 99,
+      "karma": 811645,
+      "score": 0.6515459139939309,
+      "balance": 96440906.23,
+      "joined": "2025-04-29T00:00:00Z",
+      "last_seen": "2018-07-30T07:16:16.294589445Z",
+      "active": false,
+      "status": "banned",
+      "referral_code": "RF-MT-9381",
+      "api_key": "VMc38AvwC5eC",
+      "motto": "JIPkrwE4md"
+    },
+    {
+      "owner": "Laura Nguyen",
+      "contact_email": "laura.nguyen@mail.com",
+      "display_name": "Gregory Singh",
+      "note": "0g34T1IOxn1eqRO",
+      "nickname": "Vs1la9UWnhHqwXc",
+      "tags": [
+        "oIfhGv8Qwd5",
+        "fZqBwu13vdTvJ3E"
+      ],
+      "age": 18,
+      "karma": -842274,
+      "score": 0.6672695431788443,
+      "balance": 4479522.55,
+      "joined": "2025-12-31T23:59:59.999999999Z",
+      "last_seen": "2019-06-29T22:04:33.810419647Z",
+      "active": false,
+      "status": "banned",
+      "referral_code": "RF-QB-9309",
+      "api_key": "5mM097E9",
+      "motto": "M6lszGNfgZpS"
+    }
+  ],
+  "Device": [
+    {
+      "hardware_uuid": "37b95946-7190-4624-b480-ec72ff028374",
+      "label": "XSG2H1R0lrBty",
+      "account": "c147bae3-3c76-4cc6-8c01-38102eb253be"
+    },
+    {
+      "hardware_uuid": "0570c2e7-dd2c-47ba-8ed9-e2006899aa52",
+      "label": "49Rhx3GakE",
+      "account": "3b6a5515-4603-4fb0-a110-a8be1229fe00"
+    },
+    {
+      "hardware_uuid": "24782567-611e-4bfa-b2a1-f1b2218baece",
+      "label": "h2PWXjABjWzpcp",
+      "account": "3b6a5515-4603-4fb0-a110-a8be1229fe00"
+    },
+    {
+      "hardware_uuid": "35865177-475a-4359-9086-0e57190c7fb3",
+      "label": "DZ07L0X4VK2GR",
+      "account": "c147bae3-3c76-4cc6-8c01-38102eb253be"
+    },
+    {
+      "hardware_uuid": "2e1697eb-61c3-46df-a288-454984672a3e",
+      "label": "Yoz5ARhhToi5",
+      "account": "ed349254-86de-4c77-b573-57ee24733c31"
+    }
+  ]
+}

@@ -24,6 +24,7 @@ func cmdGenerate() *cobra.Command {
 		seed       int64
 		seedSet    bool
 		locale     string
+		profile    string
 		volume     []string
 		entity     string
 		sqlDialect string
@@ -57,6 +58,9 @@ func cmdGenerate() *cobra.Command {
 			if dirtyRate < 0 || dirtyRate > 1 {
 				return &usageErr{err: fmt.Errorf("invalid --dirty-rate %v (must be between 0 and 1)", dirtyRate)}
 			}
+			if err := validateProfileFlag(profile); err != nil {
+				return &usageErr{err: err}
+			}
 
 			opts := []datjit.Option{}
 			if seedSet {
@@ -64,6 +68,9 @@ func cmdGenerate() *cobra.Command {
 			}
 			if locale != "" {
 				opts = append(opts, datjit.WithLocale(locale))
+			}
+			if profile != "" {
+				opts = append(opts, datjit.WithProfile(profile))
 			}
 			if len(volumeMap) > 0 {
 				opts = append(opts, datjit.WithVolume(volumeMap))
@@ -129,6 +136,7 @@ func cmdGenerate() *cobra.Command {
 	c.Flags().StringVarP(&format, "format", "f", "json", "output format (json|ndjson|csv|yaml|sql)")
 	c.Flags().Int64Var(&seed, "seed", 0, "override document seed")
 	c.Flags().StringVar(&locale, "locale", "", "override locale (BCP47, e.g. en-US)")
+	c.Flags().StringVar(&profile, "profile", "realistic", "generation profile (realistic|edge|hostile) — edge/hostile bias values toward boundary and adversarial cases")
 	c.Flags().StringSliceVar(&volume, "volume", nil, "per-entity volume override, e.g. User=100,Org=5")
 	c.Flags().StringVar(&entity, "entity", "", "emit only rows for this entity")
 	c.Flags().StringVar(&sqlDialect, "sql-dialect", "postgres", "SQL dialect (postgres|mysql|sqlite) — used with -f sql")
@@ -140,6 +148,18 @@ func cmdGenerate() *cobra.Command {
 	c.Flags().Float64Var(&dirtyRate, "dirty-rate", 0, "global dirty-data rate in [0,1]: corrupt eligible fields as if every entity declared @dirty(rate=R); 0 disables")
 
 	return c
+}
+
+// validateProfileFlag rejects unknown --profile values before the parse cost
+// is paid. The empty string is allowed and treated as realistic, matching
+// datjit.WithProfile.
+func validateProfileFlag(p string) error {
+	switch p {
+	case "", "realistic", "edge", "hostile":
+		return nil
+	default:
+		return fmt.Errorf("unknown --profile %q (valid: realistic|edge|hostile)", p)
+	}
 }
 
 // parseVolumeFlags converts the repeated --volume arguments into a single

@@ -12,8 +12,8 @@ spec, implementation plan, and an updated copy of this ledger.
 | A | #8 (R1-2) | Schema introspection: export, diff, deps | `claude/feat-schema-introspection` | merged (PR #12) |
 | B | #2 (R2-1) | MCP server (`datjit mcp`) | `claude/feat-mcp-server` | merged (PR #13) |
 | C | #3 (R2-2) | Dirty-data injection (`@dirty`) | `claude/feat-dirty-data` | merged (PR #14) |
-| D | #9 (R2-4) | Time-series & stateful sequences | `claude/feat-time-series` | in-review (this PR) |
-| E | #12 (R2-5) | Edge-case / hostile generation profiles | `claude/feat-profiles` | review clean (MERGE-READY), queued |
+| D | #9 (R2-4) | Time-series & stateful sequences | `claude/feat-time-series` | merged (PR #15) |
+| E | #12 (R2-5) | Edge-case / hostile generation profiles | `claude/feat-profiles` | in-review (this PR) |
 
 (#9 was added to the program by user request after the initial 2/3/8/12
 selection.)
@@ -114,3 +114,19 @@ selection.)
   CHANGELOG unions); engine post-pass order verified after rebase:
   stateful → dataset rules → dirty, so @series/@walk values are corruptible
   by @dirty (consistent with the derived/compute decision D7). PR D opened.
+- 2026-06-12: PR D (#15) merged on green CI. E rebased over the full stack —
+  five-file conflict resolved keeping both sides (GenerateOptions gains
+  DirtyRate AND Profile; --dirty-rate and --profile validations both kept).
+  Full race suite + fixtures + lint green with all three generator features
+  composed. PR E opened — final PR of the program.
+
+## Follow-ups (out of program scope)
+
+- PRE-EXISTING bug found by the profiles review: `applyRange` clamps int and
+  float but never decimal — `decimal @range(0..10000)` is unclamped on main.
+- `@dirty`: targeted test forcing the @unique collision-fallback branch;
+  consider a validation warning when every named kind ident is unknown.
+- MCP: `plannedTotal` mirrors `generator.resolveVolume` — keep in sync
+  (noted in code); consider a facade helper to remove the duplication.
+- Spec wording: `@unique` combined with stateful decorators is silently
+  unenforced (documented; a validation warning would be kinder).

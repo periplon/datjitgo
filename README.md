@@ -163,6 +163,7 @@ For larger integrations, compile the host DSL into `*model.Document`, then call
 | `-f`, `--format FMT`             | `json`     | `json \| csv \| ndjson \| yaml \| sql`   |
 | `--seed N`                       | *schema*   | Override deterministic seed              |
 | `--locale BCP47`                 | *schema*   | Override locale                          |
+| `--profile P`                    | `realistic`| `realistic \| edge \| hostile`           |
 | `--volume Entity=N,...`          | *schema*   | Per-entity volume overrides              |
 | `--entity NAME`                  | *all*      | Emit only this entity (deps still gen'd) |
 | `--sql-dialect D`                | `postgres` | `postgres \| mysql \| sqlite`            |
@@ -171,6 +172,16 @@ For larger integrations, compile the host DSL into `*model.Document`, then call
 | `--corpus-dir DIR`               | embedded   | Use on-disk corpus overlay               |
 | `--llm-live`                     | `false`    | Call configured live LLM provider        |
 | `--dirty-rate R`                 | `0`        | Seeded dirty-data corruption rate [0,1]  |
+
+Generation profiles dial values toward negative-testing territory: `edge`
+substitutes curated boundary values (empty/oversized strings, numeric
+extremes, epoch dates, all-zeros UUIDs) into eligible fields, and `hostile`
+adds adversarial payloads (CSV/SQL/spreadsheet injection shapes, 4 KiB
+strings, mixed-script homoglyphs). Keys, references, unique/pattern/derived
+fields, and fields pinned with `@profile(realistic)` are never substituted,
+and output stays deterministic per schema + seed + profile. Declared `@len`
+does not constrain substituted boundary strings (length extremes are part of
+the signal). Programmatic equivalent: `datjit.WithProfile("edge")`.
 
 ## REPL tour
 

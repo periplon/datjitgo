@@ -28,7 +28,7 @@ CLI smoke: `go run ./cmd/datjit version`.
 
 Cobra commands under `cmd/datjit` (`cmd_*.go`):
 
-- `generate <schema> [-o -f --seed --locale --volume --entity --sql-dialect --sql-indexes --pretty --dry-run --corpus-dir --llm-live --dirty-rate]` — formats `json | csv | ndjson | yaml | sql`. `--sql-indexes` is `manual` (default, declared `_indexes` only) | `auto` (also emit inferred indexes) | `none`. `--dirty-rate R` (in `[0,1]`) enables seeded dirty-data corruption for entities without their own `@dirty` config.
+- `generate <schema> [-o -f --seed --locale --profile --volume --entity --sql-dialect --sql-indexes --pretty --dry-run --corpus-dir --llm-live --dirty-rate]` — formats `json | csv | ndjson | yaml | sql`. `--sql-indexes` is `manual` (default, declared `_indexes` only) | `auto` (also emit inferred indexes) | `none`. `--dirty-rate R` (in `[0,1]`) enables seeded dirty-data corruption for entities without their own `@dirty` config. `--profile` is `realistic` (default, byte-identical to no profile) | `edge` | `hostile` — boundary/adversarial substitution per `docs/superpowers/specs/2026-06-12-generation-profiles-design.md`; fields opt out with `@profile(realistic)`.
 - `validate <schema>` — parse + validate, exit 1 on error.
 - `inspect <schema> [--infer-tools]` — entity/field/rule summary.
 - `corpus list | info | update` — inspect or refresh embedded/overlay corpus.

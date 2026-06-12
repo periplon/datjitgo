@@ -136,10 +136,24 @@ func (e *Engine) generateRow(entity *model.Entity, st *generationState, rowRNG p
 	return row, nil
 }
 
-// generateField produces a single value for f. It applies @null_rate, then
-// dispatches by type, then layers shaping decorators (range, pattern, len,
-// multiple_of, values). @unique is handled upstream by the row pipeline.
+// generateField produces a single value for f via generateFieldValue and then
+// applies the generation-profile hook: when a non-realistic profile is active
+// and the field is eligible, the produced-and-shaped value may be replaced by
+// a boundary-table entry (see applyProfileSubstitution). With the realistic
+// profile the hook is a strict no-op consuming zero RNG draws, so default
+// output is byte-identical to pre-profile behavior.
 func (e *Engine) generateField(entity *model.Entity, f *model.Field, row *value.Object, st *generationState, rng ports.Randomizer) (value.Value, error) {
+	val, err := e.generateFieldValue(entity, f, row, st, rng)
+	if err != nil {
+		return val, err
+	}
+	return applyProfileSubstitution(entity, f, val, st.profile, rng), nil
+}
+
+// generateFieldValue produces a single value for f. It applies @null_rate,
+// then dispatches by type, then layers shaping decorators (range, pattern,
+// len, multiple_of, values). @unique is handled upstream by the row pipeline.
+func (e *Engine) generateFieldValue(entity *model.Entity, f *model.Field, row *value.Object, st *generationState, rng ports.Randomizer) (value.Value, error) {
 	// 1. @null_rate.
 	if d := model.FindDecorator(f.Decorators, "null_rate"); d != nil {
 		rate := firstFloatArg(d.Args, 0)

@@ -1,6 +1,8 @@
 package datjit
 
 import (
+	"fmt"
+
 	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/ports"
 	"github.com/periplon/datjitgo/generator"
@@ -118,6 +120,28 @@ func WithLocale(loc string) Option {
 	return func(s *Service) error {
 		s.locale = loc
 		return nil
+	}
+}
+
+// WithProfile pins the generation profile applied to every subsequent
+// Generate call: "realistic" (the default; identical to not setting a
+// profile), "edge" (curated boundary values substituted into eligible
+// fields), or "hostile" (edge plus adversarial payloads for negative
+// testing). The empty string is accepted and means realistic; any other
+// value is rejected with a validation error. Output remains deterministic
+// per (schema, seed, profile).
+func WithProfile(p string) Option {
+	return func(s *Service) error {
+		switch p {
+		case "", "realistic", "edge", "hostile":
+			s.profile = p
+			return nil
+		default:
+			return &errors.Error{
+				Kind:    errors.KindValidation,
+				Message: fmt.Sprintf("WithProfile: unknown profile %q (valid: realistic|edge|hostile)", p),
+			}
+		}
 	}
 }
 

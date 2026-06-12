@@ -1,0 +1,52 @@
+# Exercises the generation-profile surface: under the default (realistic)
+# profile this fixture generates exactly like any other schema; the same
+# schema drives the dedicated WithProfile("edge"/"hostile") goldens
+# (testdata/golden/profile_edge.json / profile_hostile.json) and the hostile
+# writer-robustness tests. See
+# docs/superpowers/specs/2026-06-12-generation-profiles-design.md.
+domain: test_profiles
+version: 0.1.0
+seed: 42
+
+volume:
+  Account: 8
+  Device: 5
+
+entities:
+  Account:
+    id: uuid @primary
+    _coherence:
+      identity: [owner, contact_email]
+    # Coherence members: never substituted.
+    owner: person.first
+    contact_email: email
+    # Eligible string-like fields (semantic + primitive).
+    display_name: person.full
+    note: string
+    # Nullable and list compounds.
+    nickname: string?
+    tags: "[string]"
+    # Numerics: range-aware vs type extremes.
+    age: int @range(18..99)
+    karma: int
+    score: float
+    balance: decimal(10, 2) @range(0..10000)
+    # Time with and without declared range.
+    joined: date @range(2020-01-01..2025-12-31)
+    last_seen: datetime
+    # No boundary table: unchanged under any profile.
+    active: bool
+    status: enum(active, pending, banned)
+    # Always-realistic fields.
+    referral_code: string @pattern("RF-{AA}-{0000}")
+    api_key: string @unique
+    motto: string @profile(realistic)
+
+  Device:
+    id: uuid @primary
+    # Eligible uuid (all-zeros boundary entry); named to dodge the golden
+    # harness's top-level "id" strip.
+    hardware_uuid: uuid
+    label: string
+    # Reference: never substituted.
+    account: ->Account
