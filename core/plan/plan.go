@@ -4,6 +4,7 @@ package plan
 import (
 	"cmp"
 	"slices"
+	"strings"
 
 	"github.com/periplon/datjitgo/core/errors"
 	"github.com/periplon/datjitgo/core/model"
@@ -66,12 +67,98 @@ func Entities(doc *model.Document) ([]string, error) {
 	}
 
 	if len(result) != len(order) {
+		msg := "cycle detected in entity references"
+		if cycles := Cycles(doc); len(cycles) > 0 {
+			msg = "cyclic dependency: " + strings.Join(cycles[0], " -> ")
+		}
 		return nil, &errors.Error{
 			Kind:    errors.KindCyclicDependency,
-			Message: "cycle detected in entity references",
+			Message: msg,
 		}
 	}
 	return result, nil
+}
+
+// Cycles returns one exemplar cycle path per strongly-connected component that
+// contains at least one cycle. Each path is a list of entity names ending where
+// it began, e.g. ["A","B","A"]. Reference edges whose target is "self" or the
+// hosting entity are excluded, matching Entities, so valid self-references do
+// not appear as cycles. Paths are deterministic: entities are visited in
+// document order. Targets that are not declared entities are ignored.
+func Cycles(doc *model.Document) [][]string {
+	order := doc.Entities.Keys()
+	rank := make(map[string]int, len(order))
+	for i, n := range order {
+		rank[n] = i
+	}
+
+	// Build forward adjacency (from -> sorted targets), document-ordered.
+	adj := make(map[string][]string, len(order))
+	for _, name := range order {
+		e, _ := doc.Entities.Get(name)
+		seen := make(map[string]struct{})
+		CollectRefs(e.Fields, seen)
+		targets := make([]string, 0, len(seen))
+		for target := range seen {
+			if target == "self" || target == name {
+				continue
+			}
+			if _, ok := doc.Entities.Get(target); !ok {
+				continue
+			}
+			targets = append(targets, target)
+		}
+		slices.SortFunc(targets, func(a, b string) int { return cmp.Compare(rank[a], rank[b]) })
+		adj[name] = targets
+	}
+
+	// DFS for back-edges. The first back-edge encountered for an SCC yields its
+	// exemplar path; once a node is fully explored it cannot start a new cycle.
+	const (
+		white = 0
+		gray  = 1
+		black = 2
+	)
+	color := make(map[string]int, len(order))
+	var stack []string
+	var cycles [][]string
+	reported := make(map[string]struct{})
+
+	var dfs func(n string)
+	dfs = func(n string) {
+		color[n] = gray
+		stack = append(stack, n)
+		for _, t := range adj[n] {
+			switch color[t] {
+			case white:
+				dfs(t)
+			case gray:
+				// Back-edge: extract the path from t down to n, then close it.
+				if _, done := reported[t]; !done {
+					start := 0
+					for i, s := range stack {
+						if s == t {
+							start = i
+							break
+						}
+					}
+					path := append([]string(nil), stack[start:]...)
+					path = append(path, t)
+					cycles = append(cycles, path)
+					reported[t] = struct{}{}
+				}
+			}
+		}
+		stack = stack[:len(stack)-1]
+		color[n] = black
+	}
+
+	for _, n := range order {
+		if color[n] == white {
+			dfs(n)
+		}
+	}
+	return cycles
 }
 
 // CollectRefs walks a field OrderedMap and records every referenced entity

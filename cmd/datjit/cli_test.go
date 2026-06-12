@@ -274,3 +274,115 @@ func TestGenerateBadVolume(t *testing.T) {
 		t.Fatalf("expected exit 2 for bad volume, got %d (stderr=%q)", code, stderr)
 	}
 }
+
+func TestSchemaExport(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	stdout, stderr, code := runCmd(t, "schema", "export", path)
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	var sum map[string]any
+	if err := json.Unmarshal([]byte(stdout), &sum); err != nil {
+		t.Fatalf("export is not valid JSON: %v", err)
+	}
+	if sum["domain"] != "project_management" {
+		t.Fatalf("expected domain in export, got %v", sum["domain"])
+	}
+	// Determinism: a second export must be byte-identical.
+	stdout2, _, _ := runCmd(t, "schema", "export", path)
+	if stdout != stdout2 {
+		t.Fatal("schema export is not deterministic")
+	}
+}
+
+func TestSchemaExportYAML(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	stdout, stderr, code := runCmd(t, "schema", "export", path, "--format", "yaml")
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if !strings.Contains(stdout, "domain:") {
+		t.Fatalf("expected yaml domain key, got %q", stdout)
+	}
+}
+
+func TestSchemaDeps(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	stdout, stderr, code := runCmd(t, "schema", "deps", path)
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if !strings.Contains(stdout, "->") || !strings.Contains(stdout, "cycles:") {
+		t.Fatalf("expected edges and cycles section, got %q", stdout)
+	}
+}
+
+func TestSchemaDepsDot(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	stdout, stderr, code := runCmd(t, "schema", "deps", path, "--format", "dot")
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if !strings.HasPrefix(strings.TrimSpace(stdout), "digraph schema {") {
+		t.Fatalf("expected graphviz output, got %q", stdout)
+	}
+}
+
+func TestSchemaDiffNoChanges(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	stdout, stderr, code := runCmd(t, "schema", "diff", path, path)
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if strings.TrimSpace(stdout) != "no changes" {
+		t.Fatalf("expected 'no changes', got %q", stdout)
+	}
+}
+
+func TestSchemaDiffStrictBreaking(t *testing.T) {
+	dir := t.TempDir()
+	oldPath := filepath.Join(dir, "old.yaml")
+	newPath := filepath.Join(dir, "new.yaml")
+	if err := os.WriteFile(oldPath, []byte("domain: d\nentities:\n  User:\n    id: uuid @primary\n    email: email\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(newPath, []byte("domain: d\nentities:\n  User:\n    id: uuid @primary\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	stdout, stderr, code := runCmd(t, "schema", "diff", oldPath, newPath, "--strict")
+	if code != 1 {
+		t.Fatalf("expected exit 1 for breaking diff, got %d stderr=%q", code, stderr)
+	}
+	if !strings.Contains(stdout, "field-removed") {
+		t.Fatalf("expected field-removed line, got %q", stdout)
+	}
+}
+
+func TestSchemaDiffJSONSummaryInput(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	dir := t.TempDir()
+	exportPath := filepath.Join(dir, "summary.json")
+	out, _, code := runCmd(t, "schema", "export", path)
+	if code != 0 {
+		t.Fatalf("export failed: %d", code)
+	}
+	if err := os.WriteFile(exportPath, []byte(out), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	// Diff the exported JSON summary against the original schema: no changes.
+	stdout, stderr, code := runCmd(t, "schema", "diff", exportPath, path)
+	if code != 0 {
+		t.Fatalf("exit=%d stderr=%q", code, stderr)
+	}
+	if strings.TrimSpace(stdout) != "no changes" {
+		t.Fatalf("expected 'no changes' diffing summary vs schema, got %q", stdout)
+	}
+}
+
+func TestSchemaExportBadFormat(t *testing.T) {
+	path := fixturePath(t, "project_management.yaml")
+	_, stderr, code := runCmd(t, "schema", "export", path, "--format", "xml")
+	if code != 2 {
+		t.Fatalf("expected exit 2 for bad format, got %d stderr=%q", code, stderr)
+	}
+}
