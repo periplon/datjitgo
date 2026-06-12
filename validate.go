@@ -17,6 +17,8 @@ import (
 //   - every NamedType resolves to a types: entry or an enum;
 //   - every enum referenced by a NamedType declares at least one variant;
 //   - every rule expression parses cleanly;
+//   - every stateful sequence decorator (@series/@walk/@chain) parses and
+//     matches its field's type (see generator.ValidateStateful);
 //   - the entity dependency graph has no cycles.
 //
 // Violations are returned as the first encountered *errors.Error with
@@ -95,6 +97,13 @@ func validateDoc(doc *model.Document, corpus ports.CorpusProvider) error {
 	})
 	if firstErr != nil {
 		return firstErr
+	}
+
+	// Stateful sequence decorators (@series/@walk/@chain) — typed config
+	// parsing and type-compatibility checks live next to the generator's
+	// stateful post-pass so the two cannot drift apart.
+	if err := generator.ValidateStateful(doc); err != nil {
+		return err
 	}
 
 	// Rule expressions — cheap syntactic check via the generator's parser.

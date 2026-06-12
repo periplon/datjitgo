@@ -235,13 +235,17 @@ The DDL covers primitives, semantic types (`person.full`, `email`,
 distributions (`@dist(normal, μ=35, σ=12)`, Zipf, lognormal, weighted
 categorical, …), pattern templates (`@pattern("SKU-{AA}-{0000}")`),
 `@derived` / `@compute` / `@default_chain` expressions, cross-entity rules
-(`@strict`, `@probability(p)`, `@warn`), coherence groups, and seeded
+(`@strict`, `@probability(p)`, `@warn`), coherence groups, seeded
 dirty-data injection (`@dirty(rate=0.1, typo, whitespace)` on a field,
 `_meta: "@dirty(...)"` on an entity, or globally via `--dirty-rate` /
-`datjit.WithDirtyRate`). Corruption kinds: `typo`, `case`, `whitespace`,
-`null`, `format_mix`, `duplicate` (entity-level near-duplicate rows).
-Same schema + seed produce the same mess; schemas without `@dirty` are
-byte-identical to clean output.
+`datjit.WithDirtyRate`; corruption kinds `typo`, `case`, `whitespace`,
+`null`, `format_mix`, `duplicate` — same schema + seed produce the same
+mess, and schemas without `@dirty` are byte-identical to clean output),
+and stateful sequences — monotonic timestamps
+(`@series(start=2026-01-01T00:00:00Z, interval=1m, jitter=10s)`), random
+walks (`@walk(start=100, drift=0.1, volatility=2.5, min=0, max=10000)`),
+and Markov chains over enum fields
+(`@chain("pending>shipped:0.8, pending>cancelled:0.2", start=pending)`).
 
 Full language spec: [`docs/superpowers/specs/2026-04-22-datjitgo-design.md`](docs/superpowers/specs/2026-04-22-datjitgo-design.md)
 

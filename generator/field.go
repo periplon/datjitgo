@@ -48,6 +48,13 @@ func (e *Engine) generateRow(entity *model.Entity, st *generationState, rowRNG p
 			row.Set(fname, value.Null()) // placeholder until phase 3.
 			return true
 		}
+		if isStateful(f) {
+			// @series/@walk/@chain values are filled by the per-entity
+			// stateful post-pass; keep a null placeholder so row-level rules
+			// and expressions see a present (if null) column.
+			row.Set(fname, value.Null())
+			return true
+		}
 
 		val, gerr := e.generateField(entity, f, row, st, rowRNG)
 		if gerr != nil {
